@@ -31,7 +31,7 @@ Set
 *Defining a second name for the set f as f2.
 Alias (f,f2);
 *Defining a second name for the set p as p2.
-*Alias (p,p2);
+Alias (p,p2);
 
 
 *======================================
@@ -167,8 +167,18 @@ Use_Sim(d,p)$((ord(d)>= 2  and ord(d)<= 3)
                    OR (ord(d)>=16 and ord(d)<=17)
                   OR (ord(d)>=23 and ord(d)<=24)
                   OR (ord(d)>=30 and ord(d)<=30)) = 1;
+
+*Two day weekend days, only mark first day
+Use_Sim(d,p)$((ord(d)eq 2)
+                   OR(ord(d) eq 9 )
+                   OR(ord(d) eq 16)
+                   OR(ord(d) eq 23)
+                   OR(ord(d) eq 29)) = 1;
+* Last weekend offset one day because April only has 30 days
+
+
 *Set weekend flows to 10000 cfs.
-Rel_vals(d,p)$Use_Sim(d,p)= 10000;
+*Rel_vals(d,p)$Use_Sim(d,p)= 10000;
 
 
 
@@ -192,9 +202,9 @@ EQ13_EnergyGen(d,p)          Amount of energy generated in each time step (MWH)
 EQ13a_EnergyGen_Max(d,p)     Maximum Energy Generation Limit of the Glen Caynon Dam(MW)for each Period
 EQ14_EnergyRevenue(f)        Total monthly Hydropower Revenue generated ($)
 EQ15_CombinedObjectives      Defining all objective in single equation
-EQ16_ReleaseSim(d,p)         Setting release values as predefined for simulation(cfs)
-*EQ17_SteadyFlowDay(d,p)      Setting release on next bug flow day same as current day
-*EQ18_SteadyFlowPeriod(d,p)   Setting release for current day period similar to first period
+*EQ16_ReleaseSim(d,p)         Setting release values as predefined for simulation(cfs)
+EQ17_SteadyFlowDay(d,p)      Setting release on next bug flow day same as current day
+EQ18_SteadyFlowPeriod(d,p)   Setting release for current day period similar to first period
 ;
 
 *------------------------------------------------------------------------------*
@@ -245,13 +255,13 @@ EQ15_CombinedObjectives..                     CombineObjective=e= sum(f,FtoUse(f
 *------------------------------------------------------------------------------*
 *Eqauation 16 is introducing the steady bug flow on weekneds only. while allowing the model to calculate release for other days as per formulation.
 *Assuming the month of may 2018 (i.e. starting day will be tuesday and month ends on thursday).
-EQ16_ReleaseSim(d,p)$Use_Sim(d,p)..              release(d,p)=e=Rel_vals(d,p);
+*EQ16_ReleaseSim(d,p)$Use_Sim(d,p)..              release(d,p)=e=Rel_vals(d,p);
 
 *Release on next day, first period equals release on current day
-*EQ17_SteadyFlowDay(d,p)$(Use_Sim(d)AND ord(p) eq 1)..          Rel_vals(d,p)=e= Rel_vals(d+1,p);
+EQ17_SteadyFlowDay(d,p)$(Use_Sim(d,p) AND (ord(p) eq 1))..          Rel_vals(d,p)=e= Rel_vals(d+1,p);
 
 *Release on current day, all periods equals release in first period
-*EQ18_SteadyFlowPeriod(d,p)$(Use_Sim(d)AND ord(p) gt 1)..       sum(p2$(ord(p2)eq 1),Rel_vals(d,p2))=e= Rel_vals(d,p);
+EQ18_SteadyFlowPeriod(d,p)$(Use_Sim(d,p) AND (ord(p) gt 1))..       sum(p2$(ord(p2)eq 1),Rel_vals(d,p2))=e= Rel_vals(d,p);
 
 *------------------------------------------------------------------------------*
 *Initial values just to run simulation (Random Pick)... One might need to pick other numbers if he/she founds that some of the runs are locally infeasbile on their intial values.
@@ -284,9 +294,9 @@ EQ13_EnergyGen_m(d,p,tot_vol)          Amount of energy generated in each time s
 EQ13a_EnergyGen_Max_m(d,p,tot_vol)     Maximum Energy Generation Limit of the Glen Caynon Dam(MW)for each Period
 EQ14_EnergyRevenue_m(f,tot_vol)        Total monthly Hydropower Revenue generated ($)
 EQ15_CombinedObjectives_m(tot_vol)     Defining all objective in single equation
-EQ16_ReleaseSim_m(d,p,tot_vol)         Setting release values as predefined for simulation(cfs)
-*EQ17_SteadyFlowDay_m(d,p,tot_vol)      Setting release on next bug flow day same as current day
-*EQ18_SteadyFlowPeriod_m(d,p,tot_vol)   Setting release for current day period similar to first period
+*EQ16_ReleaseSim_m(d,p,tot_vol)         Setting release values as predefined for simulation(cfs)
+EQ17_SteadyFlowDay_m(d,p,tot_vol)      Setting release on next bug flow day same as current day
+EQ18_SteadyFlowPeriod_m(d,p,tot_vol)   Setting release for current day period similar to first period
 
 *For full Simulation Portion
 EQ1__ResMassBal_m2(d,tot_vol)           Reservoir mass balance (acre-ft)
@@ -364,9 +374,9 @@ EQ13_EnergyGen_m(d,p,tot_vol)= EQ13_EnergyGen.m(d,p);
 EQ13a_EnergyGen_Max_m(d,p,tot_vol)= EQ13a_EnergyGen_Max.m(d,p);
 EQ14_EnergyRevenue_m(f,tot_vol)= EQ14_EnergyRevenue.m(f)$(ord(f) eq 2);
 EQ15_CombinedObjectives_m(tot_vol) = EQ15_CombinedObjectives.m ;
-EQ16_ReleaseSim_m(d,p,tot_vol)= EQ16_ReleaseSim.m(d,p)$ Use_Sim(d,p);
-*EQ17_SteadyFlowDay_m(d,p,tot_vol)= EQ17_SteadyFlowDay.m(d,p)$(Use_Sim(d)AND ord(p) eq 1);
-*EQ18_SteadyFlowPeriod_m(d,p,tot_vol)= EQ18_SteadyFlowPeriod.m(d,p)$(Use_Sim(d)AND ord(p) gt 1);
+*EQ16_ReleaseSim_m(d,p,tot_vol)= EQ16_ReleaseSim.m(d,p)$ Use_Sim(d,p);
+EQ17_SteadyFlowDay_m(d,p,tot_vol)= EQ17_SteadyFlowDay.m(d,p)$(Use_Sim(d,p)AND ord(p) eq 1);
+EQ18_SteadyFlowPeriod_m(d,p,tot_vol)= EQ18_SteadyFlowPeriod.m(d,p)$(Use_Sim(d,p)AND ord(p) gt 1);
 );
 
 *------------------------------------------------------------------------------*

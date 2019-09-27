@@ -1,0 +1,118 @@
+
+--- Job April2018_observedflow__Validation(Hr).gms Start 08/09/19 00:53:24 24.2.3 r46072 WEX-WEI x86_64/MS Windows
+GAMS 24.2.3   Copyright (C) 1987-2014 GAMS Development. All rights reserved
+Licensee: Utah Water Research Laboratory (5 user)        G140130:1517AV-GEN
+          Utah State University                                      DC7087
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- April2018_observedflow__Validation(Hr).gms(68) 3 Mb
+--- call GDXXRW.EXE input=Input_April_2018_validation(2 periods).xlsx  output= Validation_April2018(2 periods).gdx  par=observed_release rng=Observed_release!A1:C32  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage
+
+GDXXRW           24.2.3 r46072 Released May 22, 2014 VS8 x86/MS Windows       
+**** No file extension for input file specified
+**** Input file: Input_April_2018_validation(2
+Total time = 594 Ms
+--- April2018_observedflow__Validation(Hr).gms(71) 3 Mb
+*** GDXIN failed E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Validation_April2018(2 periods).gdx
+*** Msg: No such file or directory
+--- April2018_observedflow__Validation(Hr).gms(71) 3 Mb 1 Error
+*** Error 510 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Unable to open gdx file for $GDXIN
+--- April2018_observedflow__Validation(Hr).gms(74) 3 Mb 2 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(75) 3 Mb 3 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(76) 3 Mb 4 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(77) 3 Mb 5 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(78) 3 Mb 6 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(79) 3 Mb 7 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(80) 3 Mb 8 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(81) 3 Mb 9 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(82) 3 Mb 10 Errors
+*** Error 502 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    GDXIN  file not open - ignore rest of line
+--- April2018_observedflow__Validation(Hr).gms(86) 3 Mb 19 Errors
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- April2018_observedflow__Validation(Hr).gms(204) 3 Mb 20 Errors
+*** Error 257 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Solve statement not checked because of previous errors
+--- April2018_observedflow__Validation(Hr).gms(206) 3 Mb 25 Errors
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- April2018_observedflow__Validation(Hr).gms(248) 3 Mb 26 Errors
+*** Error 257 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Solve statement not checked because of previous errors
+--- April2018_observedflow__Validation(Hr).gms(323) 3 Mb 27 Errors
+*** Error 257 in E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\April2018_observedflow__Validation(Hr).gms
+    Solve statement not checked because of previous errors
+--- April2018_observedflow__Validation(Hr).gms(333) 3 Mb 27 Errors
+*** Status: Compilation error(s)
+--- Job April2018_observedflow__Validation(Hr).gms Stop 08/09/19 00:53:25 elapsed 0:00:00.847
+Exit code = 2

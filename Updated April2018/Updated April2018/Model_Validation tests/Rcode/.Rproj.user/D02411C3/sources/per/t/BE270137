@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565414273645.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3511691956",
+    "id" : "BE270137",
+    "lastKnownWriteTime" : 1565430333,
+    "last_content_update" : 1565430333855,
+    "path" : "E:/Project_Bugflow/Montly_Models/April_2018/Model_Validation tests/Rcode/Validation_Results.R",
+    "project_path" : "Validation_Results.R",
+    "properties" : {
+        "cursorPosition" : "95,0",
+        "scrollLine" : "94",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

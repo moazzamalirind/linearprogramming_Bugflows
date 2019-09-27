@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565422030419.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2978828329",
+    "id" : "D78A398D",
+    "lastKnownWriteTime" : 1564557854,
+    "last_content_update" : 1564557854,
+    "path" : "E:/Project_Bugflow/Montly_Models/April_2018/Results/April_2018.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "263,40",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

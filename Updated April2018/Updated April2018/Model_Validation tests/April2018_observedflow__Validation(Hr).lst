@@ -1,0 +1,489 @@
+GAMS 24.2.3  r46072 Released May 22, 2014 WEX-WEI x86_64/MS Windows 08/09/19 00:53:24 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1   
+      Title Optimization model for Glen Canyon Dam releases to favor Bugs popula
+      tion (April 2018)
+       
+       
+      ###################################
+      Created By: Moazzam Ali Rind
+      Email: moazzamalirind@gmail.com
+       
+      Created : 4/24/2019
+      Last updated: 7/24/2019
+       
+      Description: Daily High flow & low flow release concept with an aim to min
+      imize the difference between two daily flows.
+                   Whereas, the overall objective of the model is to get the dai
+      ly flow release outer bound which is not only favourable for bugs
+                   but also accounts the hydropower objective to its best. Conve
+      rsely, the total monthly release amount is maintained same as per colorado
+       river compact .
+       
+      ######################################
+       
+  20   
+  21  ****Model code:
+  22   
+  23  Set
+  24   
+  25            d            days in April
+  26            p            time period during a day /pLow "Low flow period", p
+      High "High flow period"/
+  27            f            objective functions/BugIndex "Bug Flow objective", 
+      Hydro "Hydropower Objective"/
+  28   
+  29   
+  30  *Defining a second name for the set f as f2.
+  31  Alias (f,f2);
+  32   
+  33  *======================================
+  34  *Parameters
+  35  *======================================
+  36   
+  37  PARAMETERS
+  38   
+  39  FtoUse(f)                    Objective functions to use (1=yes 0=no)
+  40  FLevel(f)                    Right hand side of constraint when the object
+      ive is constrained
+  41   
+  42  FStore(f2,f)                 Storing objective function values over differ
+      ent scenarios of f
+  43  XStore(f2,d)                 Store decision variable values over different
+       scenarios of f
+  44   
+  45  Obj_dir(f)                   To set objective directions inorder to set th
+      e maximization and minimization of the objectives /BugIndex -1,Hydro 1/
+  46  initstorage                  Initial reservoir storage on 1st April 2018 (
+      acre-ft)
+  47  maxstorage                   Reservoir capacity (acre-ft)
+  48  minstorage                   Minimum reservoir storage to maintain hydropo
+      wer level(acre-ft)
+  49  Inflow(d)                    Inflow to reservoir (cfs)
+  50  observed_release(d,p)        observed release at April 2018 averaged over 
+      two timesteps (cfs)
+  51  maxRel                       Maximum release in a day d at any timeperiod 
+      p(cfs)
+  52  minRel                       Minimum release in a day d at any timeperiod 
+      p(cfs)
+  53  evap                         evaporation (ac-ft per day) Considered consta
+      nt throughout the month
+  54  EnergyRate(p)                Energy revenue ($ per MWH)/pLow 39.09, pHigh 
+      47.85/
+  55  Duration(p)                  Duration of period (hours)
+  56   
+  57  ;
+  58   
+  59  Duration("pLow")= 5;
+  60  *  High period weightage in a day( 5 Hours or 5 by 24 i.e:0.208 of day)
+  61  Duration("pHigh")=19;
+  62  * low period weightage in a day(19 Hours or 19 by 24 i.e:0.792 of day)
+  63   
+  64   
+  65  *===================================================
+  66  * Read data from Excel
+  67  *===================================================
+  69   
+  70  *Write the input Data into a GDX file
+**** File: E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Va
+                                               lidation_April2018(2 periods).gdx
+**** Msg : No such file or directory
+  71  $GDXIN Validation_April2018(2 periods).gdx
+****                                           $510
+  72   
+  73  * parameters and input data from the GDX file into the model
+  74  $LOAD d
+****      $502
+  75  $LOAD inflow
+****      $502
+  76  $LOAD initstorage
+****      $502
+  77  $LOAD maxstorage
+****      $502
+  78  $LOAD minstorage
+****      $502
+  79  $LOAD maxRel
+****      $502
+  80  $LOAD minRel
+****      $502
+  81  $LOAD evap
+****      $502
+  82  $LOAD observed_release
+****      $502
+  83  *Close the GDX file
+  85   
+  86  Display d,inflow, initstorage, maxstorage, minstorage, maxRel, minRel, eva
+****          $141   $141         $141        $141        $141    $141    $141  
+      p,p,observed_release;
+      $141               $141
+  87   
+  88  *===============================================
+  89  SCALAR
+  90  conver                        conversion factor from cfs to ac-ft per day 
+      /1.98348/
+  91  factor_foracftperHr           conversion factor from cfs to ac-ft per hour
+       (0.0014*60)/0.084/
+  92  *factor_HptoKWH                conversion factor from Horse Power to KWH (
+      0.746 by 550)/0.00098/
+  93  *KWHtoMWH_factor               conversion factor from KWH to MWH /0.001/
+  94  *Unitweight_Water              Specific weight of Water(Lb per Ft3)/62.43/
+  95  *factor_powerMW                Factor required to get results in MW with E
+      nglish Units /11810/
+  96  Numdays                       Number of days in month/30/
+  97  *Elev_Head                     Elevation Head at Glen Canyon Dam /432.54/
+  98  *Efficiency                    Efficieny of power turbines at GCD /0.9/
+  99  Num_of_timesteps              Total Number of timesteps used /60/
+ 100  *Vol_monthlyrelease            Total volume of water to be released in the
+       month i.e. may 2018 in presented case (acre-ft)/900000/
+ 101   
+ 102  VARIABLES
+ 103  ObjectiveVal(f)               Objective functions calculation
+ 104  CombineObjective              Combine objective functions for each senario
+ 105   
+ 106  Positive Variables
+ 107  storage(d)                    reservoir storage on any day d (acre-ft)
+ 108  release(d,p)                  reservoir release on any day d in any period
+       p (cfs)
+ 109  Avgrelease                    Average release value for the whole month (c
+      fs)
+ 110  standarddev                   Standard deviation of releases over the mont
+      h
+ 111  Energyrate_vari(d,p)          Rate of hydropower with respect to day and p
+      eriod of day ($ per MWH)
+ 112  Energy_Gen(d,p)               Hydropower Generated at a each time step (MW
+      H)
+ 113  ReleaseVol(d,p)               volume of water released per time step(acre-
+      ft)
+ 114   
+ 115  Vol_monthlyrelease            Total volume of water released in the month
+ 116  ;
+ 117   
+ 118   
+ 119  EQUATIONS
+ 120  *AND CONSTRAINTS
+ 121   
+ 122  EQ1__ResMassBal(d)           Reservoir mass balance (acre-ft)
+ 123  EQ2__reqpowerstorage(d)      The minimum storage equivalent to reservoir l
+      evel required for hydropower generation (acre-ft)
+ 124  EQ3__maxstor(d)              Reservoir storage max (acre-ft)
+ 125  EQ4__MaxR(d,p)               Max Release (cfs)
+ 126  EQ5__MinR(d,p)               Min Release  (cfs)
+ 127  EQ6_Energyrate(d,p)          Defination of Energy rate as per period of da
+      y and day of week ($ per MWH)
+ 128  EQ7_FlowVolume(d,p)          volume of water released per time step (acre-
+      ft)
+ 129  EQ8__Mayrel                  Constraining Total monthly volume of water re
+      leased in "April" as per WAPA information(acre-ft)
+ 130  EQ9_Avgrelease               Average Monthly release (cfs)
+ 131  EQ10_Standarddev             Standard Devation over month.
+ 132  EQ11_Hydropeakingindex(f)    Hydropeaking index value over month.
+ 133  EQ12_EnergyGen(d,p)          Amount of energy generated in each time step 
+      (MWH)
+ 134  EQ13_EnergyRevenue(f)        Total monthly Hydropower Revenue generated ($
+      )
+ 135  *EQ14_Simvalues(d,p)          Release values for simulation model with res
+      pect to day and periods of day(cfs)
+ 136  EQ14_ReleaseSim(d,p)         Setting release values as predefined for simu
+      lation(cfs)
+ 137  *EQ15__flowLow(d,p)          Low flow release condition or defination(cfs)
+ 138  EQ16_CombinedObjectives      Defining all objective in single equation
+ 139  ;
+ 140   
+ 141   
+ 142  *-------------------------------------------------------------------------
+      -----*
+ 143   
+ 144  EQ1__ResMassBal(d)..         storage(d) =e= initstorage$(ord(d)eq 1)+ stor
+      age(d-1)$(ord(d)gt 1)+ (inflow(d)*conver)- sum(p,ReleaseVol(d,p))-evap;
+ 145  EQ2__reqpowerstorage(d)..    storage(d) =g= minstorage;
+ 146  EQ3__maxstor(d)..            storage(d)=l= maxstorage;
+ 147  EQ4__MaxR(d,p)..             release(d,p)=l= maxRel ;
+ 148  EQ5__MinR(d,p)..             release(d,p)=g= minRel;
+ 149  EQ6_Energyrate(d,p)..        Energyrate_vari(d,p)=e= EnergyRate(p);
+ 150  *Equation 6 is just making the energy rate same for all days. However in f
+      uture we can change it as per different rates for different days.
+ 151   
+ 152  EQ7_FlowVolume(d,p)..        ReleaseVol(d,p) =e= release(d,p)*factor_forac
+      ftperHr;
+ 153  EQ8__Mayrel..                sum(d,sum(p,ReleaseVol(d,p)))=e=Vol_monthlyre
+      lease;
+ 154  *EQ8b_  constraining the overall monthly released volume..
+ 155  EQ9_Avgrelease..             Avgrelease=e= sum(d,sum(p,release(d,p))/2)/Nu
+      mdays;
+ 156  * Equation 9 is calculating the monlthy average release from the reservior
+      . (Mathematical details of RHS: First summing daily two values and dividin
+      g by 2-for average- and then summing values for all days and dividing by t
+      otal number of days i.e: 31 in May.
+ 157  EQ10_Standarddev..           standarddev=e= sqrt[sum(d,sum{p,power(release
+      (d,p)- Avgrelease,2)})/Num_of_timesteps];
+ 158  * Equation 10 is calculating the monlthy average standard devation. (Mathe
+      matical details of RHS:   as per formula of standard dev i.e: sqrt((summat
+      ion (value - average)^2)/number of values).. So same is applied here with 
+      the help of power function for squaring.
+ 159   
+ 160  EQ11_Hydropeakingindex(f)$(ord(f) eq 1)..     ObjectiveVal(f)=e= Obj_dir(f
+      )*(standarddev/Avgrelease);
+ 161  *EQ 11 is calculating hydropeaking index value for the whole month. Wherea
+      s, the -1 is added to switch the direction of objective (i.e. inorder to m
+      inimize the Bug objective rather miximizing it).
+ 162   
+ 163  *EQ12_EnergyGen(d,p)..                         Energy_Gen(d,p)=e= (release
+      (d,p)*Unitweight_Water*Elev_Head *Efficiency*factor_HptoKWH*KWHtoMWH_facto
+      r)*Duration(p);
+ 164  *https://www.quora.com/What-is-formula-of-hydroelectric-power-generation
+ 165   
+ 166  *EQ12_EnergyGen(d,p)..                         Energy_Gen(d,p)=e= ((releas
+      e(d,p)*Elev_Head *Efficiency)/factor_powerMW)*Duration(p);
+ 167  *formula Source http://rivers.bee.oregonstate.edu/book/export/html/6
+ 168   
+ 169  EQ12_EnergyGen(d,p)..                         Energy_Gen(d,p)=e= release(d
+      ,p)*0.03715;
+ 170  * Energy generation formula used in wapa Execl model..
+ 171   
+ 172  EQ13_EnergyRevenue(f)$(ord(f) eq 2)..         ObjectiveVal(f)=e= Obj_dir(f
+      )* sum((d,p),Energy_Gen(d,p)*EnergyRate(p));
+ 173  **EQ13_HyrdroPower objective
+ 174   
+ 175  *EQ15__flowLow(d,p)..          release(d,p)$(ord(p) eq 2)=L= 10000;
+ 176  * EQEQ15__flowLow is  introducing an addtional constraint for low flow amo
+      unt (incase the high and low values are coming near to each other)
+ 177   
+ 178  EQ16_CombinedObjectives..                     CombineObjective=e= sum(f,Ft
+      oUse(f)*ObjectiveVal(f));
+ 179   
+ 180  *SOLVE HI minimize BugIndex using NLP;
+ 181  *SOLVE HI maximize Hydro using NLP;
+ 182  *display release.l,storage.l,Avgrelease.l,standarddev.l,BugIndex.l,FlowVol
+      .l, Hydro.l;
+ 183   
+ 184  ***************************************************
+ 185  ******Simulation Model
+ 186  ****************************************** ********
+ 187  *-------------------------------------------------------------------------
+      -----*
+ 188  *Eqauation 14 is introducing the steady bug flow on weekneds only. while a
+      llowing the model to calculate release for other days as per formulation.
+ 189  *Assuming the month of may 2018 (i.e. starting day will be tuesday and mon
+      th ends on thursday).
+ 190  *EQ14_ReleaseSim(d,p)$Use_Sim(d,p)..                 release(d,p)=e=Rel_va
+      ls(d,p);
+ 191  EQ14_ReleaseSim(d,p)..                 release(d,p)=e=observed_release(d,p
+      );
+ 192   
+ 193   
+ 194  Model HI includes all the equations including Simuatlion part as well /ALL
+      /;
+ 195  release.L(d,p) = 10;
+ 196  Avgrelease.L = 10;
+ 197   
+ 198  *MODEL Simulation Find release values for Maximizing CombineObjective/All/
+ 199   
+ 200  FtoUse(f)=1;
+ 201   
+ 202  MODEL Simulation Find release values for Maximizing CombineObjective inclu
+      ding all equations /All/;
+ 203   
+ 204  SOLVE Simulation USING NLP MAXIMIGING CombineObjective;
+****                                                        $257
+ 205   
+ 206  DISPLAY release.L,storage.L,ObjectiveVal.L,ReleaseVol.L,Energy_Gen.L,Combi
+****                            $141           $141         $141         $141   
+      neObjective.L;
+                  $141
+ 207   
+ 208   
+ 209  *MODEL ExtremePt Finding extreme points using the NLP
+ 210   
+ 211  MODEL ExtremePt Find extreme points by using  NLP /ALL/;
+ 212   
+ 213  *MODEL ExtremePt_minus_simulation Find extreme points by using  NLP withou
+      t simulation part /EQ1__ResMassBal,EQ2__reqpowerstorage,EQ3__maxstor,EQ4__
+      MaxR,EQ5__MinR,EQ6_Energyrate,EQ7_FlowVolume,EQ8__Mayrel,EQ9_Avgrelease,EQ
+      10_Standarddev, EQ11_Hydropeakingindex, EQ12_EnergyGen,EQ13_EnergyRevenue,
+      EQ16_CombinedObjectives/;
+ 214   
+ 215  *This section constrains one objective to be greater than a level
+ 216  *EQUATION
+ 217  *ObjAsCon(f)          Objective function as constraint f(x) = FLevel;
+ 218   
+ 219  *The objective as constraint is greater or less or equal than the level se
+      t for that objective
+ 220  *ObjAsCon(f)$(1 - FtoUse(f))..        ObjectiveVal(f)=e=FLevel(f);
+ 221   
+ 222  *MODEL ObjAsConstraint Single-objective model with other objectives constr
+      ained /ALL/;
+ 223   
+ 224  *MODEL ObjAsConstraint__minus_simulation Single-objective model with other
+       objectives constrained /EQ1__ResMassBal,EQ2__reqpowerstorage,EQ3__maxstor
+      ,EQ4__MaxR,EQ5__MinR,EQ6_Energyrate,EQ7_FlowVolume,EQ8__Mayrel,EQ9_Avgrele
+      ase,EQ10_Standarddev, EQ11_Hydropeakingindex, EQ12_EnergyGen,EQ13_EnergyRe
+      venue,EQ16_CombinedObjectives/;
+ 225   
+ 226  *6. Solve the models.
+ 227  *First, solve the single objective formulation(minimize BugFlow_objective)
+ 228  *FtoUse(f)=1;
+ 229   
+ 230  *Solve as a single-objective nonlinear programming formulation
+ 231  *SOLVE ExtremePt USING NLP MAXIMIGING CombineObjective;
+ 232   
+ 233   
+ 234  * Solve for the extrement points in sequence
+ 235  * Step A. First find the extreme points associated with objective #1. Igno
+      re all other objectives
+ 236  *   i.e., Max fi(X) s.t. aX <= b;
+ 237  * Then move to objective #2
+ 238   
+ 239  Loop(f2,
+ 240  *  Ignore all the objectives
+ 241     FtoUse(f) = 0;
+ 242  *  Only consider the current objective
+ 243     FtoUse(f2) = 1;
+ 244   
+ 245     Display FtoUse;
+ 246   
+ 247  *  Solve the model
+ 248     SOLVE ExtremePt USING NLP MAXIMIGING CombineObjective;
+****                                                          $257
+ 249   
+ 250     DISPLAY release.L,storage.L,ObjectiveVal.L,ReleaseVol.L,Energy_Gen.L, C
+      ombineObjective.L;
+ 251  *Also save the results for later use
+ 252     FStore(f2,f)= ObjectiveVal.L(f)*Obj_dir(f);
+ 253   
+ 254     XStore(f2,d) = sum(p,Energy_Gen.L(d,p));
+ 255  );
+ 256   
+ 257  DISPLAY FStore, XStore;
+ 258   
+      Loop(f2,
+      *  Ignore all the objectives
+         FtoUse(f) = 0;
+      *  Only consider the current objective
+         FtoUse(f2) = 1;
+       
+         Display FtoUse;
+       
+      *  Solve the model
+         SOLVE ExtremePt_minus_simulation USING NLP MAXIMIGING CombineObjective;
+       
+         DISPLAY release.L,storage.L,ObjectiveVal.L,FlowVol.L,Energy_Gen.L, Comb
+      ineObjective.L;
+      *Also save the results for later use
+         FStore2(f2,f)= ObjectiveVal.L(f);
+       
+         XStore2(f2,d) =sum(p,FlowVol.L(d,p));
+      );
+       
+      DISPLAY FStore2, XStore2;
+       
+       
+      * Step B. Constrain one objective function value and maximize the other ob
+      jective
+       
+      **Minimize the bugindex objective, constrain the hydropower objective
+      *FToUse(f) = 0;
+      *FtoUse("BugIndex") = 1;
+      *Constrain the irrigation objective
+      *Choose a value between the extreme points for the irrigation objective id
+      entified above
+      *FLevel("Hydro") =7877694.725;
+       
+      *Alternatively
+      *Maximum the hydropower objective, constraint the  Bug objective
+       
+      loop(Scen,
+           FtoUse(f) = 0;
+           FtoUse("Hydro") =1;
+      *Set a level for the Hydropower objective
+       
+           FLevel(f)=Levels(f,Scen);
+       
+           SOLVE ObjAsConstraint USING NLP MAXIMIGING CombineObjective;
+           DISPLAY release.L,storage.L,ObjectiveVal.L,FlowVol.L,Energy_Gen.L, Co
+      mbineObjective.L;
+           Scen_store(f2,Scen)= ObjectiveVal.L(f2);
+      );
+      DISPLAY Scen_store;
+       
+      loop(Scen,
+           FtoUse(f) = 0;
+           FtoUse("Hydro") =1;
+      *Set a level for the Hydropower objective
+       
+           FLevel(f)=Levels(f,Scen);
+       
+           SOLVE ObjAsConstraint__minus_simulation USING NLP MAXIMIGING CombineO
+      bjective;
+           DISPLAY release.L,storage.L,ObjectiveVal.L,FlowVol.L,Energy_Gen.L, Co
+      mbineObjective.L;
+           Scen_store2(f2,Scen)= ObjectiveVal.L(f2);
+      );
+      DISPLAY Scen_store2;
+       
+ 320   
+ 321   
+ 322   
+ 323  SOLVE HI USING NLP MAXIMIGING CombineObjective;
+****                                                $257
+ 324   
+ 325  DISPLAY release.L,storage.L,ObjectiveVal.L,ReleaseVol.L,Energy_Gen.L, Comb
+      ineObjective.L;
+ 326   
+ 327  * Dump all input data and results to a GAMS gdx file
+ 328  Execute_Unload "Validation_April2018(2 periods).gdx";
+ 329  * Dump the gdx file to an Excel workbook
+ 330  Execute "gdx2xls Validation_April2018(2 periods).gdx"
+ 331   
+ 332   
+ 333   
+GAMS 24.2.3  r46072 Released May 22, 2014 WEX-WEI x86_64/MS Windows 08/09/19 00:53:24 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+141  Symbol neither initialized nor assigned
+        A wild shot: You may have spurious commas in the explanatory
+        text of a declaration. Check symbol reference list.
+257  Solve statement not checked because of previous errors
+502  GDXIN  file not open - ignore rest of line
+510  Unable to open gdx file for $GDXIN
+
+**** 27 ERROR(S)   0 WARNING(S)
+GAMS 24.2.3  r46072 Released May 22, 2014 WEX-WEI x86_64/MS Windows 08/09/19 00:53:24 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  E:\Project_Bugflow\Montly_Models\April
+                                          _2018\Model_Validation tests\April2018
+                                          _observedflow__Validation(Hr).gms
+     2       68 CALL           1      68  GDXXRW.EXE input=Input_April_2018_vali
+                                          dation(2 periods).xlsx  output= Valida
+                                          tion_April2018(2 periods).gdx  par=obs
+                                          erved_release rng=Observed_release!A1:
+                                          C32  set=d rng=day!A1 Rdim=1  par=Infl
+                                          ow rng=inflow!A1 Rdim=1  par=initstora
+                                          ge rng=initstorage!A1 Rdim=
+
+
+COMPILATION TIME     =        0.813 SECONDS      3 MB  24.2.3 r46072 WEX-WEI
+
+
+USER: Utah Water Research Laboratory (5 user)        G140130:1517AV-GEN
+      Utah State University                                      DC7087
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Ap
+           ril2018_observedflow__Validation(Hr).gms
+Output     E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Ap
+           ril2018_observedflow__Validation(Hr).lst
+
+**** USER ERROR(S) ENCOUNTERED

@@ -1,0 +1,160 @@
+
+--- Job April2018_observedflow__Validation(2 Periods).gms Start 08/22/19 17:24:01 24.2.3 r46072 WEX-WEI x86_64/MS Windows
+GAMS 24.2.3   Copyright (C) 1987-2014 GAMS Development. All rights reserved
+Licensee: Utah Water Research Laboratory (5 user)        G140130:1517AV-GEN
+          Utah State University                                      DC7087
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- April2018_observedflow__Validation(2 Periods).gms(68) 3 Mb
+--- call GDXXRW.EXE input=Input_2periods.xlsx  output= Validation_April2018-2periods.gdx  par=observed_release rng=Observed_release!A1:C32  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage
+
+GDXXRW           24.2.3 r46072 Released May 22, 2014 VS8 x86/MS Windows       
+Input file : E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Input_2periods.xlsx
+Output file: E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Validation_April2018-2periods.gdx
+Total time = 1032 Ms
+--- April2018_observedflow__Validation(2 Periods).gms(71) 3 Mb
+--- GDXin=E:\Project_Bugflow\Montly_Models\April_2018\Model_Validation tests\Validation_April2018-2periods.gdx
+--- April2018_observedflow__Validation(2 Periods).gms(331) 3 Mb
+--- Starting execution: elapsed 0:00:01.116
+--- April2018_observedflow__Validation(2 Periods).gms(198) 4 Mb
+--- Generating NLP model Simulation
+--- April2018_observedflow__Validation(2 Periods).gms(202) 6 Mb
+---   456 rows  276 columns  910 non-zeroes
+---   251 nl-code  63 nl-non-zeroes
+--- April2018_observedflow__Validation(2 Periods).gms(202) 4 Mb
+--- Executing CONOPT: elapsed 0:00:01.182
+CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
+ 
+ 
+    C O N O P T 3   version 3.15P
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        2.8283591608E+08 (Input point)
+                                Pre-triangular equations:      456
+                                Post-triangular equations:       0
+      1   0        0.0000000000E+00 (After pre-processing)
+      2   0        0.0000000000E+00 (After scaling)
+ 
+ ** Feasible solution. Value of objective =    15471397.0925
+ 
+   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
+      4   3        1.5471397092E+07 0.0E+00     0
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+--- Restarting execution
+--- April2018_observedflow__Validation(2 Periods).gms(202) 2 Mb
+--- Reading solution for model Simulation
+--- Executing after solve: elapsed 0:00:01.305
+--- April2018_observedflow__Validation(2 Periods).gms(237) 3 Mb
+--- Generating NLP model ExtremePt
+--- April2018_observedflow__Validation(2 Periods).gms(246) 5 Mb
+--- LOOPS f2 = BugIndex
+---   456 rows  276 columns  909 non-zeroes
+---   251 nl-code  63 nl-non-zeroes
+--- April2018_observedflow__Validation(2 Periods).gms(246) 3 Mb
+--- Executing CONOPT: elapsed 0:00:01.381
+CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
+ 
+ 
+    C O N O P T 3   version 3.15P
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        1.5471397252E+07 (Input point)
+                                Pre-triangular equations:      456
+                                Post-triangular equations:       0
+      1   0        0.0000000000E+00 (After pre-processing)
+      2   0        0.0000000000E+00 (After scaling)
+ 
+ ** Feasible solution. Value of objective =  -0.159086912243
+ 
+   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
+      4   3       -1.5908691224E-01 0.0E+00     0
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+--- Restarting execution
+--- April2018_observedflow__Validation(2 Periods).gms(246) 2 Mb
+--- Reading solution for model ExtremePt
+--- Executing after solve: elapsed 0:00:01.561
+--- April2018_observedflow__Validation(2 Periods).gms(237) 3 Mb
+--- Generating NLP model ExtremePt
+--- April2018_observedflow__Validation(2 Periods).gms(246) 5 Mb
+--- LOOPS f2 = Hydro
+---   456 rows  276 columns  909 non-zeroes
+---   251 nl-code  63 nl-non-zeroes
+--- April2018_observedflow__Validation(2 Periods).gms(246) 3 Mb
+--- Executing CONOPT: elapsed 0:00:01.640
+CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
+ 
+ 
+    C O N O P T 3   version 3.15P
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        1.5471397411E+07 (Input point)
+                                Pre-triangular equations:      456
+                                Post-triangular equations:       0
+      1   0        0.0000000000E+00 (After pre-processing)
+      2   0        0.0000000000E+00 (After scaling)
+ 
+ ** Feasible solution. Value of objective =    15471397.2516
+ 
+   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
+      4   3        1.5471397252E+07 0.0E+00     0
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+--- Restarting execution
+--- April2018_observedflow__Validation(2 Periods).gms(246) 2 Mb
+--- Reading solution for model ExtremePt
+--- Executing after solve: elapsed 0:00:01.802
+--- April2018_observedflow__Validation(2 Periods).gms(255) 3 Mb
+--- Generating NLP model HI
+--- April2018_observedflow__Validation(2 Periods).gms(321) 5 Mb
+---   456 rows  276 columns  909 non-zeroes
+---   251 nl-code  63 nl-non-zeroes
+--- April2018_observedflow__Validation(2 Periods).gms(321) 3 Mb
+--- Executing CONOPT: elapsed 0:00:01.859
+CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
+ 
+ 
+    C O N O P T 3   version 3.15P
+    Copyright (C)   ARKI Consulting and Development A/S
+                    Bagsvaerdvej 246 A
+                    DK-2880 Bagsvaerd, Denmark
+ 
+ 
+   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
+      0   0        5.4420468132E-10 (Input point)
+                                Pre-triangular equations:      456
+                                Post-triangular equations:       0
+      1   0        0.0000000000E+00 (After pre-processing)
+      2   0        0.0000000000E+00 (After scaling)
+ 
+ ** Feasible solution. Value of objective =    15471397.2516
+ 
+   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
+      4   3        1.5471397252E+07 0.0E+00     0
+ 
+ ** Optimal solution. There are no superbasic variables.
+ 
+--- Restarting execution
+--- April2018_observedflow__Validation(2 Periods).gms(321) 2 Mb
+--- Reading solution for model HI
+--- Executing after solve: elapsed 0:00:01.945
+--- April2018_observedflow__Validation(2 Periods).gms(328) 3 Mb
+GDX2XLS          24.2.3 r46072 Released May 22, 2014 VS8 x86/MS Windows       
+*** Status: Normal completion
+--- Job April2018_observedflow__Validation(2 Periods).gms Stop 08/22/19 17:24:06 elapsed 0:00:05.389
