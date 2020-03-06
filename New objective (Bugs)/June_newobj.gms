@@ -383,7 +383,7 @@ $offtext
 
 
 
-$ontext
+
 *------------------------------------------------------------------------------*  *------------------------------------------------------------------------------*
 *------------------------------------------------------------------------------*  *------------------------------------------------------------------------------*
 
@@ -404,7 +404,6 @@ loop((Scen,tot_vol),
 *Set a level for the Bugindex objective
      FLevel(f)=Levels(f,tot_vol,Scen);
 release.L(d,p) = 8000;
-
 
      SOLVE ObjAsConstraint USING DNLP MAXIMIGING CombineObjective;
      Scen_store(f,Scen,tot_vol)= ObjectiveVal.L(f);
@@ -427,7 +426,7 @@ release.L(d,p) = 8000;
      Obj_Save("Hydro",tot_vol,"Min")= Extreme_Points("Hydro",tot_vol,"Min");
      Obj_Save("Hydro",tot_vol,"Max")= Extreme_Points("Hydro",tot_vol,"Max");
 );
-$offtext
+
 
 *------------------------------------------------------------------------------*
 * Dump all input data and results to a GAMS gdx file
