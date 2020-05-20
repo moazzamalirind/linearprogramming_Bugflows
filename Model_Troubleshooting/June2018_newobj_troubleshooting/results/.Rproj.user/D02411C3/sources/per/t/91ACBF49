@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589938048904.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "91ACBF49",
+    "lastKnownWriteTime" : 2484628534807494656,
+    "last_content_update" : 1589938048904,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "B4426052",
+        "caption" : "Obj_Hydro",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=Obj_Hydro&cache_key=B4426052",
+        "displayedObservations" : 10,
+        "environment" : "",
+        "object" : "Obj_Hydro",
+        "preview" : 0,
+        "totalObservations" : 10,
+        "variables" : 4
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

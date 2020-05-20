@@ -123,7 +123,7 @@ factor_foracftperHr           conversion factor from cfs to ac-ft per hour (0.00
 Numdays                       Number of days in month/30/
 Num_of_timesteps              Total Number of timesteps used /60/
 Daily_Ramprate                Allowable daily ramp rate (cfs)/8000/
-Threshold                    Minimum release value of the hydrograph (Threshold value)/10000/
+*Threshold                    Minimum release value of the hydrograph (Threshold value)/10000/
 
 VARIABLES
 
@@ -136,7 +136,7 @@ release(d,p)                  reservoir release on any day d in any period p (cf
 *Energyrate_vari(d,p)          Rate of hydropower with respect to day and period of day ($ per MWH)
 Energy_Gen(d,p)               Hydropower Generated at a each time step (MWH)
 ReleaseVol(d,p)               volume of water released per time step(acre-ft)
-*MinRelease                    Minimum release value of the hydrograph (Threshold value)
+QMin                           Minimum release value of the hydrograph (Threshold value)
 
 ;
 
@@ -158,7 +158,8 @@ EQ7b_Rampup_ratenext(d,p)    Constraining the daily ramp up rate between the las
 EQ7c_Rampdown_ratenext(d,p)  Constraining the daily ramp down rate between the last timestep of current day and next timestep for next day(cfs)
 EQ7d_FlowVolume(d,p)         volume of water released per time step (acre-ft)
 EQ8__Monthtlyrel             Constraining Total monthly volume of water released in "May" as per WAPA information(acre-ft)
-*EQ9_Threshold(d,p)           Minimun release value within the hydrograph(cfs)
+EQ9_Threshold                Minimun release value within the hydrograph(cfs)
+EQ9a_Qminconstraint(d,p)     Constraint related to Qmin(Threshold)
 EQ10_function(f)             Fitting Arctangent Function to the release values (New Bug Metric)
 EQ12_EnergyGen(d,p)          Amount of energy generated in each time step (MWH)
 EQ12a_EnergyGen_Max(d,p)     Maximum Energy Generation Limit of the Glen Caynon Dam(MW)for Low Period
@@ -187,12 +188,13 @@ EQ8__Monthtlyrel..           sum((d,p),ReleaseVol(d,p))=e= TotMonth_volume;
 *EQ8_  constraining the overall monthly released volume..
 
 
-*EQ9_Threshold(d,p)..                            11763.84 =e= MinRelease;
+EQ9_Threshold..                                QMin=e=smin((d,p),release(d,p));
 * EQ9_  finds the minimimum release value from the hydrograph.
+EQ9a_Qminconstraint(d,p)..                      QMin=l= release(d,p);
 
 
 *EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-11763.84)-0.65)/0.001)/(pi/2)+1)+1);
-EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-Threshold)-0.65)/0.001)/(pi/2)+1)+1);
+EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-QMin)-0.65)/0.001)/(pi/2)+1)+1);
 *EQ10_ objective function qauntifying number of constant flow periods.
 
 

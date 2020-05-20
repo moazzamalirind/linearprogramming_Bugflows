@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589918712206.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2616608132",
+    "id" : "2D866FF3",
+    "lastKnownWriteTime" : 1589946285,
+    "last_content_update" : 1589946285515,
+    "path" : "E:/Project_Bugflow/June18_newObjective/June2018_newobj_Analysis/results/newobj.R",
+    "project_path" : "newobj.R",
+    "properties" : {
+        "cursorPosition" : "541,0",
+        "scrollLine" : "517"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
