@@ -194,8 +194,9 @@ EQ9a_Qminconstraint(d,p)..                      QMin=l= release(d,p);
 
 
 *EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-11763.84)-0.65)/0.001)/(pi/2)+1)+1);
-EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-QMin)-0.65)/0.001)/(pi/2)+1)+1);
-*EQ10_ objective function qauntifying number of constant flow periods.
+EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= round (sum((d,p),{(-1/2)*(arctan(((release(d,p)-QMin)-0.65)/0.001)/(pi/2)+1)+1}*{(-1/2)*(arctan(((release(d,p++1)-QMin)-0.65)/0.001)/(pi/2)+1)+1}))/2;
+*EQ10_ objective function qauntifying number of constant flow days.  The Equation is period dependent and in this study each day has two periods hence the function values is divided by two.
+*Besides, we want continous low flow days. For the reason, the arc tangent function value of current period is multiplied with the value of the next period. In this way, both of periods will only be counted if both are low flow periods else zero.
 
 
 EQ12_EnergyGen(d,p)..                         Energy_Gen(d,p)=e= release(d,p)*Duration(p)*0.03715;
@@ -299,7 +300,7 @@ option NLP= CONOPT;
 
    TotMonth_volume= Vol_monthlyrelease(tot_vol);
    SOLVE ExtremePt USING dnlp maximize CombineObjective;
-   FStore(f2,f,tot_vol)= ObjectiveVal.L(f);
+   FStore(f2,f,tot_vol)= ObjectiveVal.L(f)+EPS;
    XStore(f2,d,tot_vol,p) = Energy_Gen.L(d,p);
    RStore(f2,d,tot_vol,p)=release.L(d,p);
    Sstore(f2,d,tot_vol)=storage.L(d);

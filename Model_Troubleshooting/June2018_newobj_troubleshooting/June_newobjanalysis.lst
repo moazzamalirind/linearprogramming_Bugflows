@@ -1,4 +1,4 @@
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 1
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -142,18 +142,18 @@ C o m p i l a t i o n
   99  * Read data from Excel
  100  *===================================================
  102  *Write the input Data into a GDX file
-GDXIN   E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\newmetri
-        c_analysis.gdx
+GDXIN   C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshootin
+        g\June2018_newobj_troubleshooting\newmetric_analysis.gdx
  104   
  105  * parameters and input data from the GDX file into the model
 --- LOAD  d = 1:d
---- LOAD  Inflow = 2:Inflow
---- LOAD  initstorage = 3:initstorage
---- LOAD  maxstorage = 4:maxstorage
---- LOAD  minstorage = 5:minstorage
---- LOAD  maxRel = 6:maxRel
---- LOAD  minRel = 7:minRel
---- LOAD  evap = 8:evap
+--- LOAD  Inflow = 18:Inflow
+--- LOAD  initstorage = 15:initstorage
+--- LOAD  maxstorage = 16:maxstorage
+--- LOAD  minstorage = 17:minstorage
+--- LOAD  maxRel = 19:maxRel
+--- LOAD  minRel = 20:minRel
+--- LOAD  evap = 21:evap
  114   
  115  *Close the GDX file
  117   
@@ -271,9 +271,10 @@ GDXIN   E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\newmetri
  195   
  196  *EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p)
       ,(-1/2)*(arctan(((release(d,p)-11763.84)-0.65)/0.001)/(pi/2)+1)+1);
- 197  EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),
-      (-1/2)*(arctan(((release(d,p)-QMin)-0.65)/0.001)/(pi/2)+1)+1);
- 198  *EQ10_ objective function qauntifying number of constant flow periods.
+ 197  EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= round (sum
+      ((d,p),{(-1/2)*(arctan(((release(d,p)-QMin)-0.65)/0.001)/(pi/2)+1)+1}*{(-1
+      /2)*(arctan(((release(d,p++1)-QMin)-0.65)/0.001)/(pi/2)+1)+1}))/2;
+ 198  *EQ10_ objective function qauntifying number of constant flow days. Ino
  199   
  200   
  201  EQ12_EnergyGen(d,p)..                         Energy_Gen(d,p)=e= release(d
@@ -411,7 +412,7 @@ GDXIN   E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\newmetri
  299   
  300     TotMonth_volume= Vol_monthlyrelease(tot_vol);
  301     SOLVE ExtremePt USING dnlp maximize CombineObjective;
- 302     FStore(f2,f,tot_vol)= ObjectiveVal.L(f);
+ 302     FStore(f2,f,tot_vol)= ObjectiveVal.L(f)+EPS;
  303     XStore(f2,d,tot_vol,p) = Energy_Gen.L(d,p);
  304     RStore(f2,d,tot_vol,p)=release.L(d,p);
  305     Sstore(f2,d,tot_vol)=storage.L(d);
@@ -584,16 +585,17 @@ GDXIN   E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\newmetri
  455  Execute_Unload "newmetric_analysis.gdx";
  456  * Dump the gdx file to an Excel workbook
  457  Execute "gdx2xls newmetric_analysis.gdx"
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 2
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Include File Summary
 
 
    SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
 
-     1        1 INPUT          0       0  E:\Project_Bugflow\June18_newObjective
-                                          \June2018_newobj_Analysis\June_newobja
-                                          nalysis.gms
+     1        1 INPUT          0       0  C:\Users\moazz\OneDrive\Documents\GitH
+                                          ub\-Bug-flow-\Model_Troubleshooting\Ju
+                                          ne2018_newobj_troubleshooting\June_new
+                                          objanalysis.gms
      2      101 CALL           1     101  GDXXRW.EXE input=June2018.xls output=n
                                           ewmetric_analysis.gdx set=d rng=day!A1
                                           Rdim=1  par=Inflow rng=inflow!A1 Rdim=
@@ -601,13 +603,14 @@ Include File Summary
                                           Rdim=0  par=maxstorage rng=maxstorage!
                                           A1 Rdim=0   par=minstorage rng=minstor
                                           age!A1 Rdim=0  par=maxRel 
-     3      103 GDXIN          1     103  E:\Project_Bugflow\June18_newObjective
-                                          \June2018_newobj_Analysis\newmetric_an
-                                          alysis.gdx
+     3      103 GDXIN          1     103  C:\Users\moazz\OneDrive\Documents\GitH
+                                          ub\-Bug-flow-\Model_Troubleshooting\Ju
+                                          ne2018_newobj_troubleshooting\newmetri
+                                          c_analysis.gdx
 
 
-COMPILATION TIME     =        4.812 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 3
+COMPILATION TIME     =        5.296 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -664,7 +667,7 @@ pLow   8.000,    pHigh 16.000
 
 BugIndex 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 4
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -926,128 +929,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (3.18351270503919E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (3.18351270503919E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (3.18351270503919E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (3.18351270503919E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (3.18351270503919E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (3.18351270503919E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (3.18351270503919E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (3.18351270503919E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (3.18351270503919E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (3.18351270503919E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (3.18351270503919E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (3.18351270503919E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (3.18351270503919E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (3.18351270503919E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (3.18351270503919E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (3.18351270503919E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (3.18351270503919E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (3.18351270503919E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (3.18351270503919E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (3.18351270503919E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (3.18351270503919E-12)*release(d11,pLow)
-     
-      + (3.18351270503919E-12)*release(d11,pHigh)
-     
-      + (3.18351270503919E-12)*release(d12,pLow)
-     
-      + (3.18351270503919E-12)*release(d12,pHigh)
-     
-      + (3.18351270503919E-12)*release(d13,pLow)
-     
-      + (3.18351270503919E-12)*release(d13,pHigh)
-     
-      + (3.18351270503919E-12)*release(d14,pLow)
-     
-      + (3.18351270503919E-12)*release(d14,pHigh)
-     
-      + (3.18351270503919E-12)*release(d15,pLow)
-     
-      + (3.18351270503919E-12)*release(d15,pHigh)
-     
-      + (3.18351270503919E-12)*release(d16,pLow)
-     
-      + (3.18351270503919E-12)*release(d16,pHigh)
-     
-      + (3.18351270503919E-12)*release(d17,pLow)
-     
-      + (3.18351270503919E-12)*release(d17,pHigh)
-     
-      + (3.18351270503919E-12)*release(d18,pLow)
-     
-      + (3.18351270503919E-12)*release(d18,pHigh)
-     
-      + (3.18351270503919E-12)*release(d19,pLow)
-     
-      + (3.18351270503919E-12)*release(d19,pHigh)
-     
-      + (3.18351270503919E-12)*release(d20,pLow)
-     
-      + (3.18351270503919E-12)*release(d20,pHigh)
-     
-      + (3.18351270503919E-12)*release(d21,pLow)
-     
-      + (3.18351270503919E-12)*release(d21,pHigh)
-     
-      + (3.18351270503919E-12)*release(d22,pLow)
-     
-      + (3.18351270503919E-12)*release(d22,pHigh)
-     
-      + (3.18351270503919E-12)*release(d23,pLow)
-     
-      + (3.18351270503919E-12)*release(d23,pHigh)
-     
-      + (3.18351270503919E-12)*release(d24,pLow)
-     
-      + (3.18351270503919E-12)*release(d24,pHigh)
-     
-      + (3.18351270503919E-12)*release(d25,pLow)
-     
-      + (3.18351270503919E-12)*release(d25,pHigh)
-     
-      + (3.18351270503919E-12)*release(d26,pLow)
-     
-      + (3.18351270503919E-12)*release(d26,pHigh)
-     
-      + (3.18351270503919E-12)*release(d27,pLow)
-     
-      + (3.18351270503919E-12)*release(d27,pHigh)
-     
-      + (3.18351270503919E-12)*release(d28,pLow)
-     
-      + (3.18351270503919E-12)*release(d28,pHigh)
-     
-      + (3.18351270503919E-12)*release(d29,pLow)
-     
-      + (3.18351270503919E-12)*release(d29,pHigh)
-     
-      + (3.18351270503919E-12)*release(d30,pLow)
-     
-      + (3.18351270503919E-12)*release(d30,pHigh) - (1.91010762302352E-10)*QMin
-      =E= 30 ; (LHS = 29.9999980900165, INFES = 1.90998346472071E-6 ****)
+      (LHS = 0)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -1147,7 +1071,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(BugIndex) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 5
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -1209,7 +1133,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (3.183513E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -1227,7 +1151,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (3.183513E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -1245,7 +1169,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (3.183513E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -1359,9 +1283,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-1.91011E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 6
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 6
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -1376,17 +1300,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.031 SECONDS      4 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.063 SECONDS      4 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.031 SECONDS      4 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.063 SECONDS      4 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V1
                                          f2 BugIndex
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 7
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 7
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -1399,9 +1323,9 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      2 Locally Optimal           
-**** OBJECTIVE VALUE               59.9706
+**** OBJECTIVE VALUE               30.0000
 
- RESOURCE USAGE, LIMIT          0.047     20000.000
+ RESOURCE USAGE, LIMIT          0.016     20000.000
  ITERATION COUNT, LIMIT         7    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -1426,8 +1350,8 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.042 seconds
-   of which: Function evaluations             0.001 =  2.4%
+ CONOPT time Total                            0.004 seconds
+   of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
 
@@ -2007,73 +1931,73 @@ d30.pHigh      .         .         .         EPS
 
              LOWER     LEVEL     UPPER    MARGINAL
 
-d1 .pLow      -INF       .         .    7.5339E-4      
-d1 .pHigh     -INF       .         .    7.5339E-4      
-d2 .pLow      -INF       .         .    7.5339E-4      
-d2 .pHigh     -INF       .         .    7.5339E-4      
-d3 .pLow      -INF       .         .    7.5339E-4      
-d3 .pHigh     -INF       .         .    7.5339E-4      
-d4 .pLow      -INF       .         .    7.5339E-4      
-d4 .pHigh     -INF       .         .    7.5339E-4      
-d5 .pLow      -INF       .         .    7.5339E-4      
-d5 .pHigh     -INF       .         .    7.5339E-4      
-d6 .pLow      -INF       .         .    7.5339E-4      
-d6 .pHigh     -INF       .         .    7.5339E-4      
-d7 .pLow      -INF       .         .    7.5339E-4      
-d7 .pHigh     -INF       .         .    7.5339E-4      
-d8 .pLow      -INF       .         .    7.5339E-4      
-d8 .pHigh     -INF       .         .    7.5339E-4      
-d9 .pLow      -INF       .         .    7.5339E-4      
-d9 .pHigh     -INF       .         .    7.5339E-4      
-d10.pLow      -INF       .         .    7.5339E-4      
-d10.pHigh     -INF       .         .    7.5339E-4      
-d11.pLow      -INF       .         .    7.5339E-4      
-d11.pHigh     -INF       .         .    7.5339E-4      
-d12.pLow      -INF       .         .    7.5339E-4      
-d12.pHigh     -INF       .         .    7.5339E-4      
-d13.pLow      -INF       .         .    7.5339E-4      
-d13.pHigh     -INF       .         .    7.5339E-4      
-d14.pLow      -INF       .         .    7.5339E-4      
-d14.pHigh     -INF       .         .    7.5339E-4      
-d15.pLow      -INF       .         .    7.5339E-4      
-d15.pHigh     -INF       .         .    7.5339E-4      
-d16.pLow      -INF       .         .    7.5339E-4      
-d16.pHigh     -INF       .         .    7.5339E-4      
-d17.pLow      -INF       .         .    7.5339E-4      
-d17.pHigh     -INF       .         .    7.5339E-4      
-d18.pLow      -INF       .         .    7.5339E-4      
-d18.pHigh     -INF       .         .    7.5339E-4      
-d19.pLow      -INF       .         .    7.5339E-4      
-d19.pHigh     -INF       .         .    7.5339E-4      
-d20.pLow      -INF       .         .    7.5339E-4      
-d20.pHigh     -INF       .         .    7.5339E-4      
-d21.pLow      -INF       .         .    7.5339E-4      
-d21.pHigh     -INF       .         .    7.5339E-4      
-d22.pLow      -INF       .         .    7.5339E-4      
-d22.pHigh     -INF       .         .    7.5339E-4      
-d23.pLow      -INF       .         .    7.5339E-4      
-d23.pHigh     -INF       .         .    7.5339E-4      
-d24.pLow      -INF       .         .    7.5339E-4      
-d24.pHigh     -INF       .         .    7.5339E-4      
-d25.pLow      -INF       .         .    7.5339E-4      
-d25.pHigh     -INF       .         .    7.5339E-4      
-d26.pLow      -INF       .         .    7.5339E-4      
-d26.pHigh     -INF       .         .    7.5339E-4      
-d27.pLow      -INF       .         .    7.5339E-4      
-d27.pHigh     -INF       .         .    7.5339E-4      
-d28.pLow      -INF       .         .    7.5339E-4      
-d28.pHigh     -INF       .         .    7.5339E-4      
-d29.pLow      -INF       .         .    7.5339E-4      
-d29.pHigh     -INF       .         .    7.5339E-4      
-d30.pLow      -INF       .         .    7.5339E-4      
-d30.pHigh     -INF       .         .    7.5339E-4      
+d1 .pLow      -INF       .         .         EPS       
+d1 .pHigh     -INF       .         .         EPS       
+d2 .pLow      -INF       .         .         EPS       
+d2 .pHigh     -INF       .         .         EPS       
+d3 .pLow      -INF       .         .         EPS       
+d3 .pHigh     -INF       .         .         EPS       
+d4 .pLow      -INF       .         .         EPS       
+d4 .pHigh     -INF       .         .         EPS       
+d5 .pLow      -INF       .         .         EPS       
+d5 .pHigh     -INF       .         .         EPS       
+d6 .pLow      -INF       .         .         EPS       
+d6 .pHigh     -INF       .         .         EPS       
+d7 .pLow      -INF       .         .         EPS       
+d7 .pHigh     -INF       .         .         EPS       
+d8 .pLow      -INF       .         .         EPS       
+d8 .pHigh     -INF       .         .         EPS       
+d9 .pLow      -INF       .         .         EPS       
+d9 .pHigh     -INF       .         .         EPS       
+d10.pLow      -INF       .         .         EPS       
+d10.pHigh     -INF       .         .         EPS       
+d11.pLow      -INF       .         .         EPS       
+d11.pHigh     -INF       .         .         EPS       
+d12.pLow      -INF       .         .         EPS       
+d12.pHigh     -INF       .         .         EPS       
+d13.pLow      -INF       .         .         EPS       
+d13.pHigh     -INF       .         .         EPS       
+d14.pLow      -INF       .         .         EPS       
+d14.pHigh     -INF       .         .         EPS       
+d15.pLow      -INF       .         .         EPS       
+d15.pHigh     -INF       .         .         EPS       
+d16.pLow      -INF       .         .         EPS       
+d16.pHigh     -INF       .         .         EPS       
+d17.pLow      -INF       .         .         EPS       
+d17.pHigh     -INF       .         .         EPS       
+d18.pLow      -INF       .         .         EPS       
+d18.pHigh     -INF       .         .         EPS       
+d19.pLow      -INF       .         .         EPS       
+d19.pHigh     -INF       .         .         EPS       
+d20.pLow      -INF       .         .         EPS       
+d20.pHigh     -INF       .         .         EPS       
+d21.pLow      -INF       .         .         EPS       
+d21.pHigh     -INF       .         .         EPS       
+d22.pLow      -INF       .         .         EPS       
+d22.pHigh     -INF       .         .         EPS       
+d23.pLow      -INF       .         .         EPS       
+d23.pHigh     -INF       .         .         EPS       
+d24.pLow      -INF       .         .         EPS       
+d24.pHigh     -INF       .         .         EPS       
+d25.pLow      -INF       .         .         EPS       
+d25.pHigh     -INF       .         .         EPS       
+d26.pLow      -INF       .         .         EPS       
+d26.pHigh     -INF       .         .         EPS       
+d27.pLow      -INF       .         .         EPS       
+d27.pHigh     -INF       .         .         EPS       
+d28.pLow      -INF       .         .         EPS       
+d28.pHigh     -INF       .         .         EPS       
+d29.pLow      -INF       .         .         EPS       
+d29.pHigh     -INF       .         .         EPS       
+d30.pLow      -INF       .         .         EPS       
+d30.pHigh     -INF       .         .         EPS       
 
 ---- EQU EQ10_function  Fitting Arctangent Function to the release values (New B
                         ug Metric)
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000     1.000      
+BugIndex      .         .         .        1.000      
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -2222,12 +2146,12 @@ Hydro      .         .         .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     59.971     +INF       .         
+BugIndex     -INF     30.000     +INF       .         
 Hydro        -INF  1.5374E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
 
----- VAR CombineOb~     -INF     59.971     +INF       .         
+---- VAR CombineOb~     -INF     30.000     +INF       .         
 
   CombineObjective  Combine objective functions for each senario
 
@@ -2472,7 +2396,7 @@ d30.pHigh      .    15555.556     +INF       .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 8
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 8
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -2482,7 +2406,7 @@ E x e c u t i o n
 
                            V1
 
-BugIndex.BugIndex      59.971
+BugIndex.BugIndex      30.000
 BugIndex.Hydro    1.537391E+7
 
 
@@ -2605,7 +2529,7 @@ BugIndex.d30 1.278885E+7
 
 Hydro 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 9
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 9
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -2863,128 +2787,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (2.37590369896959E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (2.37590369896959E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (2.37590369896959E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (2.37590369896959E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (2.37590369896959E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (2.37590369896959E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (2.37590369896959E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (2.37590369896959E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (2.37590369896959E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (2.37590369896959E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (2.37590369896959E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (2.37590369896959E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (2.37590369896959E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (2.37590369896959E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (2.37590369896959E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (2.37590369896959E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (2.37590369896959E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (2.37590369896959E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (2.37590369896959E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (2.37590369896959E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (2.37590369896959E-12)*release(d11,pLow)
-     
-      + (2.37590369896959E-12)*release(d11,pHigh)
-     
-      + (2.37590369896959E-12)*release(d12,pLow)
-     
-      + (2.37590369896959E-12)*release(d12,pHigh)
-     
-      + (2.37590369896959E-12)*release(d13,pLow)
-     
-      + (2.37590369896959E-12)*release(d13,pHigh)
-     
-      + (2.37590369896959E-12)*release(d14,pLow)
-     
-      + (2.37590369896959E-12)*release(d14,pHigh)
-     
-      + (2.37590369896959E-12)*release(d15,pLow)
-     
-      + (2.37590369896959E-12)*release(d15,pHigh)
-     
-      + (2.37590369896959E-12)*release(d16,pLow)
-     
-      + (2.37590369896959E-12)*release(d16,pHigh)
-     
-      + (2.37590369896959E-12)*release(d17,pLow)
-     
-      + (2.37590369896959E-12)*release(d17,pHigh)
-     
-      + (2.37590369896959E-12)*release(d18,pLow)
-     
-      + (2.37590369896959E-12)*release(d18,pHigh)
-     
-      + (2.37590369896959E-12)*release(d19,pLow)
-     
-      + (2.37590369896959E-12)*release(d19,pHigh)
-     
-      + (2.37590369896959E-12)*release(d20,pLow)
-     
-      + (2.37590369896959E-12)*release(d20,pHigh)
-     
-      + (2.37590369896959E-12)*release(d21,pLow)
-     
-      + (2.37590369896959E-12)*release(d21,pHigh)
-     
-      + (2.37590369896959E-12)*release(d22,pLow)
-     
-      + (2.37590369896959E-12)*release(d22,pHigh)
-     
-      + (2.37590369896959E-12)*release(d23,pLow)
-     
-      + (2.37590369896959E-12)*release(d23,pHigh)
-     
-      + (2.37590369896959E-12)*release(d24,pLow)
-     
-      + (2.37590369896959E-12)*release(d24,pHigh)
-     
-      + (2.37590369896959E-12)*release(d25,pLow)
-     
-      + (2.37590369896959E-12)*release(d25,pHigh)
-     
-      + (2.37590369896959E-12)*release(d26,pLow)
-     
-      + (2.37590369896959E-12)*release(d26,pHigh)
-     
-      + (2.37590369896959E-12)*release(d27,pLow)
-     
-      + (2.37590369896959E-12)*release(d27,pHigh)
-     
-      + (2.37590369896959E-12)*release(d28,pLow)
-     
-      + (2.37590369896959E-12)*release(d28,pHigh)
-     
-      + (2.37590369896959E-12)*release(d29,pLow)
-     
-      + (2.37590369896959E-12)*release(d29,pHigh)
-     
-      + (2.37590369896959E-12)*release(d30,pLow)
-     
-      + (2.37590369896959E-12)*release(d30,pHigh) - (1.42554221938176E-10)*QMin
-      =E= 30 ; (LHS = -29.9999983499743, INFES = 59.9999983499743 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -3092,7 +2937,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(Hydro) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 10
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 10
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -3154,7 +2999,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (2.375904E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -3172,7 +3017,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (2.375904E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -3190,7 +3035,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (2.375904E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -3304,9 +3149,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-1.42554E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 11
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 11
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -3321,17 +3166,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.031 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.046 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V1
                                          f2 Hydro
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 12
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 12
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -3346,7 +3191,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE         16573679.9667
 
- RESOURCE USAGE, LIMIT          0.016     20000.000
+ RESOURCE USAGE, LIMIT          0.031     20000.000
  ITERATION COUNT, LIMIT         6    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -3371,9 +3216,9 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. Reduced gradient less than tolerance.
  
  
- CONOPT time Total                            0.011 seconds
-   of which: Function evaluations             0.001 =  9.1%
-             1st Derivative evaluations       0.000 =  0.0%
+ CONOPT time Total                            0.029 seconds
+   of which: Function evaluations             0.001 =  3.4%
+             1st Derivative evaluations       0.001 =  3.4%
  
 
 ---- EQU EQ1__ResMassBal  Reservoir mass balance (acre-ft)
@@ -4018,7 +3863,7 @@ d30.pHigh     -INF  -1910.256      .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000      EPS       
+BugIndex      .         .         .         EPS       
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -4167,7 +4012,7 @@ Hydro      .         .         .        1.000
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     29.985     +INF       .         
+BugIndex     -INF       .        +INF       .         
 Hydro        -INF  1.6574E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
@@ -4418,7 +4263,7 @@ d30.pHigh      .    13319.385     +INF       .
                              0  UNBOUNDED
                              0     ERRORS
                             16  PROJECTED
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 13
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 13
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -4428,9 +4273,9 @@ E x e c u t i o n
 
                            V1
 
-BugIndex.BugIndex      59.971
+BugIndex.BugIndex      30.000
 BugIndex.Hydro    1.537391E+7
-Hydro   .BugIndex      29.985
+Hydro   .BugIndex         EPS
 Hydro   .Hydro    1.657368E+7
 
 
@@ -4653,7 +4498,7 @@ Hydro   .d30 1.278885E+7
 
 BugIndex 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 14
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 14
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -4913,128 +4758,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (4.97278386141602E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (4.97278386141602E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (4.97278386141602E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (4.97278386141602E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (4.97278386141602E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (4.97278386141602E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (4.97278386141602E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (4.97278386141602E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (4.97278386141602E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (4.97278386141602E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (4.97278386141602E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (4.97278386141602E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (4.97278386141602E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (4.97278386141602E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (4.97278386141602E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (4.97278386141602E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (4.97278386141602E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (4.97278386141602E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (4.97278386141602E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (4.97278386141602E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (4.97278386141602E-12)*release(d11,pLow)
-     
-      + (4.97278386141602E-12)*release(d11,pHigh)
-     
-      + (4.97278386141602E-12)*release(d12,pLow)
-     
-      + (4.97278386141602E-12)*release(d12,pHigh)
-     
-      + (4.97278386141602E-12)*release(d13,pLow)
-     
-      + (4.97278386141602E-12)*release(d13,pHigh)
-     
-      + (4.97278386141602E-12)*release(d14,pLow)
-     
-      + (4.97278386141602E-12)*release(d14,pHigh)
-     
-      + (4.97278386141602E-12)*release(d15,pLow)
-     
-      + (4.97278386141602E-12)*release(d15,pHigh)
-     
-      + (4.97278386141602E-12)*release(d16,pLow)
-     
-      + (4.97278386141602E-12)*release(d16,pHigh)
-     
-      + (4.97278386141602E-12)*release(d17,pLow)
-     
-      + (4.97278386141602E-12)*release(d17,pHigh)
-     
-      + (4.97278386141602E-12)*release(d18,pLow)
-     
-      + (4.97278386141602E-12)*release(d18,pHigh)
-     
-      + (4.97278386141602E-12)*release(d19,pLow)
-     
-      + (4.97278386141602E-12)*release(d19,pHigh)
-     
-      + (4.97278386141602E-12)*release(d20,pLow)
-     
-      + (4.97278386141602E-12)*release(d20,pHigh)
-     
-      + (4.97278386141602E-12)*release(d21,pLow)
-     
-      + (4.97278386141602E-12)*release(d21,pHigh)
-     
-      + (4.97278386141602E-12)*release(d22,pLow)
-     
-      + (4.97278386141602E-12)*release(d22,pHigh)
-     
-      + (4.97278386141602E-12)*release(d23,pLow)
-     
-      + (4.97278386141602E-12)*release(d23,pHigh)
-     
-      + (4.97278386141602E-12)*release(d24,pLow)
-     
-      + (4.97278386141602E-12)*release(d24,pHigh)
-     
-      + (4.97278386141602E-12)*release(d25,pLow)
-     
-      + (4.97278386141602E-12)*release(d25,pHigh)
-     
-      + (4.97278386141602E-12)*release(d26,pLow)
-     
-      + (4.97278386141602E-12)*release(d26,pHigh)
-     
-      + (4.97278386141602E-12)*release(d27,pLow)
-     
-      + (4.97278386141602E-12)*release(d27,pHigh)
-     
-      + (4.97278386141602E-12)*release(d28,pLow)
-     
-      + (4.97278386141602E-12)*release(d28,pHigh)
-     
-      + (4.97278386141602E-12)*release(d29,pLow)
-     
-      + (4.97278386141602E-12)*release(d29,pHigh)
-     
-      + (4.97278386141602E-12)*release(d30,pLow)
-     
-      + (4.97278386141602E-12)*release(d30,pHigh) - (2.98367031684962E-10)*QMin
-      =E= 30 ; (LHS = -29.9999976128697, INFES = 59.9999976128697 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -5136,7 +4902,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(BugIndex) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 15
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 15
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -5198,7 +4964,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -5216,7 +4982,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -5234,7 +5000,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -5348,9 +5114,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-2.98367E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 16
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 16
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -5365,17 +5131,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.031 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.047 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V2
                                          f2 BugIndex
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 17
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 17
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -5388,9 +5154,9 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      2 Locally Optimal           
-**** OBJECTIVE VALUE               58.9711
+**** OBJECTIVE VALUE               29.0000
 
- RESOURCE USAGE, LIMIT          0.000     20000.000
+ RESOURCE USAGE, LIMIT          0.078     20000.000
  ITERATION COUNT, LIMIT        22    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -5412,10 +5178,10 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
                    Definitional equations:     121
  
  
- ** Optimal solution. Reduced gradient less than tolerance.
+ ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.006 seconds
+ CONOPT time Total                            0.071 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
@@ -5662,7 +5428,7 @@ d30.pHigh  8000.000 12948.167     +INF       .
              LOWER     LEVEL     UPPER    MARGINAL
 
 d1 .pLow      -INF   8000.000  8000.000      .         
-d1 .pHigh     -INF   8000.000  8000.000      .         
+d1 .pHigh     -INF   8000.000  8000.000      EPS       
 d2 .pLow      -INF       .     8000.000      .         
 d2 .pHigh     -INF       .     8000.000      .         
 d3 .pLow      -INF       .     8000.000      .         
@@ -5986,7 +5752,7 @@ d30.pHigh      .         .         .         EPS
                        LOWER     LEVEL     UPPER    MARGINAL
 
 ---- EQU EQ8__Mont~ 7.9386E+5 7.9386E+5 7.9386E+5      EPS       
----- EQU EQ9_Thres~      .         .         .    7.5339E-4      
+---- EQU EQ9_Thres~      .         .         .         EPS       
 
   EQ8__Monthtlyrel  Constraining Total monthly volume of water released in "May"
                     as per WAPA information(acre-ft)
@@ -5998,71 +5764,71 @@ d30.pHigh      .         .         .         EPS
 
 d1 .pLow      -INF       .         .         .         
 d1 .pHigh     -INF  -8000.000      .         .         
-d2 .pLow      -INF       .         .    7.5339E-4      
-d2 .pHigh     -INF       .         .    7.5339E-4      
-d3 .pLow      -INF       .         .    7.5339E-4      
-d3 .pHigh     -INF       .         .    7.5339E-4      
-d4 .pLow      -INF       .         .    7.5339E-4      
-d4 .pHigh     -INF       .         .    7.5339E-4      
-d5 .pLow      -INF       .         .    7.5339E-4      
-d5 .pHigh     -INF       .         .    7.5339E-4      
-d6 .pLow      -INF       .         .    7.5339E-4      
-d6 .pHigh     -INF       .         .    7.5339E-4      
-d7 .pLow      -INF       .         .    7.5339E-4      
-d7 .pHigh     -INF       .         .    7.5339E-4      
-d8 .pLow      -INF       .         .    7.5339E-4      
-d8 .pHigh     -INF       .         .    7.5339E-4      
-d9 .pLow      -INF       .         .    7.5339E-4      
-d9 .pHigh     -INF       .         .    7.5339E-4      
-d10.pLow      -INF       .         .    7.5339E-4      
-d10.pHigh     -INF       .         .    7.5339E-4      
-d11.pLow      -INF       .         .    7.5339E-4      
-d11.pHigh     -INF       .         .    7.5339E-4      
-d12.pLow      -INF       .         .    7.5339E-4      
-d12.pHigh     -INF       .         .    7.5339E-4      
-d13.pLow      -INF       .         .    7.5339E-4      
-d13.pHigh     -INF       .         .    7.5339E-4      
-d14.pLow      -INF       .         .    7.5339E-4      
-d14.pHigh     -INF       .         .    7.5339E-4      
-d15.pLow      -INF       .         .    7.5339E-4      
-d15.pHigh     -INF       .         .    7.5339E-4      
-d16.pLow      -INF       .         .    7.5339E-4      
-d16.pHigh     -INF       .         .    7.5339E-4      
-d17.pLow      -INF       .         .    7.5339E-4      
-d17.pHigh     -INF       .         .    7.5339E-4      
-d18.pLow      -INF       .         .    7.5339E-4      
-d18.pHigh     -INF       .         .    7.5339E-4      
-d19.pLow      -INF       .         .    7.5339E-4      
-d19.pHigh     -INF       .         .    7.5339E-4      
-d20.pLow      -INF       .         .    7.5339E-4      
-d20.pHigh     -INF       .         .    7.5339E-4      
-d21.pLow      -INF       .         .    7.5339E-4      
-d21.pHigh     -INF       .         .    7.5339E-4      
-d22.pLow      -INF       .         .    7.5339E-4      
-d22.pHigh     -INF       .         .    7.5339E-4      
-d23.pLow      -INF       .         .    7.5339E-4      
-d23.pHigh     -INF       .         .    7.5339E-4      
-d24.pLow      -INF       .         .    7.5339E-4      
-d24.pHigh     -INF       .         .    7.5339E-4      
-d25.pLow      -INF       .         .    7.5339E-4      
-d25.pHigh     -INF       .         .    7.5339E-4      
-d26.pLow      -INF       .         .    7.5339E-4      
-d26.pHigh     -INF       .         .    7.5339E-4      
-d27.pLow      -INF       .         .    7.5339E-4      
-d27.pHigh     -INF       .         .    7.5339E-4      
-d28.pLow      -INF       .         .    7.5339E-4      
-d28.pHigh     -INF       .         .    7.5339E-4      
-d29.pLow      -INF       .         .    7.5339E-4      
-d29.pHigh     -INF       .         .    7.5339E-4      
-d30.pLow      -INF       .         .    7.5339E-4      
-d30.pHigh     -INF       .         .    7.5339E-4      
+d2 .pLow      -INF       .         .         .         
+d2 .pHigh     -INF       .         .         EPS       
+d3 .pLow      -INF       .         .         EPS       
+d3 .pHigh     -INF       .         .         EPS       
+d4 .pLow      -INF       .         .         EPS       
+d4 .pHigh     -INF       .         .         EPS       
+d5 .pLow      -INF       .         .         EPS       
+d5 .pHigh     -INF       .         .         EPS       
+d6 .pLow      -INF       .         .         EPS       
+d6 .pHigh     -INF       .         .         EPS       
+d7 .pLow      -INF       .         .         EPS       
+d7 .pHigh     -INF       .         .         EPS       
+d8 .pLow      -INF       .         .         EPS       
+d8 .pHigh     -INF       .         .         EPS       
+d9 .pLow      -INF       .         .         EPS       
+d9 .pHigh     -INF       .         .         EPS       
+d10.pLow      -INF       .         .         EPS       
+d10.pHigh     -INF       .         .         EPS       
+d11.pLow      -INF       .         .         EPS       
+d11.pHigh     -INF       .         .         EPS       
+d12.pLow      -INF       .         .         EPS       
+d12.pHigh     -INF       .         .         EPS       
+d13.pLow      -INF       .         .         EPS       
+d13.pHigh     -INF       .         .         EPS       
+d14.pLow      -INF       .         .         EPS       
+d14.pHigh     -INF       .         .         EPS       
+d15.pLow      -INF       .         .         EPS       
+d15.pHigh     -INF       .         .         EPS       
+d16.pLow      -INF       .         .         EPS       
+d16.pHigh     -INF       .         .         EPS       
+d17.pLow      -INF       .         .         EPS       
+d17.pHigh     -INF       .         .         EPS       
+d18.pLow      -INF       .         .         EPS       
+d18.pHigh     -INF       .         .         EPS       
+d19.pLow      -INF       .         .         EPS       
+d19.pHigh     -INF       .         .         EPS       
+d20.pLow      -INF       .         .         EPS       
+d20.pHigh     -INF       .         .         EPS       
+d21.pLow      -INF       .         .         EPS       
+d21.pHigh     -INF       .         .         EPS       
+d22.pLow      -INF       .         .         EPS       
+d22.pHigh     -INF       .         .         EPS       
+d23.pLow      -INF       .         .         EPS       
+d23.pHigh     -INF       .         .         EPS       
+d24.pLow      -INF       .         .         EPS       
+d24.pHigh     -INF       .         .         EPS       
+d25.pLow      -INF       .         .         EPS       
+d25.pHigh     -INF       .         .         EPS       
+d26.pLow      -INF       .         .         EPS       
+d26.pHigh     -INF       .         .         EPS       
+d27.pLow      -INF       .         .         EPS       
+d27.pHigh     -INF       .         .         EPS       
+d28.pLow      -INF       .         .         EPS       
+d28.pHigh     -INF       .         .         EPS       
+d29.pLow      -INF       .         .         EPS       
+d29.pHigh     -INF       .         .         EPS       
+d30.pLow      -INF       .         .         EPS       
+d30.pHigh     -INF       .         .         EPS       
 
 ---- EQU EQ10_function  Fitting Arctangent Function to the release values (New B
                         ug Metric)
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000     1.000      
+BugIndex      .         .         .        1.000      
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -6211,12 +5977,12 @@ Hydro      .         .         .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     58.971     +INF       .         
+BugIndex     -INF     29.000     +INF       .         
 Hydro        -INF  1.7495E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
 
----- VAR CombineOb~     -INF     58.971     +INF       .         
+---- VAR CombineOb~     -INF     29.000     +INF       .         
 
   CombineObjective  Combine objective functions for each senario
 
@@ -6461,7 +6227,7 @@ d30.pHigh      .    17402.336     +INF       .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 18
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 18
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -6471,9 +6237,9 @@ E x e c u t i o n
 
                            V1          V2
 
-BugIndex.BugIndex      59.971      58.971
+BugIndex.BugIndex      30.000      29.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7
-Hydro   .BugIndex      29.985
+Hydro   .BugIndex         EPS
 Hydro   .Hydro    1.657368E+7
 
 
@@ -6756,7 +6522,7 @@ Hydro   .d30 1.278885E+7
 
 Hydro 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 19
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 19
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -7014,128 +6780,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (1.89840978292702E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (1.89840978292702E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (1.89840978292702E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (1.89840978292702E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (1.89840978292702E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (1.89840978292702E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (1.89840978292702E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (1.89840978292702E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (1.89840978292702E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (1.89840978292702E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (1.89840978292702E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (1.89840978292702E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (1.89840978292702E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (1.89840978292702E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (1.89840978292702E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (1.89840978292702E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (1.89840978292702E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (1.89840978292702E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (1.89840978292702E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (1.89840978292702E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (1.89840978292702E-12)*release(d11,pLow)
-     
-      + (1.89840978292702E-12)*release(d11,pHigh)
-     
-      + (1.89840978292702E-12)*release(d12,pLow)
-     
-      + (1.89840978292702E-12)*release(d12,pHigh)
-     
-      + (1.89840978292702E-12)*release(d13,pLow)
-     
-      + (1.89840978292702E-12)*release(d13,pHigh)
-     
-      + (1.89840978292702E-12)*release(d14,pLow)
-     
-      + (1.89840978292702E-12)*release(d14,pHigh)
-     
-      + (1.89840978292702E-12)*release(d15,pLow)
-     
-      + (1.89840978292702E-12)*release(d15,pHigh)
-     
-      + (1.89840978292702E-12)*release(d16,pLow)
-     
-      + (1.89840978292702E-12)*release(d16,pHigh)
-     
-      + (1.89840978292702E-12)*release(d17,pLow)
-     
-      + (1.89840978292702E-12)*release(d17,pHigh)
-     
-      + (1.89840978292702E-12)*release(d18,pLow)
-     
-      + (1.89840978292702E-12)*release(d18,pHigh)
-     
-      + (1.89840978292702E-12)*release(d19,pLow)
-     
-      + (1.89840978292702E-12)*release(d19,pHigh)
-     
-      + (1.89840978292702E-12)*release(d20,pLow)
-     
-      + (1.89840978292702E-12)*release(d20,pHigh)
-     
-      + (1.89840978292702E-12)*release(d21,pLow)
-     
-      + (1.89840978292702E-12)*release(d21,pHigh)
-     
-      + (1.89840978292702E-12)*release(d22,pLow)
-     
-      + (1.89840978292702E-12)*release(d22,pHigh)
-     
-      + (1.89840978292702E-12)*release(d23,pLow)
-     
-      + (1.89840978292702E-12)*release(d23,pHigh)
-     
-      + (1.89840978292702E-12)*release(d24,pLow)
-     
-      + (1.89840978292702E-12)*release(d24,pHigh)
-     
-      + (1.89840978292702E-12)*release(d25,pLow)
-     
-      + (1.89840978292702E-12)*release(d25,pHigh)
-     
-      + (1.89840978292702E-12)*release(d26,pLow)
-     
-      + (1.89840978292702E-12)*release(d26,pHigh)
-     
-      + (1.89840978292702E-12)*release(d27,pLow)
-     
-      + (1.89840978292702E-12)*release(d27,pHigh)
-     
-      + (1.89840978292702E-12)*release(d28,pLow)
-     
-      + (1.89840978292702E-12)*release(d28,pHigh)
-     
-      + (1.89840978292702E-12)*release(d29,pLow)
-     
-      + (1.89840978292702E-12)*release(d29,pHigh)
-     
-      + (1.89840978292702E-12)*release(d30,pLow)
-     
-      + (1.89840978292702E-12)*release(d30,pHigh) - (1.13904586975621E-10)*QMin
-      =E= 30 ; (LHS = -29.9999985250703, INFES = 59.9999985250703 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -7243,7 +6930,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(Hydro) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 20
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 20
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -7305,7 +6992,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (1.898410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -7323,7 +7010,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (1.898410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -7341,7 +7028,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (1.898410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -7455,9 +7142,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-1.13905E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 21
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 21
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -7472,17 +7159,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.032 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.062 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.047 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.062 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V2
                                          f2 Hydro
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 22
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 22
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -7497,7 +7184,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE         19155981.5240
 
- RESOURCE USAGE, LIMIT          0.016     20000.000
+ RESOURCE USAGE, LIMIT          0.031     20000.000
  ITERATION COUNT, LIMIT         6    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -7522,9 +7209,9 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. Reduced gradient less than tolerance.
  
  
- CONOPT time Total                            0.003 seconds
-   of which: Function evaluations             0.000 =  0.0%
-             1st Derivative evaluations       0.000 =  0.0%
+ CONOPT time Total                            0.027 seconds
+   of which: Function evaluations             0.001 =  3.7%
+             1st Derivative evaluations       0.001 =  3.7%
  
 
 ---- EQU EQ1__ResMassBal  Reservoir mass balance (acre-ft)
@@ -8169,7 +7856,7 @@ d30.pHigh     -INF  -7282.115      .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000      EPS       
+BugIndex      .         .         .         EPS       
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -8318,7 +8005,7 @@ Hydro      .         .         .        1.000
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     29.985     +INF       .         
+BugIndex     -INF       .        +INF       .         
 Hydro        -INF  1.9156E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
@@ -8569,7 +8256,7 @@ d30.pHigh      .    20539.163     +INF       .
                              0  UNBOUNDED
                              0     ERRORS
                              3  PROJECTED
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 23
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 23
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -8579,9 +8266,9 @@ E x e c u t i o n
 
                            V1          V2
 
-BugIndex.BugIndex      59.971      58.971
+BugIndex.BugIndex      30.000      29.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7
-Hydro   .BugIndex      29.985      29.985
+Hydro   .BugIndex         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7
 
 
@@ -8924,7 +8611,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7
 
 BugIndex 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 24
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 24
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -9182,128 +8869,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (4.97278386141603E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (4.97278386141603E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (4.97278386141603E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (4.97278386141603E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (4.97278386141603E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (4.97278386141603E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (4.97278386141603E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (4.97278386141603E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (4.97278386141603E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (4.97278386141603E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (4.97278386141603E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (4.97278386141603E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (4.97278386141603E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (4.97278386141603E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (4.97278386141603E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (4.97278386141603E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (4.97278386141603E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (4.97278386141603E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (4.97278386141603E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (4.97278386141603E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (4.97278386141603E-12)*release(d11,pLow)
-     
-      + (4.97278386141603E-12)*release(d11,pHigh)
-     
-      + (4.97278386141603E-12)*release(d12,pLow)
-     
-      + (4.97278386141603E-12)*release(d12,pHigh)
-     
-      + (4.97278386141603E-12)*release(d13,pLow)
-     
-      + (4.97278386141603E-12)*release(d13,pHigh)
-     
-      + (4.97278386141603E-12)*release(d14,pLow)
-     
-      + (4.97278386141603E-12)*release(d14,pHigh)
-     
-      + (4.97278386141603E-12)*release(d15,pLow)
-     
-      + (4.97278386141603E-12)*release(d15,pHigh)
-     
-      + (4.97278386141603E-12)*release(d16,pLow)
-     
-      + (4.97278386141603E-12)*release(d16,pHigh)
-     
-      + (4.97278386141603E-12)*release(d17,pLow)
-     
-      + (4.97278386141603E-12)*release(d17,pHigh)
-     
-      + (4.97278386141603E-12)*release(d18,pLow)
-     
-      + (4.97278386141603E-12)*release(d18,pHigh)
-     
-      + (4.97278386141603E-12)*release(d19,pLow)
-     
-      + (4.97278386141603E-12)*release(d19,pHigh)
-     
-      + (4.97278386141603E-12)*release(d20,pLow)
-     
-      + (4.97278386141603E-12)*release(d20,pHigh)
-     
-      + (4.97278386141603E-12)*release(d21,pLow)
-     
-      + (4.97278386141603E-12)*release(d21,pHigh)
-     
-      + (4.97278386141603E-12)*release(d22,pLow)
-     
-      + (4.97278386141603E-12)*release(d22,pHigh)
-     
-      + (4.97278386141603E-12)*release(d23,pLow)
-     
-      + (4.97278386141603E-12)*release(d23,pHigh)
-     
-      + (4.97278386141603E-12)*release(d24,pLow)
-     
-      + (4.97278386141603E-12)*release(d24,pHigh)
-     
-      + (4.97278386141603E-12)*release(d25,pLow)
-     
-      + (4.97278386141603E-12)*release(d25,pHigh)
-     
-      + (4.97278386141603E-12)*release(d26,pLow)
-     
-      + (4.97278386141603E-12)*release(d26,pHigh)
-     
-      + (4.97278386141603E-12)*release(d27,pLow)
-     
-      + (4.97278386141603E-12)*release(d27,pHigh)
-     
-      + (4.97278386141603E-12)*release(d28,pLow)
-     
-      + (4.97278386141603E-12)*release(d28,pHigh)
-     
-      + (4.97278386141603E-12)*release(d29,pLow)
-     
-      + (4.97278386141603E-12)*release(d29,pHigh)
-     
-      + (4.97278386141603E-12)*release(d30,pLow)
-     
-      + (4.97278386141603E-12)*release(d30,pHigh) - (2.98367031684962E-10)*QMin
-      =E= 30 ; (LHS = -29.9999976128697, INFES = 59.9999976128697 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -9405,7 +9013,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(BugIndex) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 25
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 25
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -9467,7 +9075,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -9485,7 +9093,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -9503,7 +9111,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (4.972784E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -9617,9 +9225,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-2.98367E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 26
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 26
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -9634,17 +9242,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.079 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.079 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V3
                                          f2 BugIndex
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 27
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 27
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -9657,9 +9265,9 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      2 Locally Optimal           
-**** OBJECTIVE VALUE               58.9711
+**** OBJECTIVE VALUE               29.0000
 
- RESOURCE USAGE, LIMIT          0.047     20000.000
+ RESOURCE USAGE, LIMIT          0.110     20000.000
  ITERATION COUNT, LIMIT         8    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -9681,12 +9289,12 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
                    Definitional equations:     121
  
  
- ** Optimal solution. Reduced gradient less than tolerance.
+ ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.047 seconds
-   of which: Function evaluations             0.001 =  2.1%
-             1st Derivative evaluations       0.001 =  2.1%
+ CONOPT time Total                            0.100 seconds
+   of which: Function evaluations             0.001 =  1.0%
+             1st Derivative evaluations       0.000 =  0.0%
  
 
 ---- EQU EQ1__ResMassBal  Reservoir mass balance (acre-ft)
@@ -10255,7 +9863,7 @@ d30.pHigh      .         .         .         EPS
                        LOWER     LEVEL     UPPER    MARGINAL
 
 ---- EQU EQ8__Mont~ 9.0000E+5 9.0000E+5 9.0000E+5      EPS       
----- EQU EQ9_Thres~      .         .         .    7.5339E-4      
+---- EQU EQ9_Thres~      .         .         .         EPS       
 
   EQ8__Monthtlyrel  Constraining Total monthly volume of water released in "May"
                     as per WAPA information(acre-ft)
@@ -10267,71 +9875,71 @@ d30.pHigh      .         .         .         EPS
 
 d1 .pLow      -INF       .         .         .         
 d1 .pHigh     -INF  -8000.000      .         .         
-d2 .pLow      -INF       .         .    7.5339E-4      
-d2 .pHigh     -INF       .         .    7.5339E-4      
-d3 .pLow      -INF       .         .    7.5339E-4      
-d3 .pHigh     -INF       .         .    7.5339E-4      
-d4 .pLow      -INF       .         .    7.5339E-4      
-d4 .pHigh     -INF       .         .    7.5339E-4      
-d5 .pLow      -INF       .         .    7.5339E-4      
-d5 .pHigh     -INF       .         .    7.5339E-4      
-d6 .pLow      -INF       .         .    7.5339E-4      
-d6 .pHigh     -INF       .         .    7.5339E-4      
-d7 .pLow      -INF       .         .    7.5339E-4      
-d7 .pHigh     -INF       .         .    7.5339E-4      
-d8 .pLow      -INF       .         .    7.5339E-4      
-d8 .pHigh     -INF       .         .    7.5339E-4      
-d9 .pLow      -INF       .         .    7.5339E-4      
-d9 .pHigh     -INF       .         .    7.5339E-4      
-d10.pLow      -INF       .         .    7.5339E-4      
-d10.pHigh     -INF       .         .    7.5339E-4      
-d11.pLow      -INF       .         .    7.5339E-4      
-d11.pHigh     -INF       .         .    7.5339E-4      
-d12.pLow      -INF       .         .    7.5339E-4      
-d12.pHigh     -INF       .         .    7.5339E-4      
-d13.pLow      -INF       .         .    7.5339E-4      
-d13.pHigh     -INF       .         .    7.5339E-4      
-d14.pLow      -INF       .         .    7.5339E-4      
-d14.pHigh     -INF       .         .    7.5339E-4      
-d15.pLow      -INF       .         .    7.5339E-4      
-d15.pHigh     -INF       .         .    7.5339E-4      
-d16.pLow      -INF       .         .    7.5339E-4      
-d16.pHigh     -INF       .         .    7.5339E-4      
-d17.pLow      -INF       .         .    7.5339E-4      
-d17.pHigh     -INF       .         .    7.5339E-4      
-d18.pLow      -INF       .         .    7.5339E-4      
-d18.pHigh     -INF       .         .    7.5339E-4      
-d19.pLow      -INF       .         .    7.5339E-4      
-d19.pHigh     -INF       .         .    7.5339E-4      
-d20.pLow      -INF       .         .    7.5339E-4      
-d20.pHigh     -INF       .         .    7.5339E-4      
-d21.pLow      -INF       .         .    7.5339E-4      
-d21.pHigh     -INF       .         .    7.5339E-4      
-d22.pLow      -INF       .         .    7.5339E-4      
-d22.pHigh     -INF       .         .    7.5339E-4      
-d23.pLow      -INF       .         .    7.5339E-4      
-d23.pHigh     -INF       .         .    7.5339E-4      
-d24.pLow      -INF       .         .    7.5339E-4      
-d24.pHigh     -INF       .         .    7.5339E-4      
-d25.pLow      -INF       .         .    7.5339E-4      
-d25.pHigh     -INF       .         .    7.5339E-4      
-d26.pLow      -INF       .         .    7.5339E-4      
-d26.pHigh     -INF       .         .    7.5339E-4      
-d27.pLow      -INF       .         .    7.5339E-4      
-d27.pHigh     -INF       .         .    7.5339E-4      
-d28.pLow      -INF       .         .    7.5339E-4      
-d28.pHigh     -INF       .         .    7.5339E-4      
-d29.pLow      -INF       .         .    7.5339E-4      
-d29.pHigh     -INF       .         .    7.5339E-4      
-d30.pLow      -INF       .         .    7.5339E-4      
-d30.pHigh     -INF       .         .    7.5339E-4      
+d2 .pLow      -INF       .         .         EPS       
+d2 .pHigh     -INF       .         .         EPS       
+d3 .pLow      -INF       .         .         EPS       
+d3 .pHigh     -INF       .         .         EPS       
+d4 .pLow      -INF       .         .         EPS       
+d4 .pHigh     -INF       .         .         EPS       
+d5 .pLow      -INF       .         .         EPS       
+d5 .pHigh     -INF       .         .         EPS       
+d6 .pLow      -INF       .         .         EPS       
+d6 .pHigh     -INF       .         .         EPS       
+d7 .pLow      -INF       .         .         EPS       
+d7 .pHigh     -INF       .         .         EPS       
+d8 .pLow      -INF       .         .         EPS       
+d8 .pHigh     -INF       .         .         EPS       
+d9 .pLow      -INF       .         .         EPS       
+d9 .pHigh     -INF       .         .         EPS       
+d10.pLow      -INF       .         .         EPS       
+d10.pHigh     -INF       .         .         EPS       
+d11.pLow      -INF       .         .         EPS       
+d11.pHigh     -INF       .         .         EPS       
+d12.pLow      -INF       .         .         EPS       
+d12.pHigh     -INF       .         .         EPS       
+d13.pLow      -INF       .         .         EPS       
+d13.pHigh     -INF       .         .         EPS       
+d14.pLow      -INF       .         .         EPS       
+d14.pHigh     -INF       .         .         EPS       
+d15.pLow      -INF       .         .         EPS       
+d15.pHigh     -INF       .         .         EPS       
+d16.pLow      -INF       .         .         EPS       
+d16.pHigh     -INF       .         .         EPS       
+d17.pLow      -INF       .         .         EPS       
+d17.pHigh     -INF       .         .         EPS       
+d18.pLow      -INF       .         .         EPS       
+d18.pHigh     -INF       .         .         EPS       
+d19.pLow      -INF       .         .         EPS       
+d19.pHigh     -INF       .         .         EPS       
+d20.pLow      -INF       .         .         EPS       
+d20.pHigh     -INF       .         .         EPS       
+d21.pLow      -INF       .         .         EPS       
+d21.pHigh     -INF       .         .         EPS       
+d22.pLow      -INF       .         .         EPS       
+d22.pHigh     -INF       .         .         EPS       
+d23.pLow      -INF       .         .         EPS       
+d23.pHigh     -INF       .         .         EPS       
+d24.pLow      -INF       .         .         EPS       
+d24.pHigh     -INF       .         .         EPS       
+d25.pLow      -INF       .         .         EPS       
+d25.pHigh     -INF       .         .         EPS       
+d26.pLow      -INF       .         .         EPS       
+d26.pHigh     -INF       .         .         EPS       
+d27.pLow      -INF       .         .         EPS       
+d27.pHigh     -INF       .         .         EPS       
+d28.pLow      -INF       .         .         EPS       
+d28.pHigh     -INF       .         .         EPS       
+d29.pLow      -INF       .         .         EPS       
+d29.pHigh     -INF       .         .         EPS       
+d30.pLow      -INF       .         .         EPS       
+d30.pHigh     -INF       .         .         EPS       
 
 ---- EQU EQ10_function  Fitting Arctangent Function to the release values (New B
                         ug Metric)
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000     1.000      
+BugIndex      .         .         .        1.000      
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -10480,12 +10088,12 @@ Hydro      .         .         .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     58.971     +INF       .         
+BugIndex     -INF     29.000     +INF       .         
 Hydro        -INF  1.9826E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
 
----- VAR CombineOb~     -INF     58.971     +INF       .         
+---- VAR CombineOb~     -INF     29.000     +INF       .         
 
   CombineObjective  Combine objective functions for each senario
 
@@ -10730,7 +10338,7 @@ d30.pHigh      .    19761.067     +INF       .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 28
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 28
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -10740,9 +10348,9 @@ E x e c u t i o n
 
                            V1          V2          V3
 
-BugIndex.BugIndex      59.971      58.971      58.971
+BugIndex.BugIndex      30.000      29.000      29.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7
-Hydro   .BugIndex      29.985      29.985
+Hydro   .BugIndex         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7
 
 
@@ -11145,7 +10753,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7
 
 Hydro 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 29
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 29
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -11403,128 +11011,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (1.47227690742222E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (1.47227690742222E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (1.47227690742222E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (1.47227690742222E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (1.47227690742222E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (1.47227690742222E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (1.47227690742222E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (1.47227690742222E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (1.47227690742222E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (1.47227690742222E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (1.47227690742222E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (1.47227690742222E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (1.47227690742222E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (1.47227690742222E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (1.47227690742222E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (1.47227690742222E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (1.47227690742222E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (1.47227690742222E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (1.47227690742222E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (1.47227690742222E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (1.47227690742222E-12)*release(d11,pLow)
-     
-      + (1.47227690742222E-12)*release(d11,pHigh)
-     
-      + (1.47227690742222E-12)*release(d12,pLow)
-     
-      + (1.47227690742222E-12)*release(d12,pHigh)
-     
-      + (1.47227690742222E-12)*release(d13,pLow)
-     
-      + (1.47227690742222E-12)*release(d13,pHigh)
-     
-      + (1.47227690742222E-12)*release(d14,pLow)
-     
-      + (1.47227690742222E-12)*release(d14,pHigh)
-     
-      + (1.47227690742222E-12)*release(d15,pLow)
-     
-      + (1.47227690742222E-12)*release(d15,pHigh)
-     
-      + (1.47227690742222E-12)*release(d16,pLow)
-     
-      + (1.47227690742222E-12)*release(d16,pHigh)
-     
-      + (1.47227690742222E-12)*release(d17,pLow)
-     
-      + (1.47227690742222E-12)*release(d17,pHigh)
-     
-      + (1.47227690742222E-12)*release(d18,pLow)
-     
-      + (1.47227690742222E-12)*release(d18,pHigh)
-     
-      + (1.47227690742222E-12)*release(d19,pLow)
-     
-      + (1.47227690742222E-12)*release(d19,pHigh)
-     
-      + (1.47227690742222E-12)*release(d20,pLow)
-     
-      + (1.47227690742222E-12)*release(d20,pHigh)
-     
-      + (1.47227690742222E-12)*release(d21,pLow)
-     
-      + (1.47227690742222E-12)*release(d21,pHigh)
-     
-      + (1.47227690742222E-12)*release(d22,pLow)
-     
-      + (1.47227690742222E-12)*release(d22,pHigh)
-     
-      + (1.47227690742222E-12)*release(d23,pLow)
-     
-      + (1.47227690742222E-12)*release(d23,pHigh)
-     
-      + (1.47227690742222E-12)*release(d24,pLow)
-     
-      + (1.47227690742222E-12)*release(d24,pHigh)
-     
-      + (1.47227690742222E-12)*release(d25,pLow)
-     
-      + (1.47227690742222E-12)*release(d25,pHigh)
-     
-      + (1.47227690742222E-12)*release(d26,pLow)
-     
-      + (1.47227690742222E-12)*release(d26,pHigh)
-     
-      + (1.47227690742222E-12)*release(d27,pLow)
-     
-      + (1.47227690742222E-12)*release(d27,pHigh)
-     
-      + (1.47227690742222E-12)*release(d28,pLow)
-     
-      + (1.47227690742222E-12)*release(d28,pHigh)
-     
-      + (1.47227690742222E-12)*release(d29,pLow)
-     
-      + (1.47227690742222E-12)*release(d29,pHigh)
-     
-      + (1.47227690742222E-12)*release(d30,pLow)
-     
-      + (1.47227690742222E-12)*release(d30,pHigh) - (8.8336614445333E-11)*QMin
-      =E= 30 ; (LHS = -29.999998701114, INFES = 59.999998701114 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -11632,7 +11161,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(Hydro) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 30
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 30
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -11694,7 +11223,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (1.472277E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -11712,7 +11241,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (1.472277E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -11730,7 +11259,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (1.472277E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -11844,9 +11373,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-8.83366E-11) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 31
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 31
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -11861,17 +11390,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.063 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.063 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V3
                                          f2 Hydro
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 32
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 32
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -11886,7 +11415,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE         21556786.3714
 
- RESOURCE USAGE, LIMIT          0.016     20000.000
+ RESOURCE USAGE, LIMIT          0.000     20000.000
  ITERATION COUNT, LIMIT         6    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -11911,8 +11440,8 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.016 seconds
-   of which: Function evaluations             0.000 =  0.0%
+ CONOPT time Total                            0.006 seconds
+   of which: Function evaluations             0.001 = 16.7%
              1st Derivative evaluations       0.000 =  0.0%
  
 
@@ -12558,7 +12087,7 @@ d30.pHigh     -INF  -8000.000      .         .
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000      EPS       
+BugIndex      .         .         .         EPS       
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -12707,7 +12236,7 @@ Hydro      .         .         .        1.000
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     29.985     +INF       .         
+BugIndex     -INF       .        +INF       .         
 Hydro        -INF  2.1557E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
@@ -12958,7 +12487,7 @@ d30.pHigh      .    23584.000     +INF       .
                              0  UNBOUNDED
                              0     ERRORS
                             86  PROJECTED
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 33
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 33
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -12968,9 +12497,9 @@ E x e c u t i o n
 
                            V1          V2          V3
 
-BugIndex.BugIndex      59.971      58.971      58.971
+BugIndex.BugIndex      30.000      29.000      29.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7
-Hydro   .BugIndex      29.985      29.985      29.985
+Hydro   .BugIndex         EPS         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7 2.155679E+7
 
 
@@ -13433,7 +12962,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7 1.258885E+7
 
 BugIndex 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 34
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 34
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -13693,128 +13222,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (3.49140983951726E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (3.49140983951726E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (3.49140983951726E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (3.49140983951726E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (3.49140983951726E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (3.49140983951726E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (3.49140983951726E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (3.49140983951726E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (3.49140983951726E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (3.49140983951726E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (3.49140983951726E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (3.49140983951726E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (3.49140983951726E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (3.49140983951726E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (3.49140983951726E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (3.49140983951726E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (3.49140983951726E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (3.49140983951726E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (3.49140983951726E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (3.49140983951726E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (3.49140983951726E-12)*release(d11,pLow)
-     
-      + (3.49140983951726E-12)*release(d11,pHigh)
-     
-      + (3.49140983951726E-12)*release(d12,pLow)
-     
-      + (3.49140983951726E-12)*release(d12,pHigh)
-     
-      + (3.49140983951726E-12)*release(d13,pLow)
-     
-      + (3.49140983951726E-12)*release(d13,pHigh)
-     
-      + (3.49140983951726E-12)*release(d14,pLow)
-     
-      + (3.49140983951726E-12)*release(d14,pHigh)
-     
-      + (3.49140983951726E-12)*release(d15,pLow)
-     
-      + (3.49140983951726E-12)*release(d15,pHigh)
-     
-      + (3.49140983951726E-12)*release(d16,pLow)
-     
-      + (3.49140983951726E-12)*release(d16,pHigh)
-     
-      + (3.49140983951726E-12)*release(d17,pLow)
-     
-      + (3.49140983951726E-12)*release(d17,pHigh)
-     
-      + (3.49140983951726E-12)*release(d18,pLow)
-     
-      + (3.49140983951726E-12)*release(d18,pHigh)
-     
-      + (3.49140983951726E-12)*release(d19,pLow)
-     
-      + (3.49140983951726E-12)*release(d19,pHigh)
-     
-      + (3.49140983951726E-12)*release(d20,pLow)
-     
-      + (3.49140983951726E-12)*release(d20,pHigh)
-     
-      + (3.49140983951726E-12)*release(d21,pLow)
-     
-      + (3.49140983951726E-12)*release(d21,pHigh)
-     
-      + (3.49140983951726E-12)*release(d22,pLow)
-     
-      + (3.49140983951726E-12)*release(d22,pHigh)
-     
-      + (3.49140983951726E-12)*release(d23,pLow)
-     
-      + (3.49140983951726E-12)*release(d23,pHigh)
-     
-      + (3.49140983951726E-12)*release(d24,pLow)
-     
-      + (3.49140983951726E-12)*release(d24,pHigh)
-     
-      + (3.49140983951726E-12)*release(d25,pLow)
-     
-      + (3.49140983951726E-12)*release(d25,pHigh)
-     
-      + (3.49140983951726E-12)*release(d26,pLow)
-     
-      + (3.49140983951726E-12)*release(d26,pHigh)
-     
-      + (3.49140983951726E-12)*release(d27,pLow)
-     
-      + (3.49140983951726E-12)*release(d27,pHigh)
-     
-      + (3.49140983951726E-12)*release(d28,pLow)
-     
-      + (3.49140983951726E-12)*release(d28,pHigh)
-     
-      + (3.49140983951726E-12)*release(d29,pLow)
-     
-      + (3.49140983951726E-12)*release(d29,pHigh)
-     
-      + (3.49140983951726E-12)*release(d30,pLow)
-     
-      + (3.49140983951726E-12)*release(d30,pHigh) - (2.09484590371036E-10)*QMin
-      =E= 30 ; (LHS = -29.9999979997849, INFES = 59.9999979997849 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -13922,7 +13372,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(BugIndex) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 35
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 35
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -13984,7 +13434,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (3.491410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -14002,7 +13452,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (3.491410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -14020,7 +13470,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (3.491410E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -14134,9 +13584,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-2.09485E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 36
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 36
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -14151,17 +13601,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.015 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.031 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
 EXECUTION TIME       =        0.031 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V4
                                          f2 BugIndex
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 37
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 37
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -14174,7 +13624,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      2 Locally Optimal           
-**** OBJECTIVE VALUE               59.9706
+**** OBJECTIVE VALUE               30.0000
 
  RESOURCE USAGE, LIMIT          0.016     20000.000
  ITERATION COUNT, LIMIT         5    2000000000
@@ -14201,7 +13651,7 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.012 seconds
+ CONOPT time Total                            0.002 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
@@ -14772,7 +14222,7 @@ d30.pHigh      .         .         .         EPS
                        LOWER     LEVEL     UPPER    MARGINAL
 
 ---- EQU EQ8__Mont~ 1.0000E+6 1.0000E+6 1.0000E+6      EPS       
----- EQU EQ9_Thres~      .         .         .    7.5339E-4      
+---- EQU EQ9_Thres~      .         .         .         EPS       
 
   EQ8__Monthtlyrel  Constraining Total monthly volume of water released in "May"
                     as per WAPA information(acre-ft)
@@ -14783,72 +14233,72 @@ d30.pHigh      .         .         .         EPS
              LOWER     LEVEL     UPPER    MARGINAL
 
 d1 .pLow      -INF       .         .         .         
-d1 .pHigh     -INF       .         .    7.5339E-4      
-d2 .pLow      -INF       .         .    7.5339E-4      
-d2 .pHigh     -INF       .         .    7.5339E-4      
-d3 .pLow      -INF       .         .    7.5339E-4      
-d3 .pHigh     -INF       .         .    7.5339E-4      
-d4 .pLow      -INF       .         .    7.5339E-4      
-d4 .pHigh     -INF       .         .    7.5339E-4      
-d5 .pLow      -INF       .         .    7.5339E-4      
-d5 .pHigh     -INF       .         .    7.5339E-4      
-d6 .pLow      -INF       .         .    7.5339E-4      
-d6 .pHigh     -INF       .         .    7.5339E-4      
-d7 .pLow      -INF       .         .    7.5339E-4      
-d7 .pHigh     -INF       .         .    7.5339E-4      
-d8 .pLow      -INF       .         .    7.5339E-4      
-d8 .pHigh     -INF       .         .    7.5339E-4      
-d9 .pLow      -INF       .         .    7.5339E-4      
-d9 .pHigh     -INF       .         .    7.5339E-4      
-d10.pLow      -INF       .         .    7.5339E-4      
-d10.pHigh     -INF       .         .    7.5339E-4      
-d11.pLow      -INF       .         .    7.5339E-4      
-d11.pHigh     -INF       .         .    7.5339E-4      
-d12.pLow      -INF       .         .    7.5339E-4      
-d12.pHigh     -INF       .         .    7.5339E-4      
-d13.pLow      -INF       .         .    7.5339E-4      
-d13.pHigh     -INF       .         .    7.5339E-4      
-d14.pLow      -INF       .         .    7.5339E-4      
-d14.pHigh     -INF       .         .    7.5339E-4      
-d15.pLow      -INF       .         .    7.5339E-4      
-d15.pHigh     -INF       .         .    7.5339E-4      
-d16.pLow      -INF       .         .    7.5339E-4      
-d16.pHigh     -INF       .         .    7.5339E-4      
-d17.pLow      -INF       .         .    7.5339E-4      
-d17.pHigh     -INF       .         .    7.5339E-4      
-d18.pLow      -INF       .         .    7.5339E-4      
-d18.pHigh     -INF       .         .    7.5339E-4      
-d19.pLow      -INF       .         .    7.5339E-4      
-d19.pHigh     -INF       .         .    7.5339E-4      
-d20.pLow      -INF       .         .    7.5339E-4      
-d20.pHigh     -INF       .         .    7.5339E-4      
-d21.pLow      -INF       .         .    7.5339E-4      
-d21.pHigh     -INF       .         .    7.5339E-4      
-d22.pLow      -INF       .         .    7.5339E-4      
-d22.pHigh     -INF       .         .    7.5339E-4      
-d23.pLow      -INF       .         .    7.5339E-4      
-d23.pHigh     -INF       .         .    7.5339E-4      
-d24.pLow      -INF       .         .    7.5339E-4      
-d24.pHigh     -INF       .         .    7.5339E-4      
-d25.pLow      -INF       .         .    7.5339E-4      
-d25.pHigh     -INF       .         .    7.5339E-4      
-d26.pLow      -INF       .         .    7.5339E-4      
-d26.pHigh     -INF       .         .    7.5339E-4      
-d27.pLow      -INF       .         .    7.5339E-4      
-d27.pHigh     -INF       .         .    7.5339E-4      
-d28.pLow      -INF       .         .    7.5339E-4      
-d28.pHigh     -INF       .         .    7.5339E-4      
-d29.pLow      -INF       .         .    7.5339E-4      
-d29.pHigh     -INF       .         .    7.5339E-4      
-d30.pLow      -INF       .         .    7.5339E-4      
-d30.pHigh     -INF       .         .    7.5339E-4      
+d1 .pHigh     -INF       .         .         EPS       
+d2 .pLow      -INF       .         .         EPS       
+d2 .pHigh     -INF       .         .         EPS       
+d3 .pLow      -INF       .         .         EPS       
+d3 .pHigh     -INF       .         .         EPS       
+d4 .pLow      -INF       .         .         EPS       
+d4 .pHigh     -INF       .         .         EPS       
+d5 .pLow      -INF       .         .         EPS       
+d5 .pHigh     -INF       .         .         EPS       
+d6 .pLow      -INF       .         .         EPS       
+d6 .pHigh     -INF       .         .         EPS       
+d7 .pLow      -INF       .         .         EPS       
+d7 .pHigh     -INF       .         .         EPS       
+d8 .pLow      -INF       .         .         EPS       
+d8 .pHigh     -INF       .         .         EPS       
+d9 .pLow      -INF       .         .         EPS       
+d9 .pHigh     -INF       .         .         EPS       
+d10.pLow      -INF       .         .         EPS       
+d10.pHigh     -INF       .         .         EPS       
+d11.pLow      -INF       .         .         EPS       
+d11.pHigh     -INF       .         .         EPS       
+d12.pLow      -INF       .         .         EPS       
+d12.pHigh     -INF       .         .         EPS       
+d13.pLow      -INF       .         .         EPS       
+d13.pHigh     -INF       .         .         EPS       
+d14.pLow      -INF       .         .         EPS       
+d14.pHigh     -INF       .         .         EPS       
+d15.pLow      -INF       .         .         EPS       
+d15.pHigh     -INF       .         .         EPS       
+d16.pLow      -INF       .         .         EPS       
+d16.pHigh     -INF       .         .         EPS       
+d17.pLow      -INF       .         .         EPS       
+d17.pHigh     -INF       .         .         EPS       
+d18.pLow      -INF       .         .         EPS       
+d18.pHigh     -INF       .         .         EPS       
+d19.pLow      -INF       .         .         EPS       
+d19.pHigh     -INF       .         .         EPS       
+d20.pLow      -INF       .         .         EPS       
+d20.pHigh     -INF       .         .         EPS       
+d21.pLow      -INF       .         .         EPS       
+d21.pHigh     -INF       .         .         EPS       
+d22.pLow      -INF       .         .         EPS       
+d22.pHigh     -INF       .         .         EPS       
+d23.pLow      -INF       .         .         EPS       
+d23.pHigh     -INF       .         .         EPS       
+d24.pLow      -INF       .         .         EPS       
+d24.pHigh     -INF       .         .         EPS       
+d25.pLow      -INF       .         .         EPS       
+d25.pHigh     -INF       .         .         EPS       
+d26.pLow      -INF       .         .         EPS       
+d26.pHigh     -INF       .         .         EPS       
+d27.pLow      -INF       .         .         EPS       
+d27.pHigh     -INF       .         .         EPS       
+d28.pLow      -INF       .         .         EPS       
+d28.pHigh     -INF       .         .         EPS       
+d29.pLow      -INF       .         .         EPS       
+d29.pHigh     -INF       .         .         EPS       
+d30.pLow      -INF       .         .         EPS       
+d30.pHigh     -INF       .         .         EPS       
 
 ---- EQU EQ10_function  Fitting Arctangent Function to the release values (New B
                         ug Metric)
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000     1.000      
+BugIndex      .         .         .        1.000      
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -14997,12 +14447,12 @@ Hydro      .         .         .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     59.971     +INF       .         
+BugIndex     -INF     30.000     +INF       .         
 Hydro        -INF  2.1963E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
 
----- VAR CombineOb~     -INF     59.971     +INF       .         
+---- VAR CombineOb~     -INF     30.000     +INF       .         
 
   CombineObjective  Combine objective functions for each senario
 
@@ -15247,7 +14697,7 @@ d30.pHigh      .    22222.222     +INF       .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 38
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 38
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -15257,9 +14707,9 @@ E x e c u t i o n
 
                            V1          V2          V3          V4
 
-BugIndex.BugIndex      59.971      58.971      58.971      59.971
+BugIndex.BugIndex      30.000      29.000      29.000      30.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7 2.196273E+7
-Hydro   .BugIndex      29.985      29.985      29.985
+Hydro   .BugIndex         EPS         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7 2.155679E+7
 
 
@@ -15782,7 +15232,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7 1.258885E+7
 
 Hydro 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 39
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 39
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -16040,128 +15490,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (1.16423203992445E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (1.16423203992445E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (1.16423203992445E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (1.16423203992445E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (1.16423203992445E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (1.16423203992445E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (1.16423203992445E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (1.16423203992445E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (1.16423203992445E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (1.16423203992445E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (1.16423203992445E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (1.16423203992445E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (1.16423203992445E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (1.16423203992445E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (1.16423203992445E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (1.16423203992445E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (1.16423203992445E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (1.16423203992445E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (1.16423203992445E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (1.16423203992445E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (1.16423203992445E-12)*release(d11,pLow)
-     
-      + (1.16423203992445E-12)*release(d11,pHigh)
-     
-      + (1.16423203992445E-12)*release(d12,pLow)
-     
-      + (1.16423203992445E-12)*release(d12,pHigh)
-     
-      + (1.16423203992445E-12)*release(d13,pLow)
-     
-      + (1.16423203992445E-12)*release(d13,pHigh)
-     
-      + (1.16423203992445E-12)*release(d14,pLow)
-     
-      + (1.16423203992445E-12)*release(d14,pHigh)
-     
-      + (1.16423203992445E-12)*release(d15,pLow)
-     
-      + (1.16423203992445E-12)*release(d15,pHigh)
-     
-      + (1.16423203992445E-12)*release(d16,pLow)
-     
-      + (1.16423203992445E-12)*release(d16,pHigh)
-     
-      + (1.16423203992445E-12)*release(d17,pLow)
-     
-      + (1.16423203992445E-12)*release(d17,pHigh)
-     
-      + (1.16423203992445E-12)*release(d18,pLow)
-     
-      + (1.16423203992445E-12)*release(d18,pHigh)
-     
-      + (1.16423203992445E-12)*release(d19,pLow)
-     
-      + (1.16423203992445E-12)*release(d19,pHigh)
-     
-      + (1.16423203992445E-12)*release(d20,pLow)
-     
-      + (1.16423203992445E-12)*release(d20,pHigh)
-     
-      + (1.16423203992445E-12)*release(d21,pLow)
-     
-      + (1.16423203992445E-12)*release(d21,pHigh)
-     
-      + (1.16423203992445E-12)*release(d22,pLow)
-     
-      + (1.16423203992445E-12)*release(d22,pHigh)
-     
-      + (1.16423203992445E-12)*release(d23,pLow)
-     
-      + (1.16423203992445E-12)*release(d23,pHigh)
-     
-      + (1.16423203992445E-12)*release(d24,pLow)
-     
-      + (1.16423203992445E-12)*release(d24,pHigh)
-     
-      + (1.16423203992445E-12)*release(d25,pLow)
-     
-      + (1.16423203992445E-12)*release(d25,pHigh)
-     
-      + (1.16423203992445E-12)*release(d26,pLow)
-     
-      + (1.16423203992445E-12)*release(d26,pHigh)
-     
-      + (1.16423203992445E-12)*release(d27,pLow)
-     
-      + (1.16423203992445E-12)*release(d27,pHigh)
-     
-      + (1.16423203992445E-12)*release(d28,pLow)
-     
-      + (1.16423203992445E-12)*release(d28,pHigh)
-     
-      + (1.16423203992445E-12)*release(d29,pLow)
-     
-      + (1.16423203992445E-12)*release(d29,pHigh)
-     
-      + (1.16423203992445E-12)*release(d30,pLow)
-     
-      + (1.16423203992445E-12)*release(d30,pHigh) - (6.98539223954672E-11)*QMin
-      =E= 30 ; (LHS = -29.9999988449624, INFES = 59.9999988449624 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -16269,7 +15640,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(Hydro) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 40
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 40
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -16331,7 +15702,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (1.164232E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -16349,7 +15720,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (1.164232E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -16367,7 +15738,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (1.164232E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -16481,9 +15852,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-6.98539E-11) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 41
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 41
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -16498,17 +15869,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.000 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.046 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.032 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.078 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V4
                                          f2 Hydro
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 42
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 42
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -16523,7 +15894,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE         23753058.9905
 
- RESOURCE USAGE, LIMIT          0.016     20000.000
+ RESOURCE USAGE, LIMIT          0.000     20000.000
  ITERATION COUNT, LIMIT         6    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -16548,9 +15919,9 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.025 seconds
-   of which: Function evaluations             0.000 =  0.0%
-             1st Derivative evaluations       0.001 =  4.0%
+ CONOPT time Total                            0.004 seconds
+   of which: Function evaluations             0.001 = 25.0%
+             1st Derivative evaluations       0.000 =  0.0%
  
 
 ---- EQU EQ1__ResMassBal  Reservoir mass balance (acre-ft)
@@ -17195,7 +16566,7 @@ d30.pHigh     -INF  -8000.000      .         .
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000      EPS       
+BugIndex      .         .         .         EPS       
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -17344,7 +16715,7 @@ Hydro      .         .         .        1.000
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     29.985     +INF       .         
+BugIndex     -INF       .        +INF       .         
 Hydro        -INF  2.3753E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
@@ -17595,7 +16966,7 @@ d30.pHigh      .    25806.222     +INF       .
                              0  UNBOUNDED
                              0     ERRORS
                             86  PROJECTED
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 43
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 43
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -17605,9 +16976,9 @@ E x e c u t i o n
 
                            V1          V2          V3          V4
 
-BugIndex.BugIndex      59.971      58.971      58.971      59.971
+BugIndex.BugIndex      30.000      29.000      29.000      30.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7 2.196273E+7
-Hydro   .BugIndex      29.985      29.985      29.985      29.985
+Hydro   .BugIndex         EPS         EPS         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7 2.155679E+7 2.375306E+7
 
 
@@ -18190,7 +17561,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7 1.258885E+7 1.248885E+7
 
 BugIndex 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 44
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 44
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -18454,128 +17825,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (2.53677305842584E-12)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (2.53677305842584E-12)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (2.53677305842584E-12)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (2.53677305842584E-12)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (2.53677305842584E-12)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (2.53677305842584E-12)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (2.53677305842584E-12)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (2.53677305842584E-12)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (2.53677305842584E-12)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (2.53677305842584E-12)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (2.53677305842584E-12)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (2.53677305842584E-12)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (2.53677305842584E-12)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (2.53677305842584E-12)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (2.53677305842584E-12)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (2.53677305842584E-12)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (2.53677305842584E-12)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (2.53677305842584E-12)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (2.53677305842584E-12)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (2.53677305842584E-12)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (2.53677305842584E-12)*release(d11,pLow)
-     
-      + (2.53677305842584E-12)*release(d11,pHigh)
-     
-      + (2.53677305842584E-12)*release(d12,pLow)
-     
-      + (2.53677305842584E-12)*release(d12,pHigh)
-     
-      + (2.53677305842584E-12)*release(d13,pLow)
-     
-      + (2.53677305842584E-12)*release(d13,pHigh)
-     
-      + (2.53677305842584E-12)*release(d14,pLow)
-     
-      + (2.53677305842584E-12)*release(d14,pHigh)
-     
-      + (2.53677305842584E-12)*release(d15,pLow)
-     
-      + (2.53677305842584E-12)*release(d15,pHigh)
-     
-      + (2.53677305842584E-12)*release(d16,pLow)
-     
-      + (2.53677305842584E-12)*release(d16,pHigh)
-     
-      + (2.53677305842584E-12)*release(d17,pLow)
-     
-      + (2.53677305842584E-12)*release(d17,pHigh)
-     
-      + (2.53677305842584E-12)*release(d18,pLow)
-     
-      + (2.53677305842584E-12)*release(d18,pHigh)
-     
-      + (2.53677305842584E-12)*release(d19,pLow)
-     
-      + (2.53677305842584E-12)*release(d19,pHigh)
-     
-      + (2.53677305842584E-12)*release(d20,pLow)
-     
-      + (2.53677305842584E-12)*release(d20,pHigh)
-     
-      + (2.53677305842584E-12)*release(d21,pLow)
-     
-      + (2.53677305842584E-12)*release(d21,pHigh)
-     
-      + (2.53677305842584E-12)*release(d22,pLow)
-     
-      + (2.53677305842584E-12)*release(d22,pHigh)
-     
-      + (2.53677305842584E-12)*release(d23,pLow)
-     
-      + (2.53677305842584E-12)*release(d23,pHigh)
-     
-      + (2.53677305842584E-12)*release(d24,pLow)
-     
-      + (2.53677305842584E-12)*release(d24,pHigh)
-     
-      + (2.53677305842584E-12)*release(d25,pLow)
-     
-      + (2.53677305842584E-12)*release(d25,pHigh)
-     
-      + (2.53677305842584E-12)*release(d26,pLow)
-     
-      + (2.53677305842584E-12)*release(d26,pHigh)
-     
-      + (2.53677305842584E-12)*release(d27,pLow)
-     
-      + (2.53677305842584E-12)*release(d27,pHigh)
-     
-      + (2.53677305842584E-12)*release(d28,pLow)
-     
-      + (2.53677305842584E-12)*release(d28,pHigh)
-     
-      + (2.53677305842584E-12)*release(d29,pLow)
-     
-      + (2.53677305842584E-12)*release(d29,pHigh)
-     
-      + (2.53677305842584E-12)*release(d30,pLow)
-     
-      + (2.53677305842584E-12)*release(d30,pHigh) - (1.52206383505551E-10)*QMin
-      =E= 30 ; (LHS = -29.9999982950286, INFES = 59.9999982950286 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -18683,7 +17975,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(BugIndex) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 45
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 45
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -18745,7 +18037,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (2.536773E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -18763,7 +18055,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (2.536773E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -18781,7 +18073,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (2.536773E-12) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -18895,9 +18187,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-1.52206E-10) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 46
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 46
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -18912,17 +18204,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.031 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.047 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V5
                                          f2 BugIndex
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 47
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 47
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -18935,9 +18227,9 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
 **** SOLVER STATUS     1 Normal Completion         
 **** MODEL STATUS      2 Locally Optimal           
-**** OBJECTIVE VALUE               59.9706
+**** OBJECTIVE VALUE               30.0000
 
- RESOURCE USAGE, LIMIT          0.031     20000.000
+ RESOURCE USAGE, LIMIT          0.000     20000.000
  ITERATION COUNT, LIMIT         5    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -18962,7 +18254,7 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.023 seconds
+ CONOPT time Total                            0.002 seconds
    of which: Function evaluations             0.000 =  0.0%
              1st Derivative evaluations       0.000 =  0.0%
  
@@ -19533,7 +18825,7 @@ d30.pHigh      .         .         .         EPS
                        LOWER     LEVEL     UPPER    MARGINAL
 
 ---- EQU EQ8__Mont~ 1.1000E+6 1.1000E+6 1.1000E+6      EPS       
----- EQU EQ9_Thres~      .         .         .    7.5339E-4      
+---- EQU EQ9_Thres~      .         .         .         EPS       
 
   EQ8__Monthtlyrel  Constraining Total monthly volume of water released in "May"
                     as per WAPA information(acre-ft)
@@ -19544,72 +18836,72 @@ d30.pHigh      .         .         .         EPS
              LOWER     LEVEL     UPPER    MARGINAL
 
 d1 .pLow      -INF       .         .         .         
-d1 .pHigh     -INF       .         .    7.5339E-4      
-d2 .pLow      -INF       .         .    7.5339E-4      
-d2 .pHigh     -INF       .         .    7.5339E-4      
-d3 .pLow      -INF       .         .    7.5339E-4      
-d3 .pHigh     -INF       .         .    7.5339E-4      
-d4 .pLow      -INF       .         .    7.5339E-4      
-d4 .pHigh     -INF       .         .    7.5339E-4      
-d5 .pLow      -INF       .         .    7.5339E-4      
-d5 .pHigh     -INF       .         .    7.5339E-4      
-d6 .pLow      -INF       .         .    7.5339E-4      
-d6 .pHigh     -INF       .         .    7.5339E-4      
-d7 .pLow      -INF       .         .    7.5339E-4      
-d7 .pHigh     -INF       .         .    7.5339E-4      
-d8 .pLow      -INF       .         .    7.5339E-4      
-d8 .pHigh     -INF       .         .    7.5339E-4      
-d9 .pLow      -INF       .         .    7.5339E-4      
-d9 .pHigh     -INF       .         .    7.5339E-4      
-d10.pLow      -INF       .         .    7.5339E-4      
-d10.pHigh     -INF       .         .    7.5339E-4      
-d11.pLow      -INF       .         .    7.5339E-4      
-d11.pHigh     -INF       .         .    7.5339E-4      
-d12.pLow      -INF       .         .    7.5339E-4      
-d12.pHigh     -INF       .         .    7.5339E-4      
-d13.pLow      -INF       .         .    7.5339E-4      
-d13.pHigh     -INF       .         .    7.5339E-4      
-d14.pLow      -INF       .         .    7.5339E-4      
-d14.pHigh     -INF       .         .    7.5339E-4      
-d15.pLow      -INF       .         .    7.5339E-4      
-d15.pHigh     -INF       .         .    7.5339E-4      
-d16.pLow      -INF       .         .    7.5339E-4      
-d16.pHigh     -INF       .         .    7.5339E-4      
-d17.pLow      -INF       .         .    7.5339E-4      
-d17.pHigh     -INF       .         .    7.5339E-4      
-d18.pLow      -INF       .         .    7.5339E-4      
-d18.pHigh     -INF       .         .    7.5339E-4      
-d19.pLow      -INF       .         .    7.5339E-4      
-d19.pHigh     -INF       .         .    7.5339E-4      
-d20.pLow      -INF       .         .    7.5339E-4      
-d20.pHigh     -INF       .         .    7.5339E-4      
-d21.pLow      -INF       .         .    7.5339E-4      
-d21.pHigh     -INF       .         .    7.5339E-4      
-d22.pLow      -INF       .         .    7.5339E-4      
-d22.pHigh     -INF       .         .    7.5339E-4      
-d23.pLow      -INF       .         .    7.5339E-4      
-d23.pHigh     -INF       .         .    7.5339E-4      
-d24.pLow      -INF       .         .    7.5339E-4      
-d24.pHigh     -INF       .         .    7.5339E-4      
-d25.pLow      -INF       .         .    7.5339E-4      
-d25.pHigh     -INF       .         .    7.5339E-4      
-d26.pLow      -INF       .         .    7.5339E-4      
-d26.pHigh     -INF       .         .    7.5339E-4      
-d27.pLow      -INF       .         .    7.5339E-4      
-d27.pHigh     -INF       .         .    7.5339E-4      
-d28.pLow      -INF       .         .    7.5339E-4      
-d28.pHigh     -INF       .         .    7.5339E-4      
-d29.pLow      -INF       .         .    7.5339E-4      
-d29.pHigh     -INF       .         .    7.5339E-4      
-d30.pLow      -INF       .         .    7.5339E-4      
-d30.pHigh     -INF       .         .    7.5339E-4      
+d1 .pHigh     -INF       .         .         EPS       
+d2 .pLow      -INF       .         .         EPS       
+d2 .pHigh     -INF       .         .         EPS       
+d3 .pLow      -INF       .         .         EPS       
+d3 .pHigh     -INF       .         .         EPS       
+d4 .pLow      -INF       .         .         EPS       
+d4 .pHigh     -INF       .         .         EPS       
+d5 .pLow      -INF       .         .         EPS       
+d5 .pHigh     -INF       .         .         EPS       
+d6 .pLow      -INF       .         .         EPS       
+d6 .pHigh     -INF       .         .         EPS       
+d7 .pLow      -INF       .         .         EPS       
+d7 .pHigh     -INF       .         .         EPS       
+d8 .pLow      -INF       .         .         EPS       
+d8 .pHigh     -INF       .         .         EPS       
+d9 .pLow      -INF       .         .         EPS       
+d9 .pHigh     -INF       .         .         EPS       
+d10.pLow      -INF       .         .         EPS       
+d10.pHigh     -INF       .         .         EPS       
+d11.pLow      -INF       .         .         EPS       
+d11.pHigh     -INF       .         .         EPS       
+d12.pLow      -INF       .         .         EPS       
+d12.pHigh     -INF       .         .         EPS       
+d13.pLow      -INF       .         .         EPS       
+d13.pHigh     -INF       .         .         EPS       
+d14.pLow      -INF       .         .         EPS       
+d14.pHigh     -INF       .         .         EPS       
+d15.pLow      -INF       .         .         EPS       
+d15.pHigh     -INF       .         .         EPS       
+d16.pLow      -INF       .         .         EPS       
+d16.pHigh     -INF       .         .         EPS       
+d17.pLow      -INF       .         .         EPS       
+d17.pHigh     -INF       .         .         EPS       
+d18.pLow      -INF       .         .         EPS       
+d18.pHigh     -INF       .         .         EPS       
+d19.pLow      -INF       .         .         EPS       
+d19.pHigh     -INF       .         .         EPS       
+d20.pLow      -INF       .         .         EPS       
+d20.pHigh     -INF       .         .         EPS       
+d21.pLow      -INF       .         .         EPS       
+d21.pHigh     -INF       .         .         EPS       
+d22.pLow      -INF       .         .         EPS       
+d22.pHigh     -INF       .         .         EPS       
+d23.pLow      -INF       .         .         EPS       
+d23.pHigh     -INF       .         .         EPS       
+d24.pLow      -INF       .         .         EPS       
+d24.pHigh     -INF       .         .         EPS       
+d25.pLow      -INF       .         .         EPS       
+d25.pHigh     -INF       .         .         EPS       
+d26.pLow      -INF       .         .         EPS       
+d26.pHigh     -INF       .         .         EPS       
+d27.pLow      -INF       .         .         EPS       
+d27.pHigh     -INF       .         .         EPS       
+d28.pLow      -INF       .         .         EPS       
+d28.pHigh     -INF       .         .         EPS       
+d29.pLow      -INF       .         .         EPS       
+d29.pHigh     -INF       .         .         EPS       
+d30.pLow      -INF       .         .         EPS       
+d30.pHigh     -INF       .         .         EPS       
 
 ---- EQU EQ10_function  Fitting Arctangent Function to the release values (New B
                         ug Metric)
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000     1.000      
+BugIndex      .         .         .        1.000      
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -19758,12 +19050,12 @@ Hydro      .         .         .         EPS
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     59.971     +INF       .         
+BugIndex     -INF     30.000     +INF       .         
 Hydro        -INF  2.4159E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
 
----- VAR CombineOb~     -INF     59.971     +INF       .         
+---- VAR CombineOb~     -INF     30.000     +INF       .         
 
   CombineObjective  Combine objective functions for each senario
 
@@ -20008,7 +19300,7 @@ d30.pHigh      .    24444.444     +INF       .
                              0 INFEASIBLE
                              0  UNBOUNDED
                              0     ERRORS
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 48
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 48
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -20018,9 +19310,9 @@ E x e c u t i o n
 
                            V1          V2          V3          V4          V5
 
-BugIndex.BugIndex      59.971      58.971      58.971      59.971      59.971
+BugIndex.BugIndex      30.000      29.000      29.000      30.000      30.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7 2.196273E+7 2.415900E+7
-Hydro   .BugIndex      29.985      29.985      29.985      29.985
+Hydro   .BugIndex         EPS         EPS         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7 2.155679E+7 2.375306E+7
 
 
@@ -20663,7 +19955,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7 1.258885E+7 1.248885E+7
 
 Hydro 1.000
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 49
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 49
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Equation Listing    SOLVE ExtremePt Using DNLP From line 301
 
@@ -20921,128 +20213,49 @@ REMAINING 57 ENTRIES SKIPPED
 ---- EQ10_function  =E=  Fitting Arctangent Function to the release values (New 
                          Bug Metric)
 
-EQ10_function(BugIndex)..  ObjectiveVal(BugIndex)
+EQ10_function(BugIndex)..  ObjectiveVal(BugIndex) + (0)*release(d1,pLow)
      
-      + (9.62182116652234E-13)*release(d1,pLow)
+      + (0)*release(d1,pHigh) + (0)*release(d2,pLow) + (0)*release(d2,pHigh)
      
-      + (9.62182116652234E-13)*release(d1,pHigh)
+      + (0)*release(d3,pLow) + (0)*release(d3,pHigh) + (0)*release(d4,pLow)
      
-      + (9.62182116652234E-13)*release(d2,pLow)
+      + (0)*release(d4,pHigh) + (0)*release(d5,pLow) + (0)*release(d5,pHigh)
      
-      + (9.62182116652234E-13)*release(d2,pHigh)
+      + (0)*release(d6,pLow) + (0)*release(d6,pHigh) + (0)*release(d7,pLow)
      
-      + (9.62182116652234E-13)*release(d3,pLow)
+      + (0)*release(d7,pHigh) + (0)*release(d8,pLow) + (0)*release(d8,pHigh)
      
-      + (9.62182116652234E-13)*release(d3,pHigh)
+      + (0)*release(d9,pLow) + (0)*release(d9,pHigh) + (0)*release(d10,pLow)
      
-      + (9.62182116652234E-13)*release(d4,pLow)
+      + (0)*release(d10,pHigh) + (0)*release(d11,pLow) + (0)*release(d11,pHigh)
      
-      + (9.62182116652234E-13)*release(d4,pHigh)
+      + (0)*release(d12,pLow) + (0)*release(d12,pHigh) + (0)*release(d13,pLow)
      
-      + (9.62182116652234E-13)*release(d5,pLow)
+      + (0)*release(d13,pHigh) + (0)*release(d14,pLow) + (0)*release(d14,pHigh)
      
-      + (9.62182116652234E-13)*release(d5,pHigh)
+      + (0)*release(d15,pLow) + (0)*release(d15,pHigh) + (0)*release(d16,pLow)
      
-      + (9.62182116652234E-13)*release(d6,pLow)
+      + (0)*release(d16,pHigh) + (0)*release(d17,pLow) + (0)*release(d17,pHigh)
      
-      + (9.62182116652234E-13)*release(d6,pHigh)
+      + (0)*release(d18,pLow) + (0)*release(d18,pHigh) + (0)*release(d19,pLow)
      
-      + (9.62182116652234E-13)*release(d7,pLow)
+      + (0)*release(d19,pHigh) + (0)*release(d20,pLow) + (0)*release(d20,pHigh)
      
-      + (9.62182116652234E-13)*release(d7,pHigh)
+      + (0)*release(d21,pLow) + (0)*release(d21,pHigh) + (0)*release(d22,pLow)
      
-      + (9.62182116652234E-13)*release(d8,pLow)
+      + (0)*release(d22,pHigh) + (0)*release(d23,pLow) + (0)*release(d23,pHigh)
      
-      + (9.62182116652234E-13)*release(d8,pHigh)
+      + (0)*release(d24,pLow) + (0)*release(d24,pHigh) + (0)*release(d25,pLow)
      
-      + (9.62182116652234E-13)*release(d9,pLow)
+      + (0)*release(d25,pHigh) + (0)*release(d26,pLow) + (0)*release(d26,pHigh)
      
-      + (9.62182116652234E-13)*release(d9,pHigh)
+      + (0)*release(d27,pLow) + (0)*release(d27,pHigh) + (0)*release(d28,pLow)
      
-      + (9.62182116652234E-13)*release(d10,pLow)
+      + (0)*release(d28,pHigh) + (0)*release(d29,pLow) + (0)*release(d29,pHigh)
      
-      + (9.62182116652234E-13)*release(d10,pHigh)
+      + (0)*release(d30,pLow) + (0)*release(d30,pHigh) + (0)*QMin =E= 0 ;
      
-      + (9.62182116652234E-13)*release(d11,pLow)
-     
-      + (9.62182116652234E-13)*release(d11,pHigh)
-     
-      + (9.62182116652234E-13)*release(d12,pLow)
-     
-      + (9.62182116652234E-13)*release(d12,pHigh)
-     
-      + (9.62182116652234E-13)*release(d13,pLow)
-     
-      + (9.62182116652234E-13)*release(d13,pHigh)
-     
-      + (9.62182116652234E-13)*release(d14,pLow)
-     
-      + (9.62182116652234E-13)*release(d14,pHigh)
-     
-      + (9.62182116652234E-13)*release(d15,pLow)
-     
-      + (9.62182116652234E-13)*release(d15,pHigh)
-     
-      + (9.62182116652234E-13)*release(d16,pLow)
-     
-      + (9.62182116652234E-13)*release(d16,pHigh)
-     
-      + (9.62182116652234E-13)*release(d17,pLow)
-     
-      + (9.62182116652234E-13)*release(d17,pHigh)
-     
-      + (9.62182116652234E-13)*release(d18,pLow)
-     
-      + (9.62182116652234E-13)*release(d18,pHigh)
-     
-      + (9.62182116652234E-13)*release(d19,pLow)
-     
-      + (9.62182116652234E-13)*release(d19,pHigh)
-     
-      + (9.62182116652234E-13)*release(d20,pLow)
-     
-      + (9.62182116652234E-13)*release(d20,pHigh)
-     
-      + (9.62182116652234E-13)*release(d21,pLow)
-     
-      + (9.62182116652234E-13)*release(d21,pHigh)
-     
-      + (9.62182116652234E-13)*release(d22,pLow)
-     
-      + (9.62182116652234E-13)*release(d22,pHigh)
-     
-      + (9.62182116652234E-13)*release(d23,pLow)
-     
-      + (9.62182116652234E-13)*release(d23,pHigh)
-     
-      + (9.62182116652234E-13)*release(d24,pLow)
-     
-      + (9.62182116652234E-13)*release(d24,pHigh)
-     
-      + (9.62182116652234E-13)*release(d25,pLow)
-     
-      + (9.62182116652234E-13)*release(d25,pHigh)
-     
-      + (9.62182116652234E-13)*release(d26,pLow)
-     
-      + (9.62182116652234E-13)*release(d26,pHigh)
-     
-      + (9.62182116652234E-13)*release(d27,pLow)
-     
-      + (9.62182116652234E-13)*release(d27,pHigh)
-     
-      + (9.62182116652234E-13)*release(d28,pLow)
-     
-      + (9.62182116652234E-13)*release(d28,pHigh)
-     
-      + (9.62182116652234E-13)*release(d29,pLow)
-     
-      + (9.62182116652234E-13)*release(d29,pHigh)
-     
-      + (9.62182116652234E-13)*release(d30,pLow)
-     
-      + (9.62182116652234E-13)*release(d30,pHigh) - (5.77309269991341E-11)*QMin
-      =E= 30 ; (LHS = -29.9999989499621, INFES = 59.9999989499621 ****)
+      (LHS = -30, INFES = 30 ****)
      
 
 ---- EQ12_EnergyGen  =E=  Amount of energy generated in each time step (MWH)
@@ -21150,7 +20363,7 @@ EQ15_CombinedObjectives..  - ObjectiveVal(Hydro) + CombineObjective =E= 0 ;
      
       (LHS = 0)
      
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 50
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 50
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Column Listing      SOLVE ExtremePt Using DNLP From line 301
 
@@ -21212,7 +20425,7 @@ release(d1,pLow)
        -0.672   EQ7d_FlowVolume(d1,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pLow)
- (9.621821E-13) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d1,pLow)
 
 release(d1,pHigh)
@@ -21230,7 +20443,7 @@ release(d1,pHigh)
        -1.344   EQ7d_FlowVolume(d1,pHigh)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d1,pHigh)
- (9.621821E-13) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.5944  EQ12_EnergyGen(d1,pHigh)
 
 release(d2,pLow)
@@ -21248,7 +20461,7 @@ release(d2,pLow)
        -0.672   EQ7d_FlowVolume(d2,pLow)
        (0)      EQ9_Threshold
        -1       EQ9a_Qminconstraint(d2,pLow)
- (9.621821E-13) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
        -0.2972  EQ12_EnergyGen(d2,pLow)
 
 REMAINING 57 ENTRIES SKIPPED
@@ -21362,9 +20575,9 @@ QMin
         1       EQ9a_Qminconstraint(d29,pHigh)
         1       EQ9a_Qminconstraint(d30,pLow)
         1       EQ9a_Qminconstraint(d30,pHigh)
- (-5.77309E-11) EQ10_function(BugIndex)
+       (0)      EQ10_function(BugIndex)
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 51
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 51
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE ExtremePt Using DNLP From line 301
 
@@ -21379,17 +20592,17 @@ BLOCKS OF EQUATIONS          18     SINGLE EQUATIONS          691
 BLOCKS OF VARIABLES           7     SINGLE VARIABLES          214
 NON ZERO ELEMENTS         1,437     NON LINEAR N-Z            121
 DERIVATIVE POOL              20     CONSTANT POOL              21
-CODE LENGTH                 607
+CODE LENGTH               1,328
 
 
-GENERATION TIME      =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+GENERATION TIME      =        0.047 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
-EXECUTION TIME       =        0.016 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        0.063 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
                L O O P S            tot_vol V5
                                          f2 Hydro
 
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 52
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 52
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE ExtremePt Using DNLP From line 301
 
@@ -21404,7 +20617,7 @@ Solution Report     SOLVE ExtremePt Using DNLP From line 301
 **** MODEL STATUS      2 Locally Optimal           
 **** OBJECTIVE VALUE         25949331.6095
 
- RESOURCE USAGE, LIMIT          0.015     20000.000
+ RESOURCE USAGE, LIMIT          0.000     20000.000
  ITERATION COUNT, LIMIT         6    2000000000
  EVALUATION ERRORS              0             0
 CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
@@ -21429,8 +20642,8 @@ CONOPT 3         30.3.0 rc5da09e Released Mar 06, 2020 WEI x86 64bit/MS Window
  ** Optimal solution. There are no superbasic variables.
  
  
- CONOPT time Total                            0.026 seconds
-   of which: Function evaluations             0.000 =  0.0%
+ CONOPT time Total                            0.005 seconds
+   of which: Function evaluations             0.001 = 20.0%
              1st Derivative evaluations       0.000 =  0.0%
  
 
@@ -22076,7 +21289,7 @@ d30.pHigh     -INF  -8000.000      .         .
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex    30.000    30.000    30.000      EPS       
+BugIndex      .         .         .         EPS       
 
 ---- EQU EQ12_EnergyGen  Amount of energy generated in each time step (MWH)
 
@@ -22225,7 +21438,7 @@ Hydro      .         .         .        1.000
 
             LOWER     LEVEL     UPPER    MARGINAL
 
-BugIndex     -INF     29.985     +INF       .         
+BugIndex     -INF       .        +INF       .         
 Hydro        -INF  2.5949E+7     +INF       .         
 
                        LOWER     LEVEL     UPPER    MARGINAL
@@ -22476,7 +21689,7 @@ d30.pHigh      .    28028.444     +INF       .
                              0  UNBOUNDED
                              0     ERRORS
                             86  PROJECTED
-GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/19/20 18:54:18 Page 53
+GAMS 30.3.0  rc5da09e Released Mar  6, 2020 WEX-WEI x86 64bit/MS Windows 05/29/20 03:18:16 Page 53
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 E x e c u t i o n
 
@@ -22486,9 +21699,9 @@ E x e c u t i o n
 
                            V1          V2          V3          V4          V5
 
-BugIndex.BugIndex      59.971      58.971      58.971      59.971      59.971
+BugIndex.BugIndex      30.000      29.000      29.000      30.000      30.000
 BugIndex.Hydro    1.537391E+7 1.749494E+7 1.982613E+7 2.196273E+7 2.415900E+7
-Hydro   .BugIndex      29.985      29.985      29.985      29.985      29.985
+Hydro   .BugIndex         EPS         EPS         EPS         EPS         EPS
 Hydro   .Hydro    1.657368E+7 1.915598E+7 2.155679E+7 2.375306E+7 2.594933E+7
 
 
@@ -23188,7 +22401,7 @@ Hydro   .d30 1.278885E+7 1.269499E+7 1.258885E+7 1.248885E+7 1.238885E+7
 
 
 
-EXECUTION TIME       =        1.140 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
+EXECUTION TIME       =        1.922 SECONDS      3 MB  30.3.0 rc5da09e WEX-WEI
 
 
 USER: Eval License MIRO                              G200330/0001AN-GEN
@@ -23198,7 +22411,7 @@ USER: Eval License MIRO                              G200330/0001AN-GEN
 
 **** FILE SUMMARY
 
-Input      E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\June_
-           newobjanalysis.gms
-Output     E:\Project_Bugflow\June18_newObjective\June2018_newobj_Analysis\June_
-           newobjanalysis.lst
+Input      C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshoo
+           ting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+Output     C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshoo
+           ting\June2018_newobj_troubleshooting\June_newobjanalysis.lst
