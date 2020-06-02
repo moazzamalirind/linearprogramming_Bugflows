@@ -74,7 +74,7 @@ maxRel                                Maximum release in a day d at any timeperi
 minRel                                Minimum release in a day d at any timeperiod p(cfs)
 evap                                  evaporation (ac-ft per day Considered constant throughout the month
 EnergyRate(p)                         Energy revenue ($ per MWH) /pLow 24.56, pHigh 62.21/
-
+*observed_release(d,p)                 observed release averaged over two timesteps (cfs)
 *Obj_dir(f)                            To set objective directions inorder to set the maximization and minimization of the objectives /BugIndex -1,Hydro 1/
 
 Duration(p)                           Duration of period (hours)
@@ -99,6 +99,7 @@ Duration("pHigh")= 16;
 * Read data from Excel
 *===================================================
 $CALL GDXXRW.EXE input=June2018.xls output=newmetric_analysis.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
+*$CALL GDXXRW.EXE input=June2018.xls output=V3_check.gdx par=observed_release rng=V3_Simulation!A1:C31  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
 *Write the input Data into a GDX file
 $GDXIN newmetric_analysis.gdx
 
@@ -111,6 +112,7 @@ $LOAD minstorage
 $LOAD maxRel
 $LOAD minRel
 $LOAD evap
+*$LOAD observed_release
 
 *Close the GDX file
 $GDXIN
@@ -212,13 +214,12 @@ EQ13_EnergyRevenue(f)$(ord(f) eq 2)..         ObjectiveVal(f)=e= sum((d,p),Energ
 
 EQ15_CombinedObjectives..                     CombineObjective =e= sum(f,FtoUse(f)*ObjectiveVal(f));
 
-
+*EQ14_ReleaseSim(d,p)..                     release(d,p)=e=observed_release(d,p);
 ***************************************************
 ******
 ***************************************************
 *------------------------------------------------------------------------------*
 *Initial values just to run simulation (Random Pick)... One might need to pick other numbers if he/she founds that some of the runs are locally infeasbile on their intial values.
-*EQ14_ReleaseSim(d,p)..                     release(d,p)=e=observed_release(d,p);
 
 
 release.L(d,p) = 10000;
@@ -298,6 +299,7 @@ option Threads=6;
 option optcr=0.001;
 option NLP= CONOPT;
 
+
    TotMonth_volume= Vol_monthlyrelease(tot_vol);
    SOLVE ExtremePt USING dnlp maximize CombineObjective;
    FStore(f2,f,tot_vol)= ObjectiveVal.L(f)+EPS;
@@ -307,7 +309,7 @@ option NLP= CONOPT;
    ExtModeL_Stat(tot_vol,f2,"SolStat") = ExtremePt.solvestat;
    ExtModeL_Stat(tot_vol,f2,"ModStat") = ExtremePt.modelstat;
    DISPLAY FStore,XStore,RStore,Sstore;
-option clear=CombineObjective,clear=ObjectiveVal,clear=release;
+   option clear=CombineObjective,clear=ObjectiveVal,clear=release;
 );
 
 
