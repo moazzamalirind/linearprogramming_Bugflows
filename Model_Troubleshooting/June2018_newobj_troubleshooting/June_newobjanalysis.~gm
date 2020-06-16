@@ -31,6 +31,7 @@ Set
 *          Scen(All_cases)               objective function scenario values /sc1 * sc6/
           modpar                        Saving model parameter for each of the solutions for each of the scenario/ ModStat "Model Statistics", SolStat "solve Statistics"/
           Ext_points                    Defining Extreme Points/Min, Max/
+          case                           Defining constrainted cases /case1,case2/
 ;
 
 *creating a copy of set f as f2.
@@ -52,13 +53,13 @@ RStore(f2,d,tot_vol,p)                  Store Release values at extreme values o
 Sstore(f2,d,tot_vol)                    Store Storage Values over different scenarios (ac-ft)
 
 
-*Scen_store(f,Scen,tot_vol)              Store objective function values under different senarios
-*ReleaseSave(tot_vol,Scen,d,p)           Saving release from each of the senarios  (cfs)
-*EnergyGen_save(tot_vol,Scen,d,p)        Saving Energy Generated from each of the senarios (MWH)
-*Storage_Save(tot_vol,Scen,d)            Saving Storage values from each of the senarios(ac-ft)
+Scen_store(f,case,tot_vol)                   Store objective function values under different constrainted part
+ReleaseSave(tot_vol,case,d,p)                Saving release from each of the senarios  (cfs)
+EnergyGen_save(tot_vol,case,d,p)             Saving Energy Generated from each of the senarios (MWH)
+Storage_Save(tot_vol,case,d)                 Saving Storage values from each of the senarios(ac-ft)
 
-ExtModeL_Stat(tot_vol,f2,modpar)        Extreme Points Model Results for the scenarios
-*ModelResults(tot_vol,Scen,modpar)       Model Results for the scenarios
+ExtModeL_Stat(tot_vol,f2,modpar)             Extreme Points Model Results for the scenarios
+ModelResults(tot_vol,case,modpar)            Model Results for the scenarios
 
 *MinVal(tot_vol,f)                      Extracting the Minimum objectives values
 *MaxVal(tot_vol,f)                      Extracting the Maximum objectives values
@@ -81,11 +82,11 @@ Duration(p)                           Duration of period (hours)
 Vol_monthlyrelease(tot_vol)           Different Total volumes of water to be released in the month i.e. June2018 in presented case (acre-ft)/V1 700000,V2 793857.12,V3 900000,V4 1000000,V5 1100000/
 TotMonth_volume                       To represent total monthly volume (acre-ft)
 
-*Levels(f,tot_vol,Scen)                Selected objective function levels
-
-*MinRelease                           Minimum release value of the hydrograph (Threshold value)
+Levels(case)                          Selected objective function levels with all equations /case1 10,case2 20/
+FLevel(f)                              Selected constrainted objective function value
 
 *observed_release(d,p)              observed release at may 2018 averaged over two timesteps (cfs)
+
 ;
 
 
@@ -98,10 +99,12 @@ Duration("pHigh")= 16;
 *===================================================
 * Read data from Excel
 *===================================================
-$CALL GDXXRW.EXE input=June2018.xls output=newmetric_analysis.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
-*$CALL GDXXRW.EXE input=June2018.xls output=V3_check.gdx par=observed_release rng=V3_Simulation!A1:C31  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
+$CALL GDXXRW.EXE input=June2018.xls output=constraint.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
+*$CALL GDXXRW.EXE input=June2018.xls output=V1_check.gdx par=observed_release rng=V1_Simulation!A1:C31  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
 *Write the input Data into a GDX file
-$GDXIN newmetric_analysis.gdx
+$GDXIN constraint.gdx
+*$GDXIN V1_check.gdx
+
 
 * parameters and input data from the GDX file into the model
 $LOAD d
@@ -120,8 +123,8 @@ $GDXIN
 Display d,inflow, initstorage, maxstorage, minstorage, maxRel, minRel, evap, p, Duration;
 *===============================================
 SCALAR
-conver                        conversion factor from cfs to ac-ft per day /1.98348/
-factor_foracftperHr           conversion factor from cfs to ac-ft per hour (0.0014*60)/0.084/
+conver                        conversion factor from cfs to ac-ft per day /1.983/
+factor_foracftperHr           conversion factor from cfs to ac-ft per hour (0.0014*60)/0.083/
 Numdays                       Number of days in month/30/
 Num_of_timesteps              Total Number of timesteps used /60/
 Daily_Ramprate                Allowable daily ramp rate (cfs)/8000/
@@ -138,7 +141,7 @@ release(d,p)                  reservoir release on any day d in any period p (cf
 *Energyrate_vari(d,p)          Rate of hydropower with respect to day and period of day ($ per MWH)
 Energy_Gen(d,p)               Hydropower Generated at a each time step (MWH)
 ReleaseVol(d,p)               volume of water released per time step(acre-ft)
-QMin                           Minimum release value of the hydrograph (Threshold value)
+QMin                          Minimum release value of the hydrograph (Threshold value)
 
 ;
 
@@ -186,13 +189,14 @@ EQ7b_Rampup_ratenext(d,p)$(ord(d) lt Numdays)..     release(d,"pHigh")-release(d
 EQ7c_Rampdown_ratenext(d,p)$(ord(d) lt Numdays)..   release(d,"pHigh")-release(d+1,"pLow")=l= Daily_Ramprate;
 EQ7d_FlowVolume(d,p)..       ReleaseVol(d,p) =e= release(d,p)*factor_foracftperHr*Duration(p);
 EQ8__Monthtlyrel..           sum((d,p),ReleaseVol(d,p))=e= TotMonth_volume;
-*EQ8__Monthtlyrel..           sum(d,sum(p,ReleaseVol(d,p)))=e= 711477.0432;
+
 *EQ8_  constraining the overall monthly released volume..
 
 
 EQ9_Threshold..                                QMin=e=smin((d,p),release(d,p));
 * EQ9_  finds the minimimum release value from the hydrograph.
 EQ9a_Qminconstraint(d,p)..                      QMin=l= release(d,p);
+
 
 
 *EQ10_function(f)$(ord(f) eq 1)..             ObjectiveVal(f)=e= sum((d,p),(-1/2)*(arctan(((release(d,p)-11763.84)-0.65)/0.001)/(pi/2)+1)+1);
@@ -214,7 +218,7 @@ EQ13_EnergyRevenue(f)$(ord(f) eq 2)..         ObjectiveVal(f)=e= sum((d,p),Energ
 
 EQ15_CombinedObjectives..                     CombineObjective =e= sum(f,FtoUse(f)*ObjectiveVal(f));
 
-*EQ14_ReleaseSim(d,p)..                     release(d,p)=e=observed_release(d,p);
+*EQ14_ReleaseSim(d,p)..                       release(d,p)=e=observed_release(d,p);
 ***************************************************
 ******
 ***************************************************
@@ -222,7 +226,7 @@ EQ15_CombinedObjectives..                     CombineObjective =e= sum(f,FtoUse(
 *Initial values just to run simulation (Random Pick)... One might need to pick other numbers if he/she founds that some of the runs are locally infeasbile on their intial values.
 
 
-release.L(d,p) = 10000;
+release.L(d,p) = 8000;
 *MinRelease.L = 10000;
 
 
@@ -288,17 +292,17 @@ $offtext
 MODEL ExtremePt Find extreme points by using nlp/ALL/ ;
 
 loop((tot_vol,f2),
+*loop(f2,
 *Ignore all the objectives
  FtoUse(f) = 0;
 *  Only consider the current objective
    FtoUse(f2) = 1;
    Display FtoUse;
 
-option  reslim=20000;
+option reslim=20000;
 option Threads=6;
 option optcr=0.001;
 option NLP= CONOPT;
-
 
    TotMonth_volume= Vol_monthlyrelease(tot_vol);
    SOLVE ExtremePt USING dnlp maximize CombineObjective;
@@ -306,16 +310,29 @@ option NLP= CONOPT;
    XStore(f2,d,tot_vol,p) = Energy_Gen.L(d,p);
    RStore(f2,d,tot_vol,p)=release.L(d,p);
    Sstore(f2,d,tot_vol)=storage.L(d);
-   ExtModeL_Stat(tot_vol,f2,"SolStat") = ExtremePt.solvestat;
-   ExtModeL_Stat(tot_vol,f2,"ModStat") = ExtremePt.modelstat;
+   ExtModeL_Stat(tot_vol,f2,"SolStat")= ExtremePt.solvestat;
+   ExtModeL_Stat(tot_vol,f2,"ModStat")= ExtremePt.modelstat;
    DISPLAY FStore,XStore,RStore,Sstore;
    option clear=CombineObjective,clear=ObjectiveVal,clear=release;
+$ontext
+
+   TotMonth_volume= Vol_monthlyrelease("V1");
+   SOLVE ExtremePt USING dnlp maximize CombineObjective;
+   FStore(f2,f,"V1")= ObjectiveVal.L(f)+EPS;
+   XStore(f2,d,"V1",p) = Energy_Gen.L(d,p);
+   RStore(f2,d,"V1",p)=release.L(d,p);
+   Sstore(f2,d,"V1")=storage.L(d);
+   ExtModeL_Stat("V1",f2,"SolStat") = ExtremePt.solvestat;
+   ExtModeL_Stat("V1",f2,"ModStat") = ExtremePt.modelstat;
+   DISPLAY FStore,XStore,RStore,Sstore;
+   option clear=CombineObjective,clear=ObjectiveVal,clear=release;
+$offtext
 );
 
 
 
 $ontext
-MODEL ExtremePt1 Find extreme points by using  DNLP/ALL/ ;
+MODEL ExtremePt1 Find extreme points by using NLP/ALL/ ;
 *Ignore all the objectives
    FtoUse(f) = 0;
 *  Only consider the current objective
@@ -335,7 +352,7 @@ SOLVE ExtremePt1 USING dnlp MAXIMIZING CombineObjective;
    ExtModeL_Stat(tot_vol,"BugIndex","ModStat") = ExtremePt1.modelstat;
 
 
-MODEL ExtremePt2 Find extreme points by using  DNLP/ALL/ ;
+MODEL ExtremePt2 Find extreme points by using  NLP/ALL/ ;
 *Ignore all the objectives
    FtoUse(f) = 0;
 *  Only consider the current objective
@@ -405,7 +422,7 @@ EQ13_EnergyRevenue_m(f,tot_vol)= EQ13_EnergyRevenue.m(f)$(ord(f) eq 2);
 *EQ14_ReleaseSim_m(d,p,tot_vol)= EQ14_ReleaseSim.m(d,p)$Use_Sim(d,p);
 EQ15_CombinedObjectives_m(tot_vol) = EQ15_CombinedObjectives.m ;
 );
-*$offtext
+$offtext
 
 
 
@@ -415,30 +432,39 @@ EQ15_CombinedObjectives_m(tot_vol) = EQ15_CombinedObjectives.m ;
 
 *This section constrains one objective to a certain defined level
 EQUATION
-ObjAsCon(f)          Objective function as constraint f(x) = FLevel;
+ObjAsCon(f)          Objective function as constraint f(x) = FLevel(f);
 
 *The objective as constraint is greater or less or equal than the level set for that objective
 ObjAsCon(f)$(1 - FtoUse(f))..        ObjectiveVal(f)=e=FLevel(f);
 
-MODEL ObjAsConstraint Single-objective model with other objectives constrained /ALL/;
+MODEL ObjAsConstraint Single-objective model with other objective constrained /ALL/;
 
 *constraining bugindex and maximizing hydropower
-loop((Scen,tot_vol),
+loop((tot_vol,case),
      FtoUse(f) = 0;
      FtoUse("Hydro") =1;
-     TotMonth_volume=Vol_monthlyrelease(tot_vol);
 *Set a level for the Bugindex objective
-     FLevel(f)=Levels(f,tot_vol,Scen);
+*     FLevel(f)=Levels(f,tot_vol,Scen);
+option reslim=20000;
+option Threads=6;
+option optcr=0.001;
+option DNLP= CONOPT;
 
-     SOLVE ObjAsConstraint USING nlp MAXIMIZE CombineObjective;
-     Scen_store(f,Scen,tot_vol)= ObjectiveVal.L(f);
-     ReleaseSave(tot_vol,Scen,d,p)= release.L(d,p);
-     EnergyGen_save(tot_vol,Scen,d,p)= Energy_Gen.L(d,p);
-     Storage_Save(tot_vol,Scen,d)=storage.L(d);
-     ModelResults(tot_vol,Scen,"SolStat") = ObjAsConstraint.solvestat;
-     ModelResults(tot_vol,Scen,"ModStat") = ObjAsConstraint.modelstat;
-     DISPLAY Scen_store, ReleaseSave,EnergyGen_save,Storage_Save;
+     TotMonth_volume=Vol_monthlyrelease(tot_vol);
+     FLevel(f)=Levels(case);
 
+     SOLVE ObjAsConstraint USING dnlp MAXIMIZE CombineObjective;
+     Scen_store(f,case,tot_vol)= ObjectiveVal.L(f);
+     ReleaseSave(tot_vol,case,d,p)= release.L(d,p);
+     EnergyGen_save(tot_vol,case,d,p)= Energy_Gen.L(d,p);
+     Storage_Save(tot_vol,case,d)=storage.L(d);
+     ModelResults(tot_vol,case,"SolStat") = ObjAsConstraint.solvestat;
+     ModelResults(tot_vol,case,"ModStat") = ObjAsConstraint.modelstat;
+     DISPLAY Scen_store,ReleaseSave,EnergyGen_save,Storage_Save;
+     option clear=CombineObjective,clear=ObjectiveVal,clear=release;
+
+
+$ontext
 *  Merge All objectives results in one parameter.
      Obj_Save(f,tot_vol,"sc1")= Scen_store(f,"sc1",tot_vol);
      Obj_Save(f,tot_vol,"sc2")= Scen_store(f,"sc2",tot_vol);
@@ -450,11 +476,14 @@ loop((Scen,tot_vol),
      Obj_Save("BugIndex",tot_vol,"Max")=Extreme_Points("BugIndex",tot_vol,"Max");
      Obj_Save("Hydro",tot_vol,"Min")= Extreme_Points("Hydro",tot_vol,"Min");
      Obj_Save("Hydro",tot_vol,"Max")= Extreme_Points("Hydro",tot_vol,"Max");
-);
 $offtext
+);
+
 
 *------------------------------------------------------------------------------*
 * Dump all input data and results to a GAMS gdx file
-Execute_Unload "newmetric_analysis.gdx";
+Execute_Unload "constraint.gdx";
+*Execute_Unload "V1_check.gdx";
 * Dump the gdx file to an Excel workbook
-Execute "gdx2xls newmetric_analysis.gdx"
+Execute "gdx2xls constraint.gdx"
+

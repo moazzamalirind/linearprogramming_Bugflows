@@ -62,7 +62,7 @@ if (!require(tidyr)) {
 igdx("") 
 
 ###Set working directory (as per your Favorable location to a  1.0MAFess easily)
-setwd("E:\\Project_Bugflow\\June18_newObjective\\June2018_newobj_Analysis\\results")
+setwd("E:\\Project_Bugflow\\June18_newObjective\\June2018_newobj_troubleshooting\\results")
 
 
 # Load igdx directory from your computer 
@@ -539,3 +539,4 @@ ggplot(data = Ext_Rel2, aes(x = new, y = Freq)) +
   theme(plot.title = element_text(size=18,hjust =0.5, vjust = 2,face="bold")) 
 dev.copy(png,"Extreme_Hydro_Release_V5.png", width =2000, height = 1000,res=150)
 dev.off()
+

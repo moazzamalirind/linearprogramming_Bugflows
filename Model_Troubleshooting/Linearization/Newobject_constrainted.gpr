@@ -513,44 +513,99 @@ Order=
 Decim=7
 PlaneRownr=-1
 
-[SOLVERS]
-DNLP=LGO
-LP=LGO
-NLP=LGO
-QCP=LGO
-RMINLP=LGO
-RMIP=LGO
-RMIQCP=LGO
-CNS=SCIP
-MINLP=SCIP
-MIP=SCIP
-MIQCP=SCIP
-
 [RP:JUNE_2018]
 1=
 
 [RP:JUNE2018_OBSERVEDFLOW]
 1=
 
+[GDXDISP: case Set 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: ModelResults Par 3]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: Levels Par 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: ObjAsCon Equ 1]
+PlaneDim=0
+RowDim=1
+Squeeze=1
+Order=1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: ReleaseSave Par 4]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=3,4,1,2
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: Scen_store Par 3]
+PlaneDim=0
+RowDim=2
+Squeeze=1
+Order=2,3,1
+Decim=7
+PlaneRownr=-1
+
+[GDXDISP: Storage_Save Par 3]
+PlaneDim=0
+RowDim=3
+Squeeze=1
+Order=1,2,3
+Decim=7
+PlaneRownr=-1
+
+[SOLVERS]
+CNS=BARON
+DNLP=BARON
+LP=BARON
+MINLP=BARON
+MIP=BARON
+MIQCP=BARON
+NLP=BARON
+QCP=BARON
+RMINLP=BARON
+RMIP=BARON
+RMIQCP=BARON
+
 [RP:JUNE_NEWOBJANALYSIS]
 1=
 
 [MRUFILES]
-1=E:\Project_Bugflow\Montly_Models\June_2018\June2018_observedflow.gms
-2=E:\Project_Bugflow\Montly_Models\June_2018\June_2018.gms
-3=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\newmetric_analysis.gdx
-4=E:\Project_Bugflow\Montly_Models\June_2018\7day_try_dailyissue\June_2018 -2periods_30days.gms
-5=E:\Project_Bugflow\Montly_Models\June_2018\7day_try_dailyissue\Junel8_30cv.gdx
+1=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\constrainted\constraint.gdx
+2=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\June_newobjanalysis.lst
+3=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V3_check.gdx
+4=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V2_check.gdx
+5=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V1_check.gdx
+6=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\newmetric_analysis.gdx
+7=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.lst
+8=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
-FILE1=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.lst
-FILE2=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\newmetric_analysis.gdx
-FILE3=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V1_check.gdx
-FILE4=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V2_check.gdx
-FILE5=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\V3_check.gdx
-FILE6=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\June_newobjanalysis.lst
-FILE7=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+FILE0=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\constrainted\June_newobjanalysis.gms
+FILE1=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\constrainted\June_newobjanalysis.lst
+FILE2=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\Linearization\June_newobjanalysis.lst
+FILE3=E:\Project_Bugflow\June18_newObjective\June2018_newobj_troubleshooting\constrainted\June_newobjanalysis.gms
 MAXIM=0
 TOP=4
 LEFT=-3

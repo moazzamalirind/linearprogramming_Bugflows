@@ -1,466 +1,103 @@
 
---- Job June_newobjanalysis.gms Start 06/02/20 02:27:28 24.2.3 r46072 WEX-WEI x86_64/MS Windows
+--- Job June_newobjanalysis.gms Start 06/10/20 16:48:32 24.2.3 r46072 WEX-WEI x86_64/MS Windows
 GAMS 24.2.3   Copyright (C) 1987-2014 GAMS Development. All rights reserved
 Licensee: Utah Water Research Laboratory (5 user)        G140130:1517AV-GEN
           Utah State University                                      DC7087
           License for teaching and research at degree granting institutions
 --- Starting compilation
---- June_newobjanalysis.gms(101) 3 Mb
---- call GDXXRW.EXE input=June2018.xls output=newmetric_analysis.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  pa
+--- June_newobjanalysis.gms(102) 3 Mb
+--- call GDXXRW.EXE input=June2018.xls output=constraint.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel
 
 GDXXRW           24.2.3 r46072 Released May 22, 2014 VS8 x86/MS Windows       
 Input file : C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June2018.xls
-Output file: C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\newmetric_analysis.gdx
-Total time = 16578 Ms
---- June_newobjanalysis.gms(104) 3 Mb
---- GDXin=C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\newmetric_analysis.gdx
---- June_newobjanalysis.gms(460) 3 Mb
---- Starting execution: elapsed 0:00:16.746
---- June_newobjanalysis.gms(290) 4 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 6 Mb
---- LOOPS tot_vol = V1
----       f2 = BugIndex
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 4 Mb
---- Executing CONOPT: elapsed 0:00:16.802
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.8357113107E+08 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        6.1211310724E+06 (After pre-processing)
-      2   0        1.8860473288E+02 (After scaling)
-      5   0    31  1.4631173417E+02               0.0E+00      T  T
-     10   0    31  1.4631173417E+02               0.0E+00      T  T
-     15   0    31  1.4631173417E+02               0.0E+00      T  T
-     20   0    31  1.4631173417E+02               0.0E+00      T  T
-     25   0    31  1.4631173417E+02               0.0E+00      T  T
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-     30   0    31  1.4631173417E+02               0.0E+00      T  T
-     35   0    31  1.4631173417E+02               0.0E+00      T  T
-     40   0    31  1.4631173417E+02               0.0E+00      T  T
-     45   0    31  1.4631173417E+02               0.0E+00      T  T
-     50   0    31  1.4631173417E+02               0.0E+00      T  T
-     55   0    31  1.4631173417E+02               0.0E+00      T  T
-     60   0    36  1.4631173417E+02               0.0E+00      T  T
-     64   1    36  2.0145642664E+01 2.0E+03     4 1.0E+00    3 T  T
-     65   1    28  1.7167879186E+01 1.0E+03     9 1.0E+00    8 T  T
-     66   1    15  1.1329260562E+01 1.0E+03    13 1.0E+00   13 T  T
- 
- ** Feasible solution. Value of objective =    15.0000000000
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-     67   3        1.5000000000E+01 0.0E+00    34
- 
- ** Optimal solution. Reduced gradient less than tolerance.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:17.085
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V1
----       f2 = Hydro
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:17.155
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        1.8199825723E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        3.1175933333E+05 (After pre-processing)
-      2   0        2.7291053185E+01 (After scaling)
-      5   0     0  2.5933570747E+01               0.0E+00      T  T
-     10   0     0  2.5933570747E+01               0.0E+00      T  T
-     15   0     0  2.5933570747E+01               0.0E+00      T  T
-     20   0     0  2.5933570747E+01               0.0E+00      T  T
-     25   0     0  2.5933570747E+01               0.0E+00      T  T
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-     30   0     0  2.5933570747E+01               0.0E+00      T  T
-     35   0     0  2.5933570747E+01               0.0E+00      T  T
-     40   0     0  2.5933570747E+01               0.0E+00      T  T
- 
- ** Feasible solution. Value of objective =    15433586.0933
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-     44   3        1.6328752493E+07 3.1E+04    15 1.0E+00    1 T  T
-     45   3        1.6573679967E+07 2.6E+06    16 1.0E+00    3 T  T
-     46   3        1.6573679967E+07 0.0E+00    16
- 
- ** Optimal solution. Reduced gradient less than tolerance.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:17.443
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V2
----       f2 = BugIndex
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:17.517
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        1.8645150420E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        4.0561645333E+05 (After pre-processing)
-      2   0        2.7644480489E+01 (After scaling)
-      5   0     0  2.6685715843E+01               0.0E+00      T  T
- 
- ** Feasible solution. Value of objective =    29.0000000000
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-      7   3        2.9000000000E+01 0.0E+00     0 0.0E+00    0 F  T
-      8   3        2.9000000000E+01 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:17.802
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V2
----       f2 = Hydro
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:17.844
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        1.9909762370E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        7.4896404867E+05 (After pre-processing)
-      2   0        1.0516126567E+02 (After scaling)
-      5   0     2  1.2721550602E+00               0.0E+00      T  T
- 
- ** Feasible solution. Value of objective =    17375588.8009
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-      7   3        1.8270755201E+07 6.1E+04    15 1.0E+00    1 T  T
-      8   3        1.9155981524E+07 1.5E+06    43 1.0E+00    2 T  T
-      9   3        1.9155981524E+07 0.0E+00     0
- 
- ** Optimal solution. Reduced gradient less than tolerance.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:18.139
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V3
----       f2 = BugIndex
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:18.186
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.1375104286E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        5.5326876200E+05 (After pre-processing)
-      2   0        3.5861304260E+01 (After scaling)
-      5   0     0  3.4934783827E+01               0.0E+00      T  T
-     10   0     0  3.4934783827E+01               0.0E+00      T  T
-     15   0     0  3.4934783827E+01               0.0E+00      T  T
-     20   0     0  3.4934783827E+01               0.0E+00      T  T
- 
- ** Feasible solution. Value of objective =    29.0000000000
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-     23   3        2.9000000000E+01 0.0E+00     0 0.0E+00    0 F  T
-     24   3        2.9000000000E+01 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:18.522
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V3
----       f2 = Hydro
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:18.597
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.2501090697E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        1.0091053651E+06 (After pre-processing)
-      2   0        1.1332505735E+02 (After scaling)
-      5   0     3  2.5730978679E+00               1.4E-03      T  T
- 
- ** Feasible solution. Value of objective =    19766453.5714
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-      9   3        2.0721297731E+07 6.1E+04    16 1.0E+00    2 T  T
-     10   3        2.1556786371E+07 1.2E+05    26 1.0E+00    3 T  T
-     11   3        2.1556786371E+07 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:18.883
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V4
----       f2 = BugIndex
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:18.963
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.4017256848E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        7.9461647619E+05 (After pre-processing)
-      2   0        7.0348472959E+01 (After scaling)
-      5   0    46  7.0348472959E+01               0.0E+00      F  F
-     10   0    51  7.0348472959E+01               0.0E+00      F  F
-     15   0    56  7.0348472959E+01               0.0E+00      F  F
-     20   0    61  7.0348472959E+01               0.0E+00      F  F
-     25   0    66  7.0348472959E+01               0.0E+00      F  F
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-     30   0    71  7.0348472959E+01               0.0E+00      F  F
-     35   0    76  7.0348472959E+01               0.0E+00      F  F
-     40   0    81  7.0348472959E+01               0.0E+00      F  F
-     45   0    86  7.0348472959E+01               0.0E+00      F  F
-     50   0    91  7.0348472959E+01               0.0E+00      F  F
-     55   0    96  7.0348472959E+01               0.0E+00      F  F
-     60   0   101  7.0348472959E+01               0.0E+00      F  F
-     65   0   106  7.0348472959E+01               0.0E+00      F  F
-     70   0   111  7.0348472959E+01               0.0E+00      F  F
-     75   0   116  7.0348472959E+01               0.0E+00      F  F
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-     80   0   121  7.0348472959E+01               0.0E+00      F  F
-     85   0   126  7.0348472959E+01               0.0E+00      F  F
-     90   0   131  7.0348472959E+01               0.0E+00      F  F
-     95   0   136  7.0348472959E+01               0.0E+00      F  F
-    100   0   141  7.0348472959E+01               0.0E+00      F  F
-    105   0   146  7.0348472959E+01               0.0E+00      F  F
-    110   0   151  7.0348472959E+01               0.0E+00      F  F
-    115   0   156  7.0348472959E+01               0.0E+00      F  F
-    120   0   161  7.0348472959E+01               0.0E+00      F  F
-    125   1    61  3.7098929374E+01 5.7E+01   121 1.0E+00    2 T  T
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-    126   1    31  4.6618546181E-01 1.9E+01    61 1.0E+00    1 T  T
-    127   1     1  1.0742652541E-02 2.0E+01    31 1.0E+00    1 T  T
- 
- ** Feasible solution. Value of objective =    30.0000000000
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-    128   3        3.0000000000E+01 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:19.264
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V4
----       f2 = Hydro
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:19.303
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.4893615979E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        1.2650357884E+06 (After pre-processing)
-      2   0        1.1093458840E+02 (After scaling)
- 
- ** Feasible solution. Value of objective =    21962726.1905
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-      4   3        2.2917570350E+07 1.2E+05    16 1.0E+00    2 T  T
-      5   3        2.3693381230E+07 6.1E+04    13 1.0E+00    2 T  T
-      6   3        2.3693381230E+07 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:19.506
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V5
----       f2 = BugIndex
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:19.552
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.6409782130E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        1.0505468995E+06 (After pre-processing)
-      2   0        1.0865236964E+02 (After scaling)
-      5   0    35  1.0865236964E+02               0.0E+00      F  F
-     10   0    40  1.0865236964E+02               0.0E+00      F  F
-     15   1     9  1.1660473870E+00 1.5E+01    34 1.0E+00    2 T  T
- 
- ** Feasible solution. Value of objective =    20.0000000000
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-     16   3        2.0000000000E+01 0.0E+00    19
- 
- ** Optimal solution. Reduced gradient less than tolerance.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:19.797
---- June_newobjanalysis.gms(290) 3 Mb
---- Generating DNLP model ExtremePt
---- June_newobjanalysis.gms(304) 5 Mb
---- LOOPS tot_vol = V5
----       f2 = Hydro
----   691 rows  214 columns  1,437 non-zeroes
----   1,328 nl-code  121 nl-non-zeroes
---- June_newobjanalysis.gms(304) 3 Mb
---- Executing CONOPT: elapsed 0:00:19.860
-CONOPT 3         24.2.3 r46072 Released May 22, 2014 WEI x86_64/MS Windows    
- 
- 
-    C O N O P T 3   version 3.15P
-    Copyright (C)   ARKI Consulting and Development A/S
-                    Bagsvaerdvej 246 A
-                    DK-2880 Bagsvaerd, Denmark
- 
- 
-   Iter Phase Ninf   Infeasibility   RGmax    NSB   Step InItr MX OK
-      0   0        2.7301404714E+07 (Input point)
-                                Pre-triangular equations:        0
-                                Post-triangular equations:       3
-      1   0        1.5013855824E+06 (After pre-processing)
-      2   0        1.3138596855E+02 (After scaling)
- 
- ** Feasible solution. Value of objective =    24099321.0495
- 
-   Iter Phase Ninf     Objective     RGmax    NSB   Step InItr MX OK
-      5   3        2.4994487450E+07 1.2E+05    15 1.0E+00    1 T  T
-      6   3        2.5889653850E+07 1.2E+05    37 1.0E+00    2 T  T
-      7   3        2.5949331610E+07 6.1E+04     1 1.0E+00    1 T  T
-      8   3        2.5949331610E+07 0.0E+00     0
- 
- ** Optimal solution. There are no superbasic variables.
- 
---- Restarting execution
---- June_newobjanalysis.gms(304) 2 Mb
---- Reading solution for model ExtremePt
---- Executing after solve: elapsed 0:00:20.125
---- June_newobjanalysis.gms(460) 3 Mb
-GDX2XLS          24.2.3 r46072 Released May 22, 2014 VS8 x86/MS Windows       
-gdx2xls error: OLE error 800AC472
-*** Status: Normal completion
---- Job June_newobjanalysis.gms Stop 06/02/20 02:27:50 elapsed 0:00:22.267
+Output file: C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\constraint.gdx
+**** Problem opening Excel: Call was rejected by callee
+Total time = 3828 Ms
+--- June_newobjanalysis.gms(105) 3 Mb
+*** GDXIN failed C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\constraint.gdx
+*** Msg: No such file or directory
+--- June_newobjanalysis.gms(105) 3 Mb 1 Error
+*** Error 510 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Unable to open gdx file for $GDXIN
+--- June_newobjanalysis.gms(110) 3 Mb 2 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(111) 3 Mb 3 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(112) 3 Mb 4 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(113) 3 Mb 5 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(114) 3 Mb 6 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(115) 3 Mb 7 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(116) 3 Mb 8 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(117) 3 Mb 9 Errors
+*** Error 502 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    GDXIN  file not open - ignore rest of line
+--- June_newobjanalysis.gms(123) 3 Mb 17 Errors
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- June_newobjanalysis.gms(308) 3 Mb 18 Errors
+*** Error 257 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Solve statement not checked because of previous errors
+--- June_newobjanalysis.gms(309) 3 Mb 19 Errors
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- June_newobjanalysis.gms(310) 3 Mb 20 Errors
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- June_newobjanalysis.gms(312) 3 Mb 21 Errors
+*** Error 141 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Symbol neither initialized nor assigned
+       A wild shot: You may have spurious commas in the explanatory
+       text of a declaration. Check symbol reference list.
+--- June_newobjanalysis.gms(456) 3 Mb 22 Errors
+*** Error 257 in C:\Users\moazz\OneDrive\Documents\GitHub\-Bug-flow-\Model_Troubleshooting\June2018_newobj_troubleshooting\June_newobjanalysis.gms
+    Solve statement not checked because of previous errors
+--- June_newobjanalysis.gms(489) 3 Mb 22 Errors
+*** Status: Compilation error(s)
+--- Job June_newobjanalysis.gms Stop 06/10/20 16:48:37 elapsed 0:00:04.093
+Exit code = 2
