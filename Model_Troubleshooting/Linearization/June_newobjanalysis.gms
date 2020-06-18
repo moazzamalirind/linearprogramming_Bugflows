@@ -85,7 +85,7 @@ Duration("pHigh")= 16;
 * Read data from Excel
 *===================================================
 $CALL GDXXRW.EXE input=June2018.xls output=Linear_June18.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
-*$CALL GDXXRW.EXE input=June2018.xls output=V1_check.gdx par=observed_release rng=V1_Simulation!A1:C31  set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
+
 *Write the input Data into a GDX file
 $GDXIN Linear_June18.gdx
 *$GDXIN V1_check.gdx
@@ -142,7 +142,7 @@ EQ3__maxstor                 res storage max (acre-ft)
 EQ4__MaxR(p)                 Max Release (cfs)
 EQ5__MinR(p)                 Min Release  (cfs)
 EQ6_Rampup_rate(p)          Constraining the daily ramp up rate between the timesteps(cfs) ..(with in same day)
-EQ7_Rampdown_rate(p)       Constraining the daily ramp down rate between the timesteps(cfs) ..(with in same day)
+*EQ7_Rampdown_rate(p)       Constraining the daily ramp down rate between the timesteps(cfs) ..(with in same day)
 EQ8__Monthtlyrel             Constraining Total monthly volume of water released in "June" as per WAPA information(acre-ft)
 EQ9_Threshold                Minimun release value within the hydrograph(cfs)
 EQ10_EnergyGen(p)           Amount of energy generated in each time step (MWH)
@@ -166,12 +166,13 @@ EQ3__maxstor..              storage =l= maxstorage;
 EQ4__MaxR(p)..              release(p)=l= maxRel;
 EQ5__MinR(p)..              release(p)=g= minRel;
 EQ6_Rampup_rate(p)..           release("pHigh")-release("pLow")=l=Daily_Ramprate;
-EQ7_Rampdown_rate(p)..        release("pHigh")-release("pLow")=g= -1*Daily_Ramprate ;
+*EQ7_Rampdown_rate(p)..        release("pHigh")-release("pLow")=g= -1*Daily_Ramprate ;
 
 *EQ8_  constraining the overall monthly released volume..
 EQ8__Monthtlyrel..                       TotMonth_volume=e= steady_Outflow + unsteady_Outflow;
 
-EQ9_Threshold..                           QMin=l=smin(p,release(p));
+EQ9_Threshold..                           QMin=e=release("pLow");
+*EQ9_Threshold..                           QMin=l=smin(p,release(p));
 * EQ9_  finds the minimimum release value from the hydrograph.
 
 EQ10_EnergyGen(p)..                         Energy_Gen(p)=e= release(p)*Duration(p)*0.03715;
@@ -181,8 +182,8 @@ EQ10_EnergyGen(p)..                         Energy_Gen(p)=e= release(p)*Duration
 EQ11_EnergyGen_Max(p)..                    Energy_Gen(p)=l= 1320*Duration(p);
 *Maximum Energy Generation capacity of GCD (MWH).. Source https://www.usbr.gov/uc/rm/crsp/gc/
 
-EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,Energy_Gen(p)*EnergyRate(p))*(Numdays-Steady_Days)+ (QMin*sum(p,Duration(p))*0.03715)*Steady_Days;
-**EQ12_HyrdroPower objective
+EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,Energy_Gen(p)*EnergyRate(p))*(Numdays-Steady_Days)+ (sum(p,QMin*Duration(p)*0.03715*EnergyRate(p)))*Steady_Days;
+**EQ12_HyrdroPower objective                                                                                                   Energy generated from the period of low steady flow multiply by the energy rate and summed over the day (2 periods) in a day and multiply by the number of steady low flow days.
 
 
 ***************************************************
@@ -202,7 +203,8 @@ option reslim=20000;
 option Threads=6;
 option optcr=0.001;
 option LP= BARON;
-release.L(p) = 8000;
+release.L(p) = 10000;
+QMin.L= 8000;
    TotMonth_volume= Vol_monthlyrelease(tot_vol);
    Steady_Days = Num_steady(case);
    SOLVE Linearization USING LP maximize ObjectiveVal;
