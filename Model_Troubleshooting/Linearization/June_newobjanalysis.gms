@@ -26,7 +26,7 @@ Set
           d                             days in June
           p                             time period during a day /pLow "Low flow period",pHigh "High flow period"/
           tot_vol                       Total montly release volume (acre-ft)/V1*V5/
-          modpar                        Saving model parameter for each of the solutions for each of the scenario/ ModStat "Model Statistics", SolStat "solve Statistics"/
+          modpar                        Saving model parameter for each of the solutions for each of the scenario/ ModStat "Model Statistics", SolStat "Solve Statistics"/
           case                          Defining constrainted cases for number of low flow steady days /case1,case2,case3,case4/
 ;
 
@@ -38,7 +38,7 @@ Set
 PARAMETERS
 
 
-FStore(tot_vol,case)                          Storing objective function values over different scenarios of f
+FStore(tot_vol,case)                          Storing objective function values over different scenarios
 
 XStore_steady(tot_vol,case)                   Store Energy Generated during steady flow days over different cases (MWH)
 XStore_unsteady(tot_vol,case)                 Store Energy Generated during unsteady flow days over different cases (MWH)
@@ -70,7 +70,7 @@ Steady_Days                           To represent the number of steady low flow
 Num_steady(case)                      Number of steady low flow days/case1 0,case2 10, case3 20, case4 30/
 
 steady_Outflow                        Volume of water released in the steay low flow days (acre-ft)
-unsteady_Outflow                       Volume of water released in the unsteay low flow days (acre-ft)
+unsteady_Outflow                      Volume of water released in the unsteay low flow days (acre-ft)
 
 ;
 
@@ -100,7 +100,7 @@ $LOAD minstorage
 $LOAD maxRel
 $LOAD minRel
 $LOAD evap
-*$LOAD observed_release
+
 
 *Close the GDX file
 $GDXIN
@@ -117,13 +117,11 @@ Daily_Ramprate                Allowable daily ramp rate (cfs)/8000/
 
 VARIABLES
 
-ObjectiveVal                  Objective functions calculation
-
-Positive Variables
+ObjectiveVal                   Objective functions calculation
 storage                        reservoir storage on any day d (acre-ft)
 release(p)                     reservoir release on any unsteady day in any period p (cfs)
 Energy_Gen(p)                  Hydropower Generated at a each time step (MWH)
-QMin                           Minimum release value of the hydrograph (Threshold value)
+Steady_Release                 Minimum release value of the hydrograph
 
 ;
 
@@ -141,13 +139,13 @@ EQ2__reqpowerstorage         The minimum storage equivalent to reservoir level r
 EQ3__maxstor                 res storage max (acre-ft)
 EQ4__MaxR(p)                 Max Release (cfs)
 EQ5__MinR(p)                 Min Release  (cfs)
-EQ6_Rampup_rate(p)          Constraining the daily ramp up rate between the timesteps(cfs) ..(with in same day)
-*EQ7_Rampdown_rate(p)       Constraining the daily ramp down rate between the timesteps(cfs) ..(with in same day)
+EQ6_Rampup_rate(p)           Constraining the daily ramp up rate between the timesteps(cfs)with in same day
+*EQ7_Rampdown_rate(p)        Constraining the daily ramp down rate between the timesteps(cfs) with in same day
 EQ8__Monthtlyrel             Constraining Total monthly volume of water released in "June" as per WAPA information(acre-ft)
-EQ9_Threshold                Minimun release value within the hydrograph(cfs)
-EQ10_EnergyGen(p)           Amount of energy generated in each time step (MWH)
-EQ11_EnergyGen_Max(p)      Maximum Energy Generation Limit of the Glen Caynon Dam(MW)for Low Period
-EQ12_EnergyRevenue          Total monthly Hydropower Revenue generated ($)
+EQ9_Steadyflow               Minimun release value within the hydrograph(cfs)
+EQ10_EnergyGen(p)            Amount of energy generated in each time step (MWH)
+EQ11_EnergyGen_Max(p)        Maximum Energy Generation Limit of the Glen Caynon Dam(MW)for Low Period
+EQ12_EnergyRevenue           Total monthly Hydropower Revenue generated ($)
 
 ;
 
@@ -155,7 +153,7 @@ EQ12_EnergyRevenue          Total monthly Hydropower Revenue generated ($)
 
 
 EQa_Inflow..                 Avail_Water =e= initstorage + sum(d,inflow(d)*conver);
-EQb_SteadyOutflow..          steady_Outflow =e= Qmin*factor_foracftperHr* sum(p,Duration(p))*Steady_Days;
+EQb_SteadyOutflow..          steady_Outflow =e= Steady_Release*conver*Steady_Days;
 EQc_UnSteadyOutflow..        unsteady_Outflow =e= sum(p,release(p)*factor_foracftperHr* Duration(p))*(Numdays-Steady_Days);
 
 
@@ -169,10 +167,10 @@ EQ6_Rampup_rate(p)..           release("pHigh")-release("pLow")=l=Daily_Ramprate
 *EQ7_Rampdown_rate(p)..        release("pHigh")-release("pLow")=g= -1*Daily_Ramprate ;
 
 *EQ8_  constraining the overall monthly released volume..
-EQ8__Monthtlyrel..                       TotMonth_volume=e= steady_Outflow + unsteady_Outflow;
+EQ8__Monthtlyrel..                         TotMonth_volume=e= steady_Outflow + unsteady_Outflow;
 
-EQ9_Threshold..                           QMin=e=release("pLow");
-*EQ9_Threshold..                           QMin=l=smin(p,release(p));
+EQ9_Steadyflow..                           Steady_Release=e=release("pLow");
+*EQ9_Threshold..                           Steady_Release=l=smin(p,release(p));
 * EQ9_  finds the minimimum release value from the hydrograph.
 
 EQ10_EnergyGen(p)..                         Energy_Gen(p)=e= release(p)*Duration(p)*0.03715;
@@ -182,7 +180,7 @@ EQ10_EnergyGen(p)..                         Energy_Gen(p)=e= release(p)*Duration
 EQ11_EnergyGen_Max(p)..                    Energy_Gen(p)=l= 1320*Duration(p);
 *Maximum Energy Generation capacity of GCD (MWH).. Source https://www.usbr.gov/uc/rm/crsp/gc/
 
-EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,Energy_Gen(p)*EnergyRate(p))*(Numdays-Steady_Days)+ (sum(p,QMin*Duration(p)*0.03715*EnergyRate(p)))*Steady_Days;
+EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,Energy_Gen(p)*EnergyRate(p))*(Numdays-Steady_Days)+ (sum(p,Steady_Release*Duration(p)*0.03715*EnergyRate(p)))*Steady_Days;
 **EQ12_HyrdroPower objective                                                                                                   Energy generated from the period of low steady flow multiply by the energy rate and summed over the day (2 periods) in a day and multiply by the number of steady low flow days.
 
 
@@ -204,25 +202,25 @@ option Threads=6;
 option optcr=0.001;
 option LP= BARON;
 release.L(p) = 10000;
-QMin.L= 8000;
-   TotMonth_volume= Vol_monthlyrelease(tot_vol);
+Steady_Release.L= 8000;
+   TotMonth_volume = Vol_monthlyrelease(tot_vol);
    Steady_Days = Num_steady(case);
    SOLVE Linearization USING LP maximize ObjectiveVal;
 
    FStore(tot_vol,case)= ObjectiveVal.L;
 
-   XStore_steady(tot_vol,case)= (QMin.L*sum(p,Duration(p))*0.03715)*Num_steady(case);
+   XStore_steady(tot_vol,case)= (Steady_Release.L*sum(p,Duration(p))*0.03715)*Num_steady(case);
    XStore_unsteady(tot_vol,case)= sum(p,release.L(p)*Duration(p)*0.03715)*(Numdays-Num_steady(case));
 
    RStore_steady(tot_vol,case,p)=release.L(p);
-   RStore_unsteady(tot_vol,case,p)= QMin.L;
+   RStore_unsteady(tot_vol,case,p)= Steady_Release.L;
 
    Sstore(tot_vol,case)=storage.L;
 
    ModelResults(tot_vol,case,"SolStat")= Linearization.solvestat;
    ModelResults(tot_vol,case,"ModStat")= Linearization.modelstat;
    DISPLAY FStore,XStore_steady,XStore_unsteady,RStore_steady,RStore_unsteady,Sstore;
-   option clear=ObjectiveVal,clear=release,clear=Qmin;
+   option clear=ObjectiveVal,clear=release,clear=Steady_Release;
 
 );
 
