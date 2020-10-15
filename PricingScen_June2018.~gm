@@ -14,9 +14,9 @@ Description: This model was developed to qaunitfy the trade-off between number o
             All the structural and operational constraints applied here are uptodate.
 
 ######################################
+Pricing Scenarios
+*#####################################
 $offtext
-
-****Model code
 
 Set
 
@@ -25,6 +25,7 @@ Set
           tot_vol                       Total montly release volume (acre-ft)/V1*V5/
           modpar                        Saving model status for each of the scenario solution/ ModStat "Model Status", SolStat "Solve Status"/
           case                          Defining constrainted cases for number of low flow steady days /case1*case12/
+          scen                          pricing scenarios tested /scen1 "$0/MWh differential", scen2 "$12.91/MWh differential",scen3 "$25.82/MWh differential"/
 ;
 
 
@@ -34,18 +35,18 @@ Set
 
 PARAMETERS
 
-FStore(tot_vol,case)                          Storing objective function values over different scenarios
+FStore(tot_vol,case,scen)                     Storing objective function values over different scenarios
 
-XStore_steady(tot_vol,case)                   Store Energy Generated during steady flow days over different cases (MWH)
-XStore_unsteady(tot_vol,case)                 Store Energy Generated during unsteady flow days over different cases (MWH)
+XStore_steady(tot_vol,case,scen)                   Store Energy Generated during steady flow days over different cases (MWH)
+XStore_unsteady(tot_vol,case,scen)                 Store Energy Generated during unsteady flow days over different cases (MWH)
 
-RStore_steady(tot_vol,case,p)                 Store Release values during steady flow days over different cases(cfs)
-RStore_unsteady(tot_vol,case,p)               Store Release values during unsteady flow days over different cases(cfs)
+RStore_steady(tot_vol,case,p,scen)                 Store Release values during steady flow days over different cases(cfs)
+RStore_unsteady(tot_vol,case,p,scen)               Store Release values during unsteady flow days over different cases(cfs)
 
-Sstore(tot_vol,case)                          Store Storage Values over different cases(ac-ft)
+Sstore(tot_vol,case,scen)                          Store Storage Values over different cases(ac-ft)
 
 
-ModelResults(tot_vol,case,modpar)             Store solution status of the scenarios i.e. whether the solution found is optimal or not?
+ModelResults(tot_vol,case,modpar,scen)             Store solution status of the scenarios i.e. whether the solution found is optimal or not?
 
 
 initstorage                           Initial reservoir storage 1st June 2018 (acre-ft)
@@ -55,15 +56,21 @@ Inflow(d)                             Inflow to reservoir (cfs)
 maxRel                                Maximum release in a day d at any timeperiod p(cfs)
 minRel                                Minimum release in a day d at any timeperiod p(cfs)
 evap                                  evaporation (ac-ft per day Considered constant throughout the month
-EnergyRate(p)                         Energy prices on weekdays ($ per MWH) /pLow 37.70, pHigh 63.52/
+WeekdayRate(p)                        Energy prices on weekdays ($ per MWH)
 weekendRate(p)                        Energy prices on weekends ($ per MWH) /pLow 37.70, pHigh 37.70/
-
 Duration(p)                           Duration of period (hours)
 Vol_monthlyrelease(tot_vol)           Different Total volumes of water to be released in the month i.e. June2018 in presented case (acre-ft)/V1 700000,V2 800000,V3 900000,V4 1000000,V5 1100000/
 TotMonth_volume                       To represent total monthly volume (acre-ft)
 Steady_Days                           To represent the number of steady low flow days
 Num_steady(case)                      Number of steady low flow days/case1 0, case2 4,case3 6, case4 7, case5 8, case6 9,case7 10,case8 12,case9 15,case10 20,case11 25,case12 30/
-Mar_Ramp(tot_vol,case,p)                To save margninal values associted with the ramp rate.
+Mar_Ramp(tot_vol,case,p,scen)         To save margninal values associted with the ramp rate
+;
+
+TABLE EnergyRate(scen,p)              Energy prices on weekdays ($ per MWH)
+         pLow     pHigh
+scen1    37.70    37.70
+scen2    37.70    50.61
+scen3    37.70    63.52
 ;
 
 
@@ -76,10 +83,10 @@ Duration("pHigh")= 16;
 *===================================================
 * Read data from Excel
 *===================================================
-$CALL GDXXRW.EXE input=June2018.xls output=Results_Bugflow.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
+$CALL GDXXRW.EXE input=June2018.xls output=PriceScen_June18.gdx set=d rng=day!A1 Rdim=1  par=Inflow rng=inflow!A1 Rdim=1  par=initstorage rng=initstorage!A1 Rdim=0  par=maxstorage rng=maxstorage!A1 Rdim=0   par=minstorage rng=minstorage!A1 Rdim=0  par=maxRel rng=maxRel!A1 Rdim=0 par=minRel rng=minRel!A1 Rdim=0  par=evap rng=evap!A1 Rdim=0
 
 *Write the input Data into a GDX file
-$GDXIN Results_Bugflow.gdx
+$GDXIN PriceScen_June18.gdx
 
 * loading parameters and input data from the GDX file into the model
 $LOAD d
@@ -177,10 +184,10 @@ EQ11_EnergyGen_Max(p)..                    Energy_Gen(p)=l= 1320*Duration(p);
 *Maximum Energy Generation capacity of GCD (MWH).. Source https://www.usbr.gov/uc/rm/crsp/gc/
 
 *
-EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,SteadyEn_Gen(p)*weekendRate(p))*weekends + sum(p,SteadyEn_Gen(p)*EnergyRate(p))*(Steady_Days-weekends)+ sum(p,Energy_Gen(p)*EnergyRate(p))*(Totaldays-Steady_Days);
+EQ12_EnergyRevenue..                         ObjectiveVal=e= sum(p,SteadyEn_Gen(p)*weekendRate(p))*weekends + sum(p,SteadyEn_Gen(p)*WeekdayRate(p))*(Steady_Days-weekends)+ sum(p,Energy_Gen(p)*WeekdayRate(p))*(Totaldays-Steady_Days);
 * *This equation works for number of steady days greater than number of weekend days.
 
-EQ13_Revenue..                             ObjectiveVal=e= sum(p,SteadyEn_Gen(p)*weekendRate(p))*(Steady_Days) + sum(p,Energy_Gen(p)*weekendRate(p))*(weekends - Steady_Days)+ sum(p,Energy_Gen(p)*EnergyRate(p))*(Totaldays-weekends);
+EQ13_Revenue..                             ObjectiveVal=e= sum(p,SteadyEn_Gen(p)*weekendRate(p))*(Steady_Days) + sum(p,Energy_Gen(p)*weekendRate(p))*(weekends - Steady_Days)+ sum(p,Energy_Gen(p)*WeekdayRate(p))*(Totaldays-weekends);
 *This equation works for number of steady days either equal or less than weekend days.  This equation price all the weekend days by weekned rate irrespective of whether its steady or hydropeaking day.
 
 
@@ -204,17 +211,29 @@ Model2.optfile = 1;
 
 
 *Looping over total volume and number of steay days scenarios
-loop((tot_vol,case),
+loop((tot_vol,case,scen),
 
+*limiting some of the parameter of the solver
 option reslim=20000;
 option Threads=6;
 option optcr=0.001;
+*selecting the solver to be used
 option LP= CPLEX;
+
+*initializing the variables
 release.L(p) = 10000;
 Steady_Release.L= 8000;
-   TotMonth_volume = Vol_monthlyrelease(tot_vol);
-   Steady_Days = Num_steady(case)+ EPS;
 
+*setting the total monthly volume equal to the mentioned volumes of the scenarios
+TotMonth_volume = Vol_monthlyrelease(tot_vol);
+
+*setting number of steady low flow days
+Steady_Days = Num_steady(case)+ EPS;
+
+*Setting the weekday energy pricing as per scen.
+WeekdayRate(p)= EnergyRate(scen,p);
+
+*solve statement
 if  (Steady_Days > weekends,
      SOLVE Model1 USING LP maximize ObjectiveVal;
 else SOLVE Model2 USING LP maximize ObjectiveVal;
@@ -222,44 +241,44 @@ else SOLVE Model2 USING LP maximize ObjectiveVal;
 
 
 * All the following lines of code are saving values for different parameters
-   FStore(tot_vol,case)= ObjectiveVal.L;
-   XStore_steady(tot_vol,case)= (Steady_Release.L*sum(p,Duration(p))*0.03715)*Num_steady(case);
-   XStore_unsteady(tot_vol,case)= sum(p,release.L(p)*Duration(p)*0.03715)*(Totaldays-Num_steady(case));
-   RStore_steady(tot_vol,"case1",p)= 0 + EPS;
+   FStore(tot_vol,case,scen)= ObjectiveVal.L;
+   XStore_steady(tot_vol,case,scen)= (Steady_Release.L*sum(p,Duration(p))*0.03715)*Num_steady(case);
+   XStore_unsteady(tot_vol,case,scen)= sum(p,release.L(p)*Duration(p)*0.03715)*(Totaldays-Num_steady(case));
+   RStore_steady(tot_vol,"case1",p,scen)= 0 + EPS;
 *************************************************
-   RStore_steady(tot_vol,case,p)= Steady_Release.L;
+   RStore_steady(tot_vol,case,p,scen)= Steady_Release.L;
 
-   RStore_unsteady(tot_vol,case,p)= release.L(p);
+   RStore_unsteady(tot_vol,case,p,scen)= release.L(p);
 *********************************************************************
 
-    RStore_unsteady(tot_vol,"case12",p)= 0+ EPS ;
+    RStore_unsteady(tot_vol,"case12",p,scen)= 0+ EPS ;
 
-   Sstore(tot_vol,case)=storage.L;
+   Sstore(tot_vol,case,scen)=storage.L;
 
-   ModelResults(tot_vol,"case1","SolStat")= Model2.solvestat;
-   ModelResults(tot_vol,"case1","ModStat")= Model2.modelstat;
-   ModelResults(tot_vol,"case2","SolStat")= Model2.solvestat;
-   ModelResults(tot_vol,"case2","ModStat")= Model2.modelstat;
-   ModelResults(tot_vol,"case3","SolStat")= Model2.solvestat;
-   ModelResults(tot_vol,"case3","ModStat")= Model2.modelstat;
-   ModelResults(tot_vol,"case4","SolStat")= Model2.solvestat;
-   ModelResults(tot_vol,"case4","ModStat")= Model2.modelstat;
-   ModelResults(tot_vol,"case5","SolStat")= Model2.solvestat;
-   ModelResults(tot_vol,"case5","ModStat")= Model2.modelstat;
-   ModelResults(tot_vol,case,"SolStat")= Model1.solvestat;
-   ModelResults(tot_vol,case,"ModStat")= Model1.modelstat;
+   ModelResults(tot_vol,"case1","SolStat",scen)= Model2.solvestat;
+   ModelResults(tot_vol,"case1","ModStat",scen)= Model2.modelstat;
+   ModelResults(tot_vol,"case2","SolStat",scen)= Model2.solvestat;
+   ModelResults(tot_vol,"case2","ModStat",scen)= Model2.modelstat;
+   ModelResults(tot_vol,"case3","SolStat",scen)= Model2.solvestat;
+   ModelResults(tot_vol,"case3","ModStat",scen)= Model2.modelstat;
+   ModelResults(tot_vol,"case4","SolStat",scen)= Model2.solvestat;
+   ModelResults(tot_vol,"case4","ModStat",scen)= Model2.modelstat;
+   ModelResults(tot_vol,"case5","SolStat",scen)= Model2.solvestat;
+   ModelResults(tot_vol,"case5","ModStat",scen)= Model2.modelstat;
+   ModelResults(tot_vol,case,"SolStat",scen)= Model1.solvestat;
+   ModelResults(tot_vol,case,"ModStat",scen)= Model1.modelstat;
 
-   Mar_Ramp(tot_vol,case,p) = EQ6_Rampup_rate.M(p)+ EPS;
+   Mar_Ramp(tot_vol,case,p,scen) = EQ6_Rampup_rate.M(p)+ EPS;
 
+*clearing the cache memory before next itteration
    option clear=ObjectiveVal,clear=release,clear=Steady_Release;
-
 );
 
    DISPLAY FStore,XStore_steady,XStore_unsteady,RStore_steady,RStore_unsteady,Sstore;
 
 *------------------------------------------------------------------------------*
 * Dump all input data and results to a GAMS gdx file
-Execute_Unload "Results_Bugflow.gdx";
+Execute_Unload "PriceScen_June18.gdx";
 * Dump the gdx file to an Excel workbook
-Execute "gdx2xls Results_Bugflow.gdx"
+Execute "gdx2xls PriceScen_June18.gdx"
 
