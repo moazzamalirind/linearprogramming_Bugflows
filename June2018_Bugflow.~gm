@@ -55,11 +55,8 @@ Inflow(d)                             Inflow to reservoir (cfs)
 maxRel                                Maximum release in a day d at any timeperiod p(cfs)
 minRel                                Minimum release in a day d at any timeperiod p(cfs)
 evap                                  evaporation (ac-ft per day Considered constant throughout the month
-EnergyRate(p)                         Energy revenue on weekdays ($ per MWH) /pLow 37.70, pHigh 63.52/
-weekendRate(p)                        Energy revenue on weekends ($ per MWH) /pLow 37.70, pHigh 37.70/
-
-*The energy prices with half price differentail
-*EnergyRate(p)                         Energy revenue on weekdays ($ per MWH) /pLow 37.70, pHigh 50.61/
+EnergyRate(p)                         Energy prices on weekdays ($ per MWH) /pLow 37.70, pHigh 63.52/
+weekendRate(p)                        Energy prices on weekends ($ per MWH) /pLow 37.70, pHigh 37.70/
 
 Duration(p)                           Duration of period (hours)
 Vol_monthlyrelease(tot_vol)           Different Total volumes of water to be released in the month i.e. June2018 in presented case (acre-ft)/V1 700000,V2 800000,V3 900000,V4 1000000,V5 1100000/
